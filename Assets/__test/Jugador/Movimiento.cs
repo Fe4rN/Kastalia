@@ -6,12 +6,13 @@ public class Movimiento : MonoBehaviour
 {
     private CharacterController controller;
     private Vector3 playerVelocity;
-    private float dashCooldown;
+    private float dashCooldown = 2;
+    private bool isDashing = false;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float sprintValue = 2.0f;
-    [SerializeField] private float dashSpeed;
-    [SerializeField] private float dashTime;
- 
+    [SerializeField] private float dashSpeed = 1.5f;
+    [SerializeField] private float dashTime = 0.25f;
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -20,12 +21,13 @@ public class Movimiento : MonoBehaviour
     void Update()
     {
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        float speedMultiplier = Input.GetKey(KeyCode.LeftShift)? sprintValue : 1f;
+        float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintValue : 1f;
         controller.Move(move * Time.deltaTime * playerSpeed * speedMultiplier);
-        if(Input.GetKey(KeyCode.Space)){
-            StartCoroutine(Dash(move));
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!isDashing) StartCoroutine(Dash(move));
         }
-        
+
         if (move != Vector3.zero)
         {
             transform.forward = move;
@@ -33,11 +35,18 @@ public class Movimiento : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
-    IEnumerator Dash(Vector3 move){
+    IEnumerator Dash(Vector3 move)
+    {
+
         float startTime = Time.time;
-        while(Time.time < startTime + dashTime){
-            controller.Move(move * dashSpeed *Time.deltaTime);
+        isDashing = true;
+        while (Time.time < startTime + dashTime)
+        {
+            Debug.Log("Dash");
+            controller.Move(move * dashSpeed * Time.deltaTime);
             yield return null;
         }
+        yield return new WaitForSeconds(dashCooldown - dashTime);
+        isDashing = false;
     }
 }
