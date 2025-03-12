@@ -28,10 +28,6 @@ public class Movimiento : MonoBehaviour
             if (!isDashing) StartCoroutine(Dash(move));
         }
 
-        if (move != Vector3.zero)
-        {
-            transform.forward = move;
-        }
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
