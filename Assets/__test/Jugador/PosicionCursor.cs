@@ -3,7 +3,7 @@ using UnityEngine;
 public class PosicionCursor : MonoBehaviour
 {
     private Transform player;
-    private LayerMask layerMask = ~LayerMask.GetMask("Player");
+    private LayerMask layerMask;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
