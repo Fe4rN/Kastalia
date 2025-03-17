@@ -3,7 +3,6 @@ using UnityEngine;
 public class CameraRaycaster : MonoBehaviour
 {
     [SerializeField] private LayerMask layerMask;
-
     //Camera cam;
     Transform player;
     void Start()
@@ -20,12 +19,9 @@ public class CameraRaycaster : MonoBehaviour
         Vector3.Distance(transform.position, player.position),
         layerMask);
 
-        if (hits.Length > 0)
-        {
-            foreach (var item in hits)
-            {
-                if (item.transform.TryGetComponent<ObstaculoTransparente>(out ObstaculoTransparente obstaculo))
-                {
+        if(hits.Length > 0){
+            foreach(var item in hits){
+                if(item.transform.TryGetComponent<ObstaculoTransparente>(out ObstaculoTransparente obstaculo)){
                     obstaculo.hitted = true;
                 }
             }

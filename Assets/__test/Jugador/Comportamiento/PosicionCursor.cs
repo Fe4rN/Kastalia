@@ -19,7 +19,6 @@ public class PosicionCursor : MonoBehaviour
             Vector3 worldPoint = hit.point;
             Vector3 Yremoved = new Vector3(worldPoint.x, player.position.y, worldPoint.z);
             player.LookAt(Yremoved);
-            Debug.Log(Yremoved);
         }
     }
 }
