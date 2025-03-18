@@ -6,12 +6,12 @@ public class Movimiento : MonoBehaviour
 {
     private CharacterController controller;
     private Vector3 playerVelocity;
-    private float dashCooldown = 2;
+    private float dashCooldown = 1.5f;
     private bool isDashing = false;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float sprintValue = 2.0f;
-    [SerializeField] private float dashSpeed = 1.5f;
-    [SerializeField] private float dashTime = 0.25f;
+    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashTime = 0.1f;
 
     private void Start()
     {
@@ -38,7 +38,6 @@ public class Movimiento : MonoBehaviour
         isDashing = true;
         while (Time.time < startTime + dashTime)
         {
-            Debug.Log("Dash");
             controller.Move(move * dashSpeed * Time.deltaTime);
             yield return null;
         }

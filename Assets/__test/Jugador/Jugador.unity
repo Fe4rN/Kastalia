@@ -550,8 +550,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 2
   sprintValue: 2
-  dashSpeed: 1.5
-  dashTime: 0.25
+  dashSpeed: 20
+  dashTime: 0.1
 --- !u!1 &2066126413
 GameObject:
   m_ObjectHideFlags: 0
