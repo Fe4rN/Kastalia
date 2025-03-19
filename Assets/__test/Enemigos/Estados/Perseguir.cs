@@ -16,11 +16,7 @@ public class Perseguir : Estado
     void Update()
     {
         if(agent == null) {return;}
-        if (player == null)
-        {
-            Debug.LogWarning("No hay jugador");
-            return;
-        }
+        if (player == null) return;
         float distanciaAJugador = Vector3.Distance(agent.transform.position, player.position);
         if (distanciaAJugador <= controller.DetectionDistance)
         {

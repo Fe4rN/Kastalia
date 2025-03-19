@@ -50,7 +50,6 @@ public class Deambular : Estado
         if(!estaDeambulando){
             estaDeambulando = true;
             posicionAleatoria = ElegirPosicionAleatoria();
-            Debug.Log(posicionAleatoria);
 
             while (posicionAleatoria != null && (Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f))
             {

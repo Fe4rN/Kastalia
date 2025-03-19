@@ -79,7 +79,6 @@ public class Acciones : MonoBehaviour
     {
         if (isAttacking) yield break;
         isAttacking = true;
-        Debug.Log("Ataque de espada");
         comprobarEnemigosEnArea();
         yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
