@@ -7,7 +7,7 @@ public class PosicionCursor : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        layerMask = ~LayerMask.GetMask("Player");
+        layerMask = ~LayerMask.GetMask("Player", "Paredes");
     }
     void Update()
     {

@@ -15,7 +15,7 @@ public class Perseguir : Estado
 
     void Update()
     {
-
+        if(agent == null) {return;}
         if (player == null)
         {
             Debug.LogWarning("No hay jugador");

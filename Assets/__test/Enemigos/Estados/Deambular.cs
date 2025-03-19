@@ -46,6 +46,7 @@ public class Deambular : Estado
 
     IEnumerator DeambularCoorutina()
     {
+        if(agent == null) yield break;
         if(!estaDeambulando){
             estaDeambulando = true;
             posicionAleatoria = ElegirPosicionAleatoria();
@@ -53,14 +54,14 @@ public class Deambular : Estado
 
             while (posicionAleatoria != null && (Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f))
             {
-
                 agent.SetDestination(posicionAleatoria);
                 agent.transform.LookAt(posicionAleatoria);
 
-                while (agent.pathPending || agent.remainingDistance > .2f)
-                {
-                    yield return null;
-                }
+                while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
+            {
+                yield return null;
+                if (agent == null || !agent.isOnNavMesh) yield break;
+            }
 
                 float tiempoEspera = Random.Range(1f, 4f);
                 yield return new WaitForSeconds(tiempoEspera);
