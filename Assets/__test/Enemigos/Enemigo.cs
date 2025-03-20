@@ -22,13 +22,18 @@ public class Enemigo : Maquina
     public Transform Player { get { return jugador; } }
 
     void Start()
-    {   
+    {   if(GameObject.FindWithTag("Player") == null) return;
         jugador = GameObject.FindWithTag("Player").transform;
         vidaActual = vidaMaxima;
     }
 
     void Update()
     {
+        if(GameObject.FindWithTag("Player") == null){
+            return;
+        } else {
+            jugador = GameObject.FindWithTag("Player").transform;
+        }
         if (vidaActual <= 0) Die();
     }
 

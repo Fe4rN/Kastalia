@@ -11,14 +11,19 @@ public class HealthManager : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
-        maxHealth = player.GetComponent<Acciones>().vidaMaxima;
+        if(player){
+            player = GameObject.FindWithTag("Player");
+            maxHealth = player.GetComponent<Acciones>().vidaMaxima;  
+        }
         
     }
     void Update()
     {
         if(player == null) return;
-        if(player.GetComponent<Acciones>().vidaActual == 0) return;
+        if(player.GetComponent<Acciones>().vidaActual == 0) {
+            healthText.text = "Vida: 0/" + maxHealth;
+            return;
+        };
         currentHealth = player.GetComponent<Acciones>().vidaActual;
         healthText.text = "Vida: " + currentHealth + "/" + maxHealth;
     }

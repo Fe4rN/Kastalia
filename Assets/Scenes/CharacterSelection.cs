@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NewMonoBehaviourScript : MonoBehaviour
@@ -30,10 +29,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
         if (selectedCharacter != -1)
         {
             Debug.Log("Selected character: " + selectedCharacter);
-            SceneManager.LoadScene("Mazmorra1");
-
+            GameManager.instance.characterIndex = selectedCharacter;
         } else {
-        Debug.Log("No character selected");
+            Debug.Log("No character selected");
         }
     }
 }

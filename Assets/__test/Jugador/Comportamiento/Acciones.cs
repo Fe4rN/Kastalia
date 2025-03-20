@@ -83,7 +83,8 @@ public class Acciones : MonoBehaviour
     public void Die(){
         StopAllCoroutines();
         Destroy(gameObject);
-        SceneManager.LoadScene("CharacterSelection");
+        LevelManager.instance.isLevelLoaded = false;
+        GameManager.instance.RestartGame();
     }
 
     private void comprobarEnemigosEnArea()
