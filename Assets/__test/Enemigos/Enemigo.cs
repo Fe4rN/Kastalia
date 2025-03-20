@@ -29,7 +29,16 @@ public class Enemigo : Maquina
 
     void Update()
     {
-        if(GameObject.FindWithTag("Player") == null){
+        void Update()
+        {
+            if (Time.timeScale == 0) return; // Evita la ejecución si el juego está en pausa
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+        }
+
+        if (GameObject.FindWithTag("Player") == null){
             return;
         } else {
             jugador = GameObject.FindWithTag("Player").transform;
