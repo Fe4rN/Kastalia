@@ -29,18 +29,10 @@ public class Enemigo : Maquina
 
     void Update()
     {
-        void Update()
-        {
-            if (Time.timeScale == 0) return; // Evita la ejecución si el juego está en pausa
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
+        if (GameObject.FindWithTag("Player") == null) {
+            return; 
         }
-
-        if (GameObject.FindWithTag("Player") == null){
-            return;
-        } else {
+         else {
             jugador = GameObject.FindWithTag("Player").transform;
         }
         if (vidaActual <= 0) Die();
