@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Acciones : MonoBehaviour
 {
+    //Atributos del jugador
+    public float vidaMaxima = 100f;
+    public float vidaActual;
+    private bool estaVivo = true;
+    private float tiempoImmunidad = 1.5f;
+    private bool inmunidad = false;
+
     //Variables relacionadas al movimiento
     private CharacterController controller;
     private Vector3 playerVelocity;
@@ -23,6 +31,7 @@ public class Acciones : MonoBehaviour
     private void Start()
     {
         controller = GetComponent<CharacterController>();
+        vidaActual = vidaMaxima;
     }
 
     void Update()
@@ -39,6 +48,7 @@ public class Acciones : MonoBehaviour
         {
             if (!isAttacking) StartCoroutine(SwordAttack());
         }
+        if(vidaActual <= 0) Die();
 
         controller.Move(playerVelocity * Time.deltaTime);
     }
@@ -57,7 +67,24 @@ public class Acciones : MonoBehaviour
         isDashing = false;
     }
 
+    
+    public void takeDamage(float damage)
+    {
+        if (inmunidad) return;
+        vidaActual -= damage;
+        if (vidaActual <= 0)
+        {
+            vidaActual = 0;
+            Die();
+        }
+        StartCoroutine(ActivarInmunidad());
+    }
 
+    public void Die(){
+        StopAllCoroutines();
+        Destroy(gameObject);
+        SceneManager.LoadScene("CharacterSelection");
+    }
 
     private void comprobarEnemigosEnArea()
     {
@@ -82,6 +109,13 @@ public class Acciones : MonoBehaviour
         comprobarEnemigosEnArea();
         yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
+    }
+
+    IEnumerator ActivarInmunidad()
+    {
+        inmunidad = true;
+        yield return new WaitForSeconds(tiempoImmunidad);
+        inmunidad = false;
     }
 
     //Para debugging del area de ataque

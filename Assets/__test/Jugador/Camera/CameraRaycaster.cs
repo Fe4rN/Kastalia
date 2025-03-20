@@ -14,6 +14,7 @@ public class CameraRaycaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(player == null) return;
         RaycastHit[] hits = Physics.RaycastAll(transform.position,
         (player.position - transform.position),
         Vector3.Distance(transform.position, player.position),

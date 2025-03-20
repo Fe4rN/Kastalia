@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class Enemigo : Maquina
 {
-    [SerializeField]
-    public float vidaMaxima = 100f;
+    [SerializeField] public float vidaMaxima = 50f;
     public float vidaActual;
     Transform jugador;
     [SerializeField] float distanciaAtaque = 3f;
     [SerializeField] float distanciaDeteccion = 30f;
+    float distanceToPlayer;
+
+    private float attackCooldown = 1.5f;
+    public float attackDamage = 10f;
 
     public NombreEstado deambularEstado;
     public NombreEstado perseguirEstado;
@@ -19,7 +22,7 @@ public class Enemigo : Maquina
     public Transform Player { get { return jugador; } }
 
     void Start()
-    {
+    {   
         jugador = GameObject.FindWithTag("Player").transform;
         vidaActual = vidaMaxima;
     }

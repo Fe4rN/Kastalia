@@ -16,15 +16,21 @@ public class Perseguir : Estado
     void Update()
     {
         if(agent == null) {return;}
-        if (player == null) return;
-        float distanciaAJugador = Vector3.Distance(agent.transform.position, player.position);
-        if (distanciaAJugador <= controller.DetectionDistance)
-        {
-            agent.SetDestination(player.position);
-            agent.transform.LookAt(new Vector3(player.position.x, agent.transform.position.y, player.position.z));
-        } else {
-            controller.SetEstado(controller.deambularEstado.Value);
-            return;
+        if (player == null) controller.SetEstado(controller.deambularEstado.Value);
+        if(player){
+            float distanciaAJugador = Vector3.Distance(agent.transform.position, player.position);
+            if(distanciaAJugador <= controller.AttackDistance)
+            {
+                player.GetComponent<Acciones>().takeDamage(controller.attackDamage);
+            }
+            if (distanciaAJugador <= controller.DetectionDistance)
+            {
+                agent.SetDestination(player.position);
+                agent.transform.LookAt(new Vector3(player.position.x, agent.transform.position.y, player.position.z));
+            } else {
+                controller.SetEstado(controller.deambularEstado.Value);
+                return;
+            }
         }
     }
 }
