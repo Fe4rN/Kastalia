@@ -646,6 +646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   characterIndex: 0
+  playerSpawned: 0
   currentCharacter: 
   Lyx: {fileID: 0}
   Dreven: {fileID: 0}
@@ -695,6 +696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyQuantity: 2
   isPlayerLoadedIn: 0
+  isLevelLoaded: 0
   enemyPrefab: {fileID: 8115032155769542572, guid: 267ce24bb5897234480b5024a8689c80, type: 3}
 --- !u!4 &820928491
 Transform:
@@ -1504,8 +1506,6 @@ GameObject:
   - component: {fileID: 1795124282}
   - component: {fileID: 1795124281}
   - component: {fileID: 1795124284}
-  - component: {fileID: 1795124286}
-  - component: {fileID: 1795124287}
   - component: {fileID: 1795124288}
   m_Layer: 0
   m_Name: Main Camera
@@ -1632,41 +1632,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &1795124286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1795124280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 110d6b7b3c1895b44a0093065ee9fd5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 8
---- !u!1818360608 &1795124287
-PositionConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1795124280}
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Weight: 1
-  m_TranslationAtRest: {x: 1.4831095, y: 10, z: -19.563435}
-  m_TranslationOffset: {x: 0, y: 0, z: 0}
-  m_AffectTranslationX: 1
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 1
-  m_Active: 1
-  m_IsLocked: 0
-  m_Sources:
-  - sourceTransform: {fileID: 0}
-    weight: 1
 --- !u!114 &1795124288
 MonoBehaviour:
   m_ObjectHideFlags: 0

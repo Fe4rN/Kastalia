@@ -1,9 +1,11 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CameraRaycaster : MonoBehaviour
 {
     [SerializeField] private LayerMask layerMask;
     Transform player;
+    private bool playerTransformFound = false;
     void Start()
     {
         if (player) player = GameObject.FindWithTag("Player").transform;
@@ -11,7 +13,11 @@ public class CameraRaycaster : MonoBehaviour
 
     void Update()
     {
-        if(player == null) return;
+        if(LevelManager.instance.isLevelLoaded == false) return;
+        if(!playerTransformFound) {
+            findPlayerTransform();
+            return;
+        }
         RaycastHit[] hits = Physics.RaycastAll(transform.position, player.position - transform.position,
         Vector3.Distance(transform.position, player.position),layerMask);
 
@@ -23,5 +29,10 @@ public class CameraRaycaster : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void findPlayerTransform(){
+        player = GameObject.FindWithTag("Player").transform;
+        if(player) playerTransformFound = true;
     }
 }

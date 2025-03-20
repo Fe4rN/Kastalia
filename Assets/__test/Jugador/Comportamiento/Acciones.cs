@@ -11,7 +11,7 @@ public class Acciones : MonoBehaviour
     private bool estaVivo = true;
     private float tiempoImmunidad = 1.5f;
     private bool inmunidad = false;
-
+    
     //Variables relacionadas al movimiento
     private CharacterController controller;
     private Vector3 playerVelocity;
@@ -25,6 +25,8 @@ public class Acciones : MonoBehaviour
     //Variables relacionadas al ataque
     private bool isAttacking = false;
     [SerializeField] private float attackrange = 6.0f;
+    [SerializeField] private float bowReach = 30.0f;
+    private float arrowRadius = 0.1f;
     private float attackCooldown = 1.5f;
     private Vector3 attackDamageOffset = new Vector3(0, 0, 1);
 
@@ -46,9 +48,17 @@ public class Acciones : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (!isAttacking) StartCoroutine(SwordAttack());
+            if (!isAttacking) {
+                if(GameManager.instance.characterIndex == 1){
+                    StartCoroutine(SwordAttack());
+                    Debug.Log("Ataque Espada");
+                }else if(GameManager.instance.characterIndex == 2){
+                    StartCoroutine(bowAttack());
+                    Debug.Log("Ataque Arco");
+                }
+            }
         }
-        if(vidaActual <= 0) Die();
+        if (vidaActual <= 0) Die();
 
         controller.Move(playerVelocity * Time.deltaTime);
     }
@@ -67,7 +77,7 @@ public class Acciones : MonoBehaviour
         isDashing = false;
     }
 
-    
+
     public void takeDamage(float damage)
     {
         if (inmunidad) return;
@@ -80,7 +90,8 @@ public class Acciones : MonoBehaviour
         StartCoroutine(ActivarInmunidad());
     }
 
-    public void Die(){
+    public void Die()
+    {
         StopAllCoroutines();
         Destroy(gameObject);
         LevelManager.instance.isLevelLoaded = false;
@@ -103,6 +114,33 @@ public class Acciones : MonoBehaviour
             }
         }
     }
+
+    private void trazarRayoArco()
+    {
+        PosicionCursor cursorToWorld = GetComponent<PosicionCursor>();
+        Debug.Log(cursorToWorld.lookPoint);
+        Vector3 direccion = (cursorToWorld.lookPoint - transform.position).normalized;
+
+        Ray rayo = new Ray(transform.position, direccion);
+        RaycastHit hit;
+
+        if (Physics.SphereCast(rayo, arrowRadius, out hit, bowReach))
+        {
+            Enemigo enemigo = hit.collider.GetComponentInParent<Enemigo>();
+            Debug.DrawLine(transform.position, hit.point, Color.red, 1f); // Debugging line
+            if(enemigo){
+                enemigo.takeDamage(20f);
+            }
+            
+        }
+        else
+        {
+            Vector3 endPoint = transform.position + direccion * bowReach; // End of the ray
+            Debug.DrawLine(transform.position, endPoint, Color.green, 1f); // Debug line when nothing is hit
+            Debug.Log("Arrow max range reached.");
+        }
+    }
+
     IEnumerator SwordAttack()
     {
         if (isAttacking) yield break;
@@ -110,6 +148,16 @@ public class Acciones : MonoBehaviour
         comprobarEnemigosEnArea();
         yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
+    }
+
+    IEnumerator bowAttack()
+    {
+        if (isAttacking) yield break;
+        isAttacking = true;
+        trazarRayoArco();
+        yield return new WaitForSeconds(attackCooldown);
+        isAttacking = false;
+
     }
 
     IEnumerator ActivarInmunidad()
