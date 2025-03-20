@@ -35,7 +35,7 @@ public class Enemigo : Maquina
          else {
             jugador = GameObject.FindWithTag("Player").transform;
         }
-        if (vidaActual <= 0) Die();
+       if (vidaActual <= 0) Die();
     }
 
     public void takeDamage(float damage)

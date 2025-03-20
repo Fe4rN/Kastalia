@@ -8,7 +8,7 @@ public class Acciones : MonoBehaviour
     //Atributos del jugador
     public float vidaMaxima = 100f;
     public float vidaActual;
-    private bool estaVivo = true;
+    //private bool estaVivo = true;
     private float tiempoImmunidad = 1.5f;
     private bool inmunidad = false;
 
