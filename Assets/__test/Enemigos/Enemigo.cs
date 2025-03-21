@@ -43,6 +43,7 @@ public class Enemigo : Maquina
         if(vidaActual <= 0) return;
         StartCoroutine(FlashOnHit());
         vidaActual -= damage;
+        Debug.Log($"Ouch! -{damage}");
     }
     IEnumerator FlashOnHit()
     {

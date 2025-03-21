@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 661b0c2176eca8d41aebb252898c3cee, type: 3}
-  m_Name: HojaAfilada
+  m_Script: {fileID: 11500000, guid: bc152922b271c9e49b3c028efc010484, type: 3}
+  m_Name: Hoja Afilada
   m_EditorClassIdentifier: 
-  nombre: Hoja Afilada
-  "da\xF1o": 20
-  icono: {fileID: 0}
+  weaponName: HojaAfilada
+  weaponType: 0
+  damage: 20
+  icon: {fileID: 0}

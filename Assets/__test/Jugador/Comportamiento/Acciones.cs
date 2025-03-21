@@ -11,7 +11,7 @@ public class Acciones : MonoBehaviour
     //private bool estaVivo = true;
     private float tiempoImmunidad = 1.5f;
     private bool inmunidad = false;
-    
+
     //Variables relacionadas al movimiento
     private CharacterController controller;
     private Vector3 playerVelocity;
@@ -30,15 +30,29 @@ public class Acciones : MonoBehaviour
     private float attackCooldown = 1.5f;
     private Vector3 attackDamageOffset = new Vector3(0, 0, 1);
 
+    // Inventario
+    public string currentlySelected;
+    public WeaponType allowedWeaponType;
+    public Weapon equippedWeapon;
+    private Dictionary<AbilityType, Habilidad> equippedAbilities = new Dictionary<AbilityType, Habilidad>();
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
         vidaActual = vidaMaxima;
+        if (GameManager.instance.currentCharacter == "Lyx")
+        {
+            allowedWeaponType = WeaponType.Espada;
+        }
+        else if (GameManager.instance.currentCharacter == "Dreven")
+        {
+            allowedWeaponType = WeaponType.Arco;
+        }
     }
 
     void Update()
     {
-        if(GameManager.instance.isPaused) return;
+        if (GameManager.instance.isPaused) return;
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintValue : 1f;
         controller.Move(move * Time.deltaTime * playerSpeed * speedMultiplier);
@@ -49,16 +63,21 @@ public class Acciones : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (!isAttacking) {
-                if(GameManager.instance.characterIndex == 1){
+            if (!isAttacking)
+            {
+                if (currentlySelected == "Espada" && equippedWeapon != null)
+                {
                     StartCoroutine(SwordAttack());
                     Debug.Log("Ataque Espada");
-                }else if(GameManager.instance.characterIndex == 2){
+                }
+                else if (currentlySelected == "Arco" && equippedWeapon != null)
+                {
                     StartCoroutine(bowAttack());
                     Debug.Log("Ataque Arco");
                 }
             }
         }
+        if (Input.GetKeyDown(KeyCode.Tab)) PrintLoadout();
         if (vidaActual <= 0) Die();
 
         controller.Move(playerVelocity * Time.deltaTime);
@@ -91,6 +110,14 @@ public class Acciones : MonoBehaviour
         StartCoroutine(ActivarInmunidad());
     }
 
+    public void EquipWeapon(Weapon weapon)
+    {
+        if(weapon.weaponType == allowedWeaponType) {
+            equippedWeapon = weapon;
+            currentlySelected = weapon.weaponType.ToString();
+        }
+    }
+
     public void Die()
     {
         StopAllCoroutines();
@@ -111,7 +138,7 @@ public class Acciones : MonoBehaviour
             if (enemigo != null && !uniqueEnemies.Contains(enemigo))
             {
                 uniqueEnemies.Add(enemigo);
-                enemigo.takeDamage(20f);
+                enemigo.takeDamage(equippedWeapon.damage);
             }
         }
     }
@@ -128,16 +155,17 @@ public class Acciones : MonoBehaviour
         if (Physics.SphereCast(rayo, arrowRadius, out hit, bowReach))
         {
             Enemigo enemigo = hit.collider.GetComponentInParent<Enemigo>();
-            Debug.DrawLine(transform.position, hit.point, Color.red, 1f); // Debugging line
-            if(enemigo){
-                enemigo.takeDamage(20f);
+            Debug.DrawLine(transform.position, hit.point, Color.red, 1f); // Debugging
+            if (enemigo)
+            {
+                enemigo.takeDamage(equippedWeapon.damage);
             }
-            
+
         }
         else
         {
-            Vector3 endPoint = transform.position + direccion * bowReach; // End of the ray
-            Debug.DrawLine(transform.position, endPoint, Color.green, 1f); // Debug line when nothing is hit
+            Vector3 endPoint = transform.position + direccion * bowReach;
+            Debug.DrawLine(transform.position, endPoint, Color.green, 1f); // Debugging
             Debug.Log("Arrow max range reached.");
         }
     }
@@ -168,12 +196,23 @@ public class Acciones : MonoBehaviour
         inmunidad = false;
     }
 
-    //Para debugging del area de ataque
+    //Para visualizar el rango de ataque de la espada (debugging)
     private void OnDrawGizmosSelected()
     {
         if (controller == null) return;
         Vector3 attackPosition = controller.transform.position + controller.transform.forward * attackDamageOffset.z + controller.transform.up * attackDamageOffset.y + controller.transform.right * attackDamageOffset.x;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPosition, attackrange);
+    }
+
+    public void PrintLoadout() //Debugging
+    {
+        Debug.Log($"Character: {GameManager.instance.currentCharacter}");
+        Debug.Log($"Weapon: {(equippedWeapon != null ? equippedWeapon : "None")}");
+
+        foreach (var ability in equippedAbilities.Values)
+        {
+            Debug.Log($"Ability: {ability.Name} ({ability.Type})");
+        }
     }
 }
