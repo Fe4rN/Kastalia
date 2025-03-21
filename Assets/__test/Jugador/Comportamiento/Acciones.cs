@@ -8,7 +8,7 @@ public class Acciones : MonoBehaviour
     //Atributos del jugador
     public float vidaMaxima = 100f;
     public float vidaActual;
-    private bool estaVivo = true;
+    //private bool estaVivo = true;
     private float tiempoImmunidad = 1.5f;
     private bool inmunidad = false;
     
@@ -38,6 +38,7 @@ public class Acciones : MonoBehaviour
 
     void Update()
     {
+        if(GameManager.instance.isPaused) return;
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintValue : 1f;
         controller.Move(move * Time.deltaTime * playerSpeed * speedMultiplier);

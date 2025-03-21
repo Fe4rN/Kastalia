@@ -10,6 +10,7 @@ public class Deambular : Estado
     NavMeshAgent agent;
     Enemigo controller;
     private bool estaDeambulando = false;
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -19,6 +20,8 @@ public class Deambular : Estado
 
     void Update()
     {
+        if (Menu_Pausa.JuegoPausado) return;
+
         if (controller != null && controller.Player != null)
         {
             float distanciaAJugador = Vector3.Distance(agent.transform.position, controller.Player.position);
@@ -46,26 +49,30 @@ public class Deambular : Estado
 
     IEnumerator DeambularCoorutina()
     {
-        if(agent == null) yield break;
-        if(!estaDeambulando){
+        if (agent == null) yield break;
+        if (!estaDeambulando)
+        {
             estaDeambulando = true;
             posicionAleatoria = ElegirPosicionAleatoria();
 
             while (posicionAleatoria != null && (Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f))
             {
+                while (Menu_Pausa.JuegoPausado) yield return null;
+
                 agent.SetDestination(posicionAleatoria);
                 agent.transform.LookAt(posicionAleatoria);
 
                 while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
-            {
-                yield return null;
-                if (agent == null || !agent.isOnNavMesh) yield break;
-            }
+                {
+                    if (Menu_Pausa.JuegoPausado) yield return null;
+                    yield return null;
+                }
 
                 float tiempoEspera = Random.Range(1f, 4f);
+                while (Menu_Pausa.JuegoPausado) yield return null;
                 yield return new WaitForSeconds(tiempoEspera);
-
             }
+
             estaDeambulando = false;
         }
     }

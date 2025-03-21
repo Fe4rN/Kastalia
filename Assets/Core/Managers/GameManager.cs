@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject Lyx;
     [SerializeField] private GameObject Dreven;
 
+    public bool isPaused = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -34,6 +36,14 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+                ResumeGame();
+            else
+                PauseGame();
+        }
+
         if (characterIndex != -1 && !playerSpawned)
         {
             switch (characterIndex)
@@ -68,5 +78,19 @@ public class GameManager : MonoBehaviour
     public void LoadScenes(){
         SceneManager.LoadSceneAsync("Mazmorra1");
         SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
+    }
+
+    public void PauseGame()
+    {
+        SceneManager.LoadSceneAsync("PauseMenu", LoadSceneMode.Additive);
+        Time.timeScale = 0f;
+        isPaused = true;
+    }
+
+    public void ResumeGame()
+    {
+        SceneManager.UnloadSceneAsync("PauseMenu");
+        Time.timeScale = 1f;
+        isPaused = false;
     }
 }

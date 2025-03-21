@@ -29,12 +29,13 @@ public class Enemigo : Maquina
 
     void Update()
     {
-        if(GameObject.FindWithTag("Player") == null){
-            return;
-        } else {
+        if (GameObject.FindWithTag("Player") == null) {
+            return; 
+        }
+         else {
             jugador = GameObject.FindWithTag("Player").transform;
         }
-        if (vidaActual <= 0) Die();
+       if (vidaActual <= 0) Die();
     }
 
     public void takeDamage(float damage)

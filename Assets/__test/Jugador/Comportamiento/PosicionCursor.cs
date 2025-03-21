@@ -12,6 +12,7 @@ public class PosicionCursor : MonoBehaviour
     }
     void Update()
     {
+        if(GameManager.instance.isPaused) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
