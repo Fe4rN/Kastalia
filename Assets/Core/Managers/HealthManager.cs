@@ -17,7 +17,15 @@ public class HealthManager : MonoBehaviour
     private float maxHealth;
     private float currentHealth;
     private bool uiShown = false;
-    
+
+    private Color defaultButtonColor;
+    public Color highlightColor = Color.yellow;
+
+    void Start()
+    {
+        defaultButtonColor = weaponButton.GetComponent<Image>().color;
+    }
+
     void Update()
     {
         if (GameManager.instance.playerSpawned && uiShown != true) startUI();
@@ -34,6 +42,7 @@ public class HealthManager : MonoBehaviour
         healthText.text = "Vida: " + currentHealth + "/" + maxHealth;
 
         updateWeapon();
+        updateAbilities();
     }
 
     private void startUI()
@@ -51,6 +60,88 @@ public class HealthManager : MonoBehaviour
         if (player == null) return;
         Acciones jugador = player.GetComponent<Acciones>();
         if (jugador == null || jugador.equippedWeapon == null) return;
+
+        // Update weapon button text
         weaponButtonText.text = jugador.equippedWeapon.weaponName;
+
+        // Highlight selected weapon button
+        if (jugador.currentlySelected == jugador.equippedWeapon.weaponType.ToString())
+        {
+            weaponButton.GetComponent<Image>().color = highlightColor; // Highlight color
+        }
+        else
+        {
+            weaponButton.GetComponent<Image>().color = defaultButtonColor; // Reset to default color
+        }
+    }
+
+    private void updateAbilities()
+    {
+        if (player == null) return;
+        Acciones jugador = player.GetComponent<Acciones>();
+        if (jugador == null) return;
+
+        // Update Offensive Ability Button Text
+        if (jugador.equippedAbilities.TryGetValue(AbilityType.Ofensiva, out Ability offensiveAbility))
+        {
+            offensiveAbilityButtonText.text = offensiveAbility != null ? offensiveAbility.abilityName : "None";
+
+            // Highlight selected offensive ability button
+            if (jugador.currentlySelected == offensiveAbility.abilityType.ToString())
+            {
+                offensiveAbilityButton.GetComponent<Image>().color = highlightColor; // Highlight color
+            }
+            else
+            {
+                offensiveAbilityButton.GetComponent<Image>().color = defaultButtonColor; // Reset to default color
+            }
+        }
+        else
+        {
+            offensiveAbilityButtonText.text = "None";
+            offensiveAbilityButton.GetComponent<Image>().color = defaultButtonColor; // Reset to default color
+        }
+
+        // Update Defensive Ability Button Text
+        if (jugador.equippedAbilities.TryGetValue(AbilityType.Defensiva, out Ability defensiveAbility))
+        {
+            defensiveAbilityButtonText.text = defensiveAbility != null ? defensiveAbility.abilityName : "None";
+
+            // Highlight selected defensive ability button
+            if (jugador.currentlySelected == defensiveAbility.abilityType.ToString())
+            {
+                defensiveAbilityButton.GetComponent<Image>().color = highlightColor; // Highlight color
+            }
+            else
+            {
+                defensiveAbilityButton.GetComponent<Image>().color = defaultButtonColor; // Reset to default color
+            }
+        }
+        else
+        {
+            defensiveAbilityButtonText.text = "None";
+            defensiveAbilityButton.GetComponent<Image>().color = defaultButtonColor; // Reset to default color
+        }
+
+        // Update Healing Ability Button Text
+        if (jugador.equippedAbilities.TryGetValue(AbilityType.Curativa, out Ability healingAbility))
+        {
+            healingAbilityButtonText.text = healingAbility != null ? healingAbility.abilityName : "None";
+
+            // Highlight selected healing ability button
+            if (jugador.currentlySelected == healingAbility.abilityType.ToString())
+            {
+                healingAbilityButton.GetComponent<Image>().color = highlightColor; // Highlight color
+            }
+            else
+            {
+                healingAbilityButton.GetComponent<Image>().color = defaultButtonColor; // Reset to default color
+            }
+        }
+        else
+        {
+            healingAbilityButtonText.text = "None";
+            healingAbilityButton.GetComponent<Image>().color = defaultButtonColor; // Reset to default color
+        }
     }
 }

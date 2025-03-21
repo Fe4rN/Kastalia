@@ -34,7 +34,15 @@ public class Acciones : MonoBehaviour
     public string currentlySelected;
     public WeaponType allowedWeaponType;
     public Weapon equippedWeapon;
-    private Dictionary<AbilityType, Habilidad> equippedAbilities = new Dictionary<AbilityType, Habilidad>();
+    public Dictionary<AbilityType, Ability> equippedAbilities = new Dictionary<AbilityType, Ability>();
+
+    public float offensiveAbilityCooldown = 0;
+    public float defensiveAbilityCooldown = 0;
+        public int defensiveAbilityHits = 0;
+        private float tiempoImmunidadEscudo = 1f;
+    public float healingAbilityCooldown = 0;
+    private bool isCastingAbility = false;
+
 
     private void Start()
     {
@@ -63,7 +71,7 @@ public class Acciones : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (!isAttacking)
+            if (!isAttacking && !isDashing)
             {
                 if (currentlySelected == "Espada" && equippedWeapon != null)
                 {
@@ -75,9 +83,42 @@ public class Acciones : MonoBehaviour
                     StartCoroutine(bowAttack());
                     Debug.Log("Ataque Arco");
                 }
+                else if (currentlySelected == "Ofensiva"
+                && equippedAbilities.ContainsKey(AbilityType.Ofensiva)
+                && offensiveAbilityCooldown == 0)
+                {
+                    StartCoroutine(offensiveAbility());
+                    Debug.Log("Habilidad Ofensiva");
+                }
+                else if (currentlySelected == "Defensiva" && equippedAbilities.ContainsKey(AbilityType.Defensiva)
+                && defensiveAbilityCooldown == 0)
+                {
+                    enableShield();
+                    Debug.Log("Habilidad Defensiva");
+                }
+                else if (currentlySelected == "Curativa"
+                && equippedAbilities.ContainsKey(AbilityType.Curativa)
+                && healingAbilityCooldown == 0)
+                {
+                    StartCoroutine(healingAbility());
+                    Debug.Log("Habilidad Curativa");
+                }
             }
         }
+
         if (Input.GetKeyDown(KeyCode.Tab)) PrintLoadout();
+        if (Input.GetKeyDown(KeyCode.Alpha1) && equippedAbilities.ContainsKey(AbilityType.Ofensiva) && offensiveAbilityCooldown == 0 && currentlySelected != "Ofensiva")
+        {
+            currentlySelected = "Ofensiva";
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2) && equippedAbilities.ContainsKey(AbilityType.Defensiva) && defensiveAbilityCooldown == 0 && currentlySelected != "Defensiva")
+        {
+            currentlySelected = "Defensiva";
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3) && equippedAbilities.ContainsKey(AbilityType.Curativa) && healingAbilityCooldown == 0 && currentlySelected != "Curativa")
+        {
+            currentlySelected = "Curativa";
+        }
         if (vidaActual <= 0) Die();
 
         controller.Move(playerVelocity * Time.deltaTime);
@@ -101,21 +142,33 @@ public class Acciones : MonoBehaviour
     public void takeDamage(float damage)
     {
         if (inmunidad) return;
-        vidaActual -= damage;
-        if (vidaActual <= 0)
-        {
-            vidaActual = 0;
-            Die();
+        if(defensiveAbilityHits > 0){
+            defensiveAbilityHits -= 1;
+            StartCoroutine(ActivarInmunidadEscudo());
+            Debug.Log("The shield took a hit");
+        } else {
+            vidaActual -= damage;
+            if (vidaActual <= 0)
+            {
+                vidaActual = 0;
+                Die();
+            }
+            StartCoroutine(ActivarInmunidad());
         }
-        StartCoroutine(ActivarInmunidad());
     }
 
     public void EquipWeapon(Weapon weapon)
     {
-        if(weapon.weaponType == allowedWeaponType) {
+        if (weapon.weaponType == allowedWeaponType)
+        {
             equippedWeapon = weapon;
             currentlySelected = weapon.weaponType.ToString();
         }
+    }
+
+    public void EquipAbility(Ability ability)
+    {
+        equippedAbilities.Add(ability.abilityType, ability);
     }
 
     public void Die()
@@ -126,9 +179,8 @@ public class Acciones : MonoBehaviour
         GameManager.instance.RestartGame();
     }
 
-    private void comprobarEnemigosEnArea()
+    private void comprobarEnemigosEnArea(Vector3 attackPosition, float attackRadius, float damage)
     {
-        Vector3 attackPosition = controller.transform.position + controller.transform.forward * attackDamageOffset.z + controller.transform.up * attackDamageOffset.y + controller.transform.right * attackDamageOffset.x;
         Collider[] colliders = Physics.OverlapSphere(attackPosition, attackrange);
         HashSet<Enemigo> uniqueEnemies = new HashSet<Enemigo>();
 
@@ -138,7 +190,7 @@ public class Acciones : MonoBehaviour
             if (enemigo != null && !uniqueEnemies.Contains(enemigo))
             {
                 uniqueEnemies.Add(enemigo);
-                enemigo.takeDamage(equippedWeapon.damage);
+                enemigo.takeDamage(damage);
             }
         }
     }
@@ -146,7 +198,6 @@ public class Acciones : MonoBehaviour
     private void trazarRayoArco()
     {
         PosicionCursor cursorToWorld = GetComponent<PosicionCursor>();
-        Debug.Log(cursorToWorld.lookPoint);
         Vector3 direccion = (cursorToWorld.lookPoint - transform.position).normalized;
 
         Ray rayo = new Ray(transform.position, direccion);
@@ -170,11 +221,13 @@ public class Acciones : MonoBehaviour
         }
     }
 
+
     IEnumerator SwordAttack()
     {
         if (isAttacking) yield break;
         isAttacking = true;
-        comprobarEnemigosEnArea();
+        Vector3 attackPosition = controller.transform.position + controller.transform.forward * attackDamageOffset.z + controller.transform.up * attackDamageOffset.y + controller.transform.right * attackDamageOffset.x;
+        comprobarEnemigosEnArea(attackPosition, attackrange, equippedWeapon.damage);
         yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
     }
@@ -189,11 +242,90 @@ public class Acciones : MonoBehaviour
 
     }
 
+    IEnumerator offensiveAbility()
+    {
+        if (!equippedAbilities.TryGetValue(AbilityType.Ofensiva, out Ability offensiveAbility))
+        {
+            Debug.LogWarning("No offensive ability equipped!");
+            yield break;
+        }
+
+        isCastingAbility = true;
+        PosicionCursor cursorToWorld = GetComponent<PosicionCursor>();
+        Vector3 targetPosition = cursorToWorld.lookPoint;
+        Vector3 playerPosition = transform.position;
+        float distanceToTarget = Vector3.Distance(playerPosition, targetPosition);
+        float maxCastRange = offensiveAbility.range;
+
+        if (distanceToTarget > maxCastRange)
+        {
+            Vector3 direction = (targetPosition - playerPosition).normalized;
+            targetPosition = playerPosition + direction * maxCastRange;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        comprobarEnemigosEnArea(targetPosition, offensiveAbility.areaOfEffect, offensiveAbility.damage);
+        offensiveAbilityCooldown = offensiveAbility.killCountCooldown;
+        if(equippedWeapon) currentlySelected = equippedWeapon.weaponType.ToString();
+        isCastingAbility = false;
+    }
+
+    private void enableShield(){
+
+        if (!equippedAbilities.TryGetValue(AbilityType.Defensiva, out Ability defensiveAbility))
+        {
+            Debug.LogWarning("No defensive ability equipped!");
+            return;
+        }
+        isCastingAbility = true;
+        defensiveAbilityHits = 2;
+        Debug.Log("Shield enabled");
+        defensiveAbilityCooldown = defensiveAbility.killCountCooldown;
+        isCastingAbility = false;
+        StartCoroutine(shieldDuration());
+        if(equippedWeapon) currentlySelected = equippedWeapon.weaponType.ToString();
+    }
+
+    IEnumerator shieldDuration(){
+        yield return new WaitForSeconds(10);
+        defensiveAbilityHits = 0;
+        Debug.Log("Shield disabled");
+    }
+
+
     IEnumerator ActivarInmunidad()
     {
         inmunidad = true;
         yield return new WaitForSeconds(tiempoImmunidad);
         inmunidad = false;
+    }
+
+    IEnumerator ActivarInmunidadEscudo()
+    {
+        inmunidad = true;
+        yield return new WaitForSeconds(tiempoImmunidad);
+        inmunidad = false;
+    }
+
+    IEnumerator healingAbility(){
+        if (!equippedAbilities.TryGetValue(AbilityType.Curativa, out Ability healingAbility))
+        {
+            Debug.LogWarning("No offensive ability equipped!");
+            yield break;
+        }
+        isCastingAbility = true;
+        healingAbilityCooldown = healingAbility.killCountCooldown;
+        healPlayer(60);
+        isCastingAbility = false;
+        if(equippedWeapon) currentlySelected = equippedWeapon.weaponType.ToString();
+
+    }
+    private void healPlayer(int ammount){
+        if(vidaActual <= 0) return;
+        if(vidaActual >= vidaMaxima-ammount) { vidaActual = vidaMaxima; }
+        else { vidaActual += ammount; }
+        
     }
 
     //Para visualizar el rango de ataque de la espada (debugging)
@@ -212,7 +344,7 @@ public class Acciones : MonoBehaviour
 
         foreach (var ability in equippedAbilities.Values)
         {
-            Debug.Log($"Ability: {ability.Name} ({ability.Type})");
+            Debug.Log($"Ability: {ability.abilityName} ({ability.abilityType})");
         }
     }
 }
