@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class DungeonGenerator
+{
+    List<RoomNode> allNodeCollection = new List<RoomNode>();
+    private int dungeonWidth, dungeonLength;
+    public DungeonGenerator(int dungeonWidth, int dungeonLength)
+    {
+        this.dungeonWidth = dungeonWidth;
+        this.dungeonLength = dungeonLength;
+    }
+
+    public List<Node> CalculateDungeon(int maxIterations, int roomWidthMin, int roomLenghtMin, float roomBottomCornerModifier, float roomTopCornerModifier, int roomOffset, int corridorWidth)
+    {
+        BinarySpacePartitioner bsp = new BinarySpacePartitioner(dungeonWidth, dungeonLength);
+        allNodeCollection = bsp.PrepareNodesCollection(maxIterations, roomWidthMin, roomLenghtMin);
+        List<Node> roomSpaces = StructureHelper.TraverseGraphToExtractLowestLeafes(bsp.RootNode);
+        RoomGenerator roomGenerator = new RoomGenerator(maxIterations, roomLenghtMin, roomWidthMin);
+        List<RoomNode> roomList = roomGenerator.GenerateRoomInGivenSpaces(roomSpaces, roomBottomCornerModifier, roomTopCornerModifier, roomOffset);
+
+        // Find the start and end rooms
+        RoomNode startRoom = roomList.OrderBy(r => Vector2.Distance(Vector2.zero, new Vector2(r.BottomLeftAreaCorner.x, r.BottomLeftAreaCorner.y))).First();
+        RoomNode endRoom = roomList.OrderByDescending(r => Vector2.Distance(Vector2.zero, new Vector2(r.BottomLeftAreaCorner.x, r.BottomLeftAreaCorner.y))).First();
+        
+        startRoom.IsStartRoom = true;
+        endRoom.IsEndRoom = true;
+
+        // Calculate center positions
+        Vector3 startCenter = new Vector3((startRoom.BottomLeftAreaCorner.x + startRoom.TopRightAreaCorner.x) / 2, 1, (startRoom.BottomLeftAreaCorner.y + startRoom.TopRightAreaCorner.y) / 2);
+        Vector3 endCenter = new Vector3((endRoom.BottomLeftAreaCorner.x + endRoom.TopRightAreaCorner.x) / 2, 1, (endRoom.BottomLeftAreaCorner.y + endRoom.TopRightAreaCorner.y) / 2);
+
+        // Instantiate markers for start and end rooms
+        GameObject startMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        startMarker.transform.position = startCenter;
+        startMarker.GetComponent<Renderer>().material.color = Color.green;
+        
+        GameObject endMarker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        endMarker.transform.position = endCenter;
+        endMarker.GetComponent<Renderer>().material.color = Color.red;
+
+        CorridorsGenerator corridorGenerator = new CorridorsGenerator();
+        var corridorList = corridorGenerator.CreateCorridor(allNodeCollection, corridorWidth);
+
+
+        return new List<Node>(roomList).Concat(corridorList).ToList();
+    }
+}
