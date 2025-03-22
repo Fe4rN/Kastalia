@@ -60,11 +60,9 @@ public class HealthManager : MonoBehaviour
         if (player == null) return;
         Acciones jugador = player.GetComponent<Acciones>();
         if (jugador == null || jugador.equippedWeapon == null) return;
-
-        // Update weapon button text
         weaponButtonText.text = jugador.equippedWeapon.weaponName;
 
-        // Highlight selected weapon button
+
         if (jugador.currentlySelected == jugador.equippedWeapon.weaponType.ToString())
         {
             weaponButton.GetComponent<Image>().color = highlightColor; // Highlight color
