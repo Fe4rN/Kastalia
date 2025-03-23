@@ -184,7 +184,8 @@ MonoBehaviour:
   vidaMaxima: 100
   vidaActual: 0
   distanciaAtaque: 3
-  distanciaDeteccion: 30
+  distanciaDeteccion: 10
+  attackDamage: 10
   deambularEstado: {fileID: 11400000, guid: 12978dd09c039ba42a43d88d702c611c, type: 2}
   perseguirEstado: {fileID: 11400000, guid: 18f0b41aba7231e44a4787b60456c609, type: 2}
 --- !u!114 &4953254434463862538

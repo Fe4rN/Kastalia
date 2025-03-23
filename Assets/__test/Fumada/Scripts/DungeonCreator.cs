@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Net.WebSockets;
 using Unity.Mathematics;
 using UnityEngine;
+using Unity.AI.Navigation;
+using UnityEngine.AI;
+
 
 public class DungeonCreator : MonoBehaviour
 {
+    public static DungeonCreator instance;
     public int dungeonWidth, dungeonLength;
     public int roomWidthMin, roomLenghtMin;
     public int maxIterations;
@@ -22,12 +26,29 @@ public class DungeonCreator : MonoBehaviour
     List<Vector3Int> possibleDoorHorizontalPosition;
     List<Vector3Int> possibleWallHorizontalPosition;
     List<Vector3Int> possibleWallVerticalPosition;
+    [SerializeField] private GameObject enemyPrefab;
+    private NavMeshSurface navMeshSurface;
 
-    void Start()
+
+    private void Awake()
     {
-        CreateDungeon();
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
+    public void generateDungeon(){
+        navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
+        navMeshSurface.collectObjects = CollectObjects.Children;
+        CreateDungeon();
+    }
     public void CreateDungeon()
     {
         DestroyAllChildren();
@@ -38,7 +59,10 @@ public class DungeonCreator : MonoBehaviour
         roomBottomCornerModifier,
         roomTopCornerModifier,
         roomOffset,
-        corridorWidth);
+        corridorWidth,
+        this.transform,
+        enemyPrefab);
+
         GameObject wallParent = new GameObject("WallParent");
         wallParent.transform.parent = transform;
         possibleDoorVerticalPosition = new List<Vector3Int>();
@@ -51,6 +75,15 @@ public class DungeonCreator : MonoBehaviour
             CreateMesh(listOfRooms[i].BottomLeftAreaCorner, listOfRooms[i].TopRightAreaCorner);
         }
         CreateWalls(wallParent);
+        navMeshSurface.BuildNavMesh();
+        if (navMeshSurface == null)
+        navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
+
+        navMeshSurface.collectObjects = CollectObjects.Children;
+        navMeshSurface.BuildNavMesh();
+
+        // **2. Now spawn enemies AFTER NavMesh is built**
+        SpawnEnemies(listOfRooms);
     }
 
     private void CreateWalls(GameObject wallParent)
@@ -103,13 +136,18 @@ public class DungeonCreator : MonoBehaviour
         mesh.uv = uvs;
         mesh.triangles = triangles;
 
-        GameObject dungeonFloor = new GameObject("Mesh" + bottomLeftCorner, typeof(MeshFilter), typeof(MeshRenderer));
+        GameObject dungeonFloor = new GameObject("Mesh" + bottomLeftCorner, typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider));
 
         dungeonFloor.transform.position = Vector3.zero;
         dungeonFloor.transform.localScale = Vector3.one;
         dungeonFloor.GetComponent<MeshFilter>().mesh = mesh;
         dungeonFloor.GetComponent<MeshRenderer>().material = material;
         dungeonFloor.transform.parent = transform;
+
+        var meshCollider = dungeonFloor.GetComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh;
+        dungeonFloor.layer = LayerMask.NameToLayer("Default");
+
 
         for (int row = (int)bottomLeftV.x; row < (int)bottomRightV.x; row++)
         {
@@ -152,4 +190,30 @@ public class DungeonCreator : MonoBehaviour
             }
         }
     }
+
+    private void SpawnEnemies(List<Node> listOfRooms)
+{
+    foreach (var room in listOfRooms)
+    {
+        for (int i = 0; i < 3; i++) // Spawn 3 enemies per room
+        {
+            Vector3 enemyPosition = new Vector3(
+                UnityEngine.Random.Range(room.BottomLeftAreaCorner.x, room.TopRightAreaCorner.x),
+                1, // Ensure Y is above the floor
+                UnityEngine.Random.Range(room.BottomLeftAreaCorner.y, room.TopRightAreaCorner.y)
+            );
+
+            GameObject enemy = Instantiate(enemyPrefab, enemyPosition, Quaternion.identity);
+            enemy.transform.parent = transform;
+
+            // **Ensure NavMeshAgent is enabled**
+            NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+            if (agent != null)
+            {
+                agent.enabled = true; // Ensure it's enabled after NavMesh is built
+            }
+        }
+    }
+}
+
 }

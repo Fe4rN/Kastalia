@@ -3,17 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    
     public static GameManager instance;
-    public GameObject player;
     public int characterIndex = -1;
     public bool playerSpawned = false;
     public string currentCharacter;
     // Personajes
 
-    [SerializeField] private GameObject Lyx;
-    [SerializeField] private GameObject Dreven;
+    [SerializeField] public GameObject Lyx;
+    [SerializeField] public GameObject Dreven;
 
     public bool isPaused = false;
+    public string LoadMode;
 
     private void Awake()
     {
@@ -49,13 +50,11 @@ public class GameManager : MonoBehaviour
             switch (characterIndex)
             {
                 case 1:
-                    player = Instantiate(Lyx, Vector3.zero, Quaternion.identity);
                     currentCharacter = "Lyx";
                     playerSpawned = true;
                     SceneManager.UnloadSceneAsync("CharacterSelection");
                     break;
                 case 2:
-                    player = Instantiate(Dreven, Vector3.zero, Quaternion.identity);
                     currentCharacter = "Dreven";
                     playerSpawned = true;
                     SceneManager.UnloadSceneAsync("CharacterSelection");
