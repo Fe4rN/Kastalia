@@ -16,7 +16,7 @@ public class Perseguir : Estado
 
     void Update()
     {
-        if (Menu_Pausa.JuegoPausado || agent == null) return;
+        if (agent == null) return;
 
         if (player == null)
         {

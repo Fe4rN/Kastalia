@@ -340,6 +340,37 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: fe60749e5818c7045b7be265122e129a, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1 &249283974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 249283975}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &249283975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249283974}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -20.71}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &251832795
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,13 +813,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0aee448e4a187439cba17afd7a8b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   characterIndex: 0
   playerSpawned: 0
   currentCharacter: 
   Lyx: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
   Dreven: {fileID: 3699512526310861274, guid: d636ff1da9651ce42b3f1b799bb45e6f, type: 3}
   isPaused: 0
+  LoadMode: 
 --- !u!4 &524873435
 Transform:
   m_ObjectHideFlags: 0
@@ -837,6 +868,8 @@ MonoBehaviour:
   isPlayerLoadedIn: 0
   isLevelLoaded: 0
   enemyPrefab: {fileID: 8115032155769542572, guid: 267ce24bb5897234480b5024a8689c80, type: 3}
+  player: {fileID: 0}
+  spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!4 &820928491
 Transform:
   m_ObjectHideFlags: 0
@@ -3270,3 +3303,4 @@ SceneRoots:
   - {fileID: 6635183719851945032}
   - {fileID: 5575030372155153985}
   - {fileID: 5993256066686423809}
+  - {fileID: 249283975}

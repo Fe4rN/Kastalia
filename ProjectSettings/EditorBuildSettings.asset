@@ -12,8 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 08d2dac3a122e2f4884c749149bdccdb
   - enabled: 1
+    path: Assets/Scenes/PauseMenu.unity
+    guid: 58e70a7bdfaafb4489c8462a1a551280
+  - enabled: 1
     path: Assets/Scenes/Opciones.unity
     guid: c62ee3cb3c12fab4ba7ef8e6e7c8e67e
+  - enabled: 1
+    path: Assets/Scenes/BSPDemo.unity
+    guid: 560de36eff577a64fa41495b265ade5a
+  - enabled: 1
+    path: Assets/Scenes/CharacterSelection.unity
+    guid: 98e539cd79890cf45a02154b282d437d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -20,7 +20,7 @@ public class Deambular : Estado
 
     void Update()
     {
-        if (Menu_Pausa.JuegoPausado) return;
+        if (GameManager.instance.isPaused) return;
 
         if (controller != null && controller.Player != null)
         {
@@ -55,21 +55,18 @@ public class Deambular : Estado
             estaDeambulando = true;
             posicionAleatoria = ElegirPosicionAleatoria();
 
-            while (posicionAleatoria != null && (Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f))
+            while (posicionAleatoria != null && Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f)
             {
-                while (Menu_Pausa.JuegoPausado) yield return null;
 
                 agent.SetDestination(posicionAleatoria);
                 agent.transform.LookAt(posicionAleatoria);
 
                 while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
                 {
-                    if (Menu_Pausa.JuegoPausado) yield return null;
                     yield return null;
                 }
 
                 float tiempoEspera = Random.Range(1f, 4f);
-                while (Menu_Pausa.JuegoPausado) yield return null;
                 yield return new WaitForSeconds(tiempoEspera);
             }
 

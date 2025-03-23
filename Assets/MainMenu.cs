@@ -1,17 +1,21 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
-    public void EscenaJuego()
+    [SerializeField] Button BotonJugar;
+    [SerializeField] Button BotonSalir;
+    void Start()
     {
-        SceneManager.LoadScene("Mazmorra1");
+        BotonJugar.onClick.AddListener(() => Jugar());
+        BotonSalir.onClick.AddListener(() => Salir());
     }
 
-    public void CargarNivel(string nombreNivel)
-    {
-        SceneManager.LoadScene(nombreNivel);
+    private void Jugar(){
+        GameManager.instance.StartMainGameLoop();
     }
-    public void Salir()
+
+    private void Salir()
     {
         Application.Quit();
     }

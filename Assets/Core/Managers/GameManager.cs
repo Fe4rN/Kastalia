@@ -1,3 +1,4 @@
+using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject Dreven;
 
     public bool isPaused = false;
-    public string LoadMode;
+    private bool isFromMainMenu = true;
 
     private void Awake()
     {
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        LoadScenes();
+        StartMainMenu();
     }
 
     void Update()
@@ -71,10 +72,14 @@ public class GameManager : MonoBehaviour
         SceneManager.UnloadSceneAsync("Mazmorra1");
         characterIndex = -1;
         playerSpawned = false;
-        LoadScenes();
+        StartMainGameLoop();
     }
 
-    public void LoadScenes(){
+    public void StartMainGameLoop(){
+        if(isFromMainMenu){
+            SceneManager.UnloadSceneAsync("MainMenu");
+            isFromMainMenu = false;
+        }
         SceneManager.LoadSceneAsync("Mazmorra1");
         SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
     }
@@ -91,5 +96,9 @@ public class GameManager : MonoBehaviour
         SceneManager.UnloadSceneAsync("PauseMenu");
         Time.timeScale = 1f;
         isPaused = false;
+    }
+
+    private void StartMainMenu(){
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -44,7 +44,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel()
     {
-        DungeonCreator.instance.generateDungeon();
+        LoadEnemies();
         spawnPoint = GameObject.Find("SpawnPoint").transform.position;
         LoadPlayer();
     }
@@ -52,7 +52,7 @@ public class LevelManager : MonoBehaviour
     public void LoadPlayer()
     {
         if(GameManager.instance.currentCharacter == "Lyx") player = Instantiate(GameManager.instance.Lyx, spawnPoint - new Vector3(0,1,0), Quaternion.identity);
-        if(GameManager.instance.currentCharacter == "Dreven") player = Instantiate(GameManager.instance.Lyx, spawnPoint - new Vector3(0,1,0), Quaternion.identity);
+        if(GameManager.instance.currentCharacter == "Dreven") player = Instantiate(GameManager.instance.Dreven, spawnPoint - new Vector3(0,1,0), Quaternion.identity);
         cinemachineCamera = FindAnyObjectByType<CinemachineCamera>();
         cinemachineCamera.Follow = GameObject.FindGameObjectWithTag("Player").transform;
 
