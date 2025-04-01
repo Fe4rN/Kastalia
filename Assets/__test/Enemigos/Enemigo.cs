@@ -10,7 +10,6 @@ public class Enemigo : Maquina
     [SerializeField] float distanciaDeteccion = 5f;
     float distanceToPlayer;
 
-    private float attackCooldown = 1.5f;
     public float attackDamage = 10f;
 
     public NombreEstado deambularEstado;

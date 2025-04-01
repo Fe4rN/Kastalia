@@ -39,7 +39,6 @@ public class Acciones : MonoBehaviour
     public float offensiveAbilityCooldown = 0;
     public float defensiveAbilityCooldown = 0;
         public int defensiveAbilityHits = 0;
-        private float tiempoImmunidadEscudo = 1f;
     public float healingAbilityCooldown = 0;
     private bool isCastingAbility = false;
 
