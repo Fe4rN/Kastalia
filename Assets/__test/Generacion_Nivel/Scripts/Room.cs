@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Room : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class Room : MonoBehaviour
     {
         CreateRoom(new Vector2Int(0, 0), minX, maxX, minY, maxY);
         InstatiateRoom(new Vector2Int(0, 0));
+        GenerateEnemies(new Dictionary<string, GameObject>(), 5);
     }
 
     public void CreateRoom(Vector2Int origin, int minX, int maxX, int minY, int maxY)
@@ -44,6 +46,10 @@ public class Room : MonoBehaviour
 
     public void InstatiateRoom(Vector2Int position)
     {
+
+        GameObject roomParent = new GameObject("Room");
+        roomParent.transform.position = new Vector3(position.x, 0, position.y);
+
         Dictionary<string, Transform> cells = new Dictionary<string, Transform>();
 
         for (int i = Y1pos; i <= Y2pos; i++)
@@ -54,7 +60,7 @@ public class Room : MonoBehaviour
                 //Esquina superior izquierda
                 if (i == Y1pos && j == X1pos)
                 {
-                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     cells.Add($"{i},{j}", w);
                     continue;
                 }
@@ -62,7 +68,7 @@ public class Room : MonoBehaviour
                 //Esquina superior derecha
                 if (i == Y1pos && j == X2pos)
                 {
-                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     w.Rotate(Vector3.up, 90);
                     cells.Add($"{i},{j}", w);
                     continue;
@@ -71,7 +77,7 @@ public class Room : MonoBehaviour
                 //Esquina inferior izquierda
                 if (i == Y2pos && j == X1pos)
                 {
-                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     w.Rotate(Vector3.up, -90);
                     cells.Add($"{i},{j}", w);
                     continue;
@@ -80,7 +86,7 @@ public class Room : MonoBehaviour
                 //Esquina inferior derecha
                 if (i == Y2pos && j == X2pos)
                 {
-                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     w.Rotate(Vector3.up, 180);
                     cells.Add($"{i},{j}", w);
                     continue;
@@ -89,7 +95,7 @@ public class Room : MonoBehaviour
                 //Pared izquierda
                 if (i != Y1pos && i != Y2pos && j == X1pos)
                 {
-                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     cells.Add($"{i},{j}", w);
                     continue;
                 }
@@ -97,7 +103,7 @@ public class Room : MonoBehaviour
                 //Pared superior
                 if (i == Y1pos && j != X1pos && j != X2pos)
                 {
-                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     w.Rotate(Vector3.up, 90);
                     cells.Add($"{i},{j}", w);
                     continue;
@@ -106,7 +112,7 @@ public class Room : MonoBehaviour
                 //Pared derecha
                 if (i != Y1pos && i != Y2pos && j == X2pos)
                 {
-                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     w.Rotate(Vector3.up, 180);
                     cells.Add($"{i},{j}", w);
                     continue;
@@ -115,7 +121,7 @@ public class Room : MonoBehaviour
                 //Pared inferior
                 if (i == Y2pos && j != X1pos && j != X2pos)
                 {
-                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     w.Rotate(Vector3.up, -90);
                     cells.Add($"{i},{j}", w);
                     continue;
@@ -124,7 +130,7 @@ public class Room : MonoBehaviour
                 //Suelos
                 if (i != Y1pos && i != Y2pos && j != X1pos && j != X2pos)
                 {
-                    Transform w = Instantiate(floorTilePrefab, pos, Quaternion.identity).transform;
+                    Transform w = Instantiate(floorTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
                     cells.Add($"{i},{j}", w);
                     continue;
                 }
@@ -132,7 +138,14 @@ public class Room : MonoBehaviour
         Debug.Log($"Generadas {cells.Count} casillas");
     }
 
-    private void GenerateEnemies(Dictionary<String, GameObject> enemyPool, int enemyCount){
+    private void GenerateEnemies(Dictionary<String, GameObject> enemyPool, int enemyCount)
+    {
+        float randomXSpawn = Random.Range(X1pos, X2pos);
+        float randomYSpawn = Random.Range(Y1pos, Y2pos);
 
+        for (int i  = 0; i < enemyCount; i++)
+        {
+            R
+        }
     }
 }
