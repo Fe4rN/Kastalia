@@ -1,0 +1,88 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+public class RoomRenderer : MonoBehaviour
+{
+    public GameObject floorTilePrefab, wallTilePrefab, cornerWallTilePrefab;
+    public void RenderRoom(Room room, Vector3 position)
+    {
+        GameObject roomParent = new GameObject("Room");
+        
+        roomParent.transform.position = new Vector3(position.x, 0, position.y);
+
+        Dictionary<string, Transform> cells = new Dictionary<string, Transform>();
+
+        int widthTiles = Mathf.RoundToInt(room.width);
+        int lengthTiles = Mathf.RoundToInt(room.length);
+        float cellSize = room.cellSize;
+
+        for (int i = 0; i < lengthTiles; i++)
+        {
+            for (int j = 0; j < widthTiles; j++)
+            {
+                Vector3 pos = new Vector3(position.x + j * cellSize, 0, position.y + i * cellSize);
+
+                bool isLeft = j == 0;
+                bool isRight = j == widthTiles - 1;
+                bool isTop = i == 0;
+                bool isBottom = i == lengthTiles - 1;
+
+                // Corners
+                if (isTop && isLeft)
+                {
+                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+
+                    cells.Add($"{i},{j}", w);
+                    continue;
+                }
+
+                if (isTop && isRight)
+                {
+                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+                    w.Rotate(Vector3.up, -90);
+                    cells.Add($"{i},{j}", w);
+                    continue;
+                }
+
+                if (isBottom && isLeft)
+                {
+                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+                    w.Rotate(Vector3.up, 90);
+                    cells.Add($"{i},{j}", w);
+                    continue;
+                }
+
+                if (isBottom && isRight)
+                {
+                    Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+                    w.Rotate(Vector3.up, 180);
+                    cells.Add($"{i},{j}", w);
+                    continue;
+                }
+
+                // Walls
+                if (isLeft || isRight)
+                {
+                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+                    w.Rotate(Vector3.up, isRight ? -90 : 90);
+                    cells.Add($"{i},{j}", w);
+                    continue;
+                }
+
+                if (isTop || isBottom)
+                {
+                    Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+                    w.Rotate(Vector3.up, isBottom ? 180 : 0);
+                    cells.Add($"{i},{j}", w);
+                    continue;
+                }
+
+                // Floor
+                Transform f = Instantiate(floorTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+                cells.Add($"{i},{j}", f);
+            }
+        }
+
+        Debug.Log($"Room instantiated with {cells.Count} cells.");
+    }
+}

@@ -341,8 +341,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2115044016}
-  - component: {fileID: 2115044017}
   - component: {fileID: 2115044018}
+  - component: {fileID: 2115044019}
   m_Layer: 0
   m_Name: RoomGenerator
   m_TagString: Untagged
@@ -365,30 +365,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2115044017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2115044015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0db1f21147c0e854a844fbbf88edb80a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minX: 6
-  maxX: 10
-  minY: 6
-  maxY: 10
-  width: 0
-  length: 0
-  cellSize: 10
-  cellQuantity: 0
-  floorTilePrefab: {fileID: 2790025338716391452, guid: d9cf7825fb960b749a19a2d754f6040a, type: 3}
-  wallTilePrefab: {fileID: 6312857568954630246, guid: 0f4992776b0010842abe63c8c19d9faf, type: 3}
-  cornerWallTilePrefab: {fileID: 401741184634225371, guid: f8ef6230cfe6ac543bc70aaf669cf4b5, type: 3}
-  doorTilePrefab: {fileID: 0}
 --- !u!114 &2115044018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,6 +377,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5051445f48b2a4fb880354ded6b18c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  salasNivel: {fileID: 11400000, guid: c9ec7b2d1eff16a4481a13ac873c95af, type: 2}
+--- !u!114 &2115044019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115044015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaaa226de4bfeed4ab69101bbbceff1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorTilePrefab: {fileID: 2790025338716391452, guid: d9cf7825fb960b749a19a2d754f6040a, type: 3}
+  wallTilePrefab: {fileID: 6312857568954630246, guid: 0f4992776b0010842abe63c8c19d9faf, type: 3}
+  cornerWallTilePrefab: {fileID: 401741184634225371, guid: f8ef6230cfe6ac543bc70aaf669cf4b5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
