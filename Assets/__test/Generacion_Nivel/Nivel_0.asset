@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Nivel_0
   m_EditorClassIdentifier: 
   numSalas: 10
-  anchuraMinSala: 5
+  anchuraMinSala: 7
   anchuraMaxSala: 10
-  alturaMinSala: 5
+  alturaMinSala: 7
   alturaMaxSala: 10
   anchuraPared: 0.5
   anchuraPasillo: 3

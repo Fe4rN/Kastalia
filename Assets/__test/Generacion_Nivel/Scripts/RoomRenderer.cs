@@ -7,8 +7,7 @@ public class RoomRenderer : MonoBehaviour
     public void RenderRoom(Room room, Vector3 position)
     {
         GameObject roomParent = new GameObject("Room");
-        
-        roomParent.transform.position = new Vector3(position.x, 0, position.y);
+
 
         Dictionary<string, Transform> cells = new Dictionary<string, Transform>();
 
@@ -16,11 +15,23 @@ public class RoomRenderer : MonoBehaviour
         int lengthTiles = Mathf.RoundToInt(room.length);
         float cellSize = room.cellSize;
 
+        float roomWidth = widthTiles / cellSize;
+        float roomLength = lengthTiles / cellSize;
+
+        Vector3 roomOrigin = new Vector3(
+                            position.x - roomWidth / 2f,
+                            0,
+                            position.z - roomLength / 2f
+                        );
+
+
+        roomParent.transform.position = new Vector3(roomOrigin.x, 0, roomOrigin.z);
+
         for (int i = 0; i < lengthTiles; i++)
         {
             for (int j = 0; j < widthTiles; j++)
             {
-                Vector3 pos = new Vector3(position.x + j * cellSize, 0, position.y + i * cellSize);
+                Vector3 pos = new Vector3(roomOrigin.x + j * cellSize, 0, roomOrigin.z + i * cellSize);
 
                 bool isLeft = j == 0;
                 bool isRight = j == widthTiles - 1;
@@ -31,7 +42,6 @@ public class RoomRenderer : MonoBehaviour
                 if (isTop && isLeft)
                 {
                     Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
-
                     cells.Add($"{i},{j}", w);
                     continue;
                 }

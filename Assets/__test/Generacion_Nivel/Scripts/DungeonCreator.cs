@@ -51,13 +51,12 @@ public class DungeonCreator : MonoBehaviour
         for (int i = 0; i < casillasOcupadas.Count; i++)
         {
             Vector3 centro = casillasOcupadas[i].getCentro();
-            
+
             Room room = new Room(
                 centro,
                 salasNivel.anchuraMinSala, salasNivel.anchuraMaxSala,
                 salasNivel.alturaMinSala, salasNivel.alturaMaxSala
             );
-            
             roomRenderer.RenderRoom(room, centro);
         }
     }
@@ -75,7 +74,7 @@ public class DungeonCreator : MonoBehaviour
         #region --- Crear filas y columnas ---
 
         float anchuraTotal = 0;
-        float altruraTotal = 0;
+        float alturaTotal = 0;
 
         columnas.Add(0f);
         filas.Add(0f);
@@ -85,7 +84,7 @@ public class DungeonCreator : MonoBehaviour
             float anchura = Random.Range(salasNivel.anchuraMinSala, salasNivel.anchuraMaxSala) + salasNivel.espacioEntreSalas;
             if (i != 0 && i != ladoColumnas - 1) anchura += salasNivel.espacioEntreSalas;
 
-            anchuraTotal += anchura;
+            anchuraTotal += anchura*10;
 
             columnas.Add(anchuraTotal);
         }
@@ -95,16 +94,16 @@ public class DungeonCreator : MonoBehaviour
             float altura = Random.Range(salasNivel.alturaMinSala, salasNivel.alturaMaxSala) + salasNivel.espacioEntreSalas;
             if (j != 0 && j != ladoFilas - 1) altura += salasNivel.espacioEntreSalas;
 
-            altruraTotal += altura;
+            alturaTotal += altura*10;
 
-            filas.Add(altruraTotal);
+            filas.Add(alturaTotal);
         }
 
         #endregion
 
         #region --- Centrar Rejilla ---
         float desplazamientoX = anchuraTotal / 2;
-        float desplazamientoZ = altruraTotal / 2;
+        float desplazamientoZ = alturaTotal / 2;
 
         for (int i = 0; i < columnas.Count; i++)
         {

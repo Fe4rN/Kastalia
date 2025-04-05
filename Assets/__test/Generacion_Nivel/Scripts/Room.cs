@@ -5,7 +5,7 @@ public class Room
 {
     public float X1pos, X2pos, Y1pos, Y2pos;
     public float width, length;
-    public float cellSize = 1f;
+    public float cellSize = 10f;
     public float cellQuantity = 10f;
     public int probability = 50;
 
