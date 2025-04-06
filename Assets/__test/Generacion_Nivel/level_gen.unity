@@ -378,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   salasNivel: {fileID: 11400000, guid: c9ec7b2d1eff16a4481a13ac873c95af, type: 2}
+  probabilidadCofre: 0.5
 --- !u!114 &2115044019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,6 +394,7 @@ MonoBehaviour:
   floorTilePrefab: {fileID: 2790025338716391452, guid: d9cf7825fb960b749a19a2d754f6040a, type: 3}
   wallTilePrefab: {fileID: 6312857568954630246, guid: 0f4992776b0010842abe63c8c19d9faf, type: 3}
   cornerWallTilePrefab: {fileID: 401741184634225371, guid: f8ef6230cfe6ac543bc70aaf669cf4b5, type: 3}
+  chestTilePrefab: {fileID: 7349474005740832800, guid: 89b9c6e984d909d4eb1dd4612710b5cc, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

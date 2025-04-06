@@ -5,6 +5,7 @@ public class DungeonCreator : MonoBehaviour
 {
 
     [SerializeField] SalasNivel salasNivel;
+    [SerializeField] float probabilidadCofre;
     public List<Casilla> casillas = new List<Casilla>();
 
     List<float> columnas = new List<float>();
@@ -13,6 +14,8 @@ public class DungeonCreator : MonoBehaviour
     float lado;
     float ladoColumnas;
     float ladoFilas;
+
+    private bool tresureRoom = false;
 
     private void Awake()
     {
@@ -33,7 +36,7 @@ public class DungeonCreator : MonoBehaviour
 
     private void conectarSalas()
     {
-
+        
     }
 
     private void colocarSalas()
@@ -51,13 +54,24 @@ public class DungeonCreator : MonoBehaviour
         for (int i = 0; i < casillasOcupadas.Count; i++)
         {
             Vector3 centro = casillasOcupadas[i].getCentro();
+            RoomType roomType = RoomType.enemyRoom;
+            
+            if(!tresureRoom){
+                if(Random.Range(0f, 1f) < probabilidadCofre && !tresureRoom)
+                {
+                    tresureRoom = true;
+                    roomType = RoomType.safeRoom;
+                }
+            }
 
             Room room = new Room(
                 centro,
                 salasNivel.anchuraMinSala, salasNivel.anchuraMaxSala,
-                salasNivel.alturaMinSala, salasNivel.alturaMaxSala
+                salasNivel.alturaMinSala, salasNivel.alturaMaxSala,
+                roomType
             );
-            roomRenderer.RenderRoom(room, centro);
+
+            roomRenderer.RenderRoom(room, centro, i);
         }
     }
 

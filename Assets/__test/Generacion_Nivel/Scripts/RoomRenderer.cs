@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public class RoomRenderer : MonoBehaviour
 {
-    public GameObject floorTilePrefab, wallTilePrefab, cornerWallTilePrefab;
-    public void RenderRoom(Room room, Vector3 position)
+    public GameObject floorTilePrefab, wallTilePrefab, cornerWallTilePrefab, chestTilePrefab;
+    public void RenderRoom(Room room, Vector3 originPosition, int id)
     {
-        GameObject roomParent = new GameObject("Room");
-
+        GameObject roomParent = new GameObject($"Room {id}");
 
         Dictionary<string, Transform> cells = new Dictionary<string, Transform>();
 
@@ -19,9 +19,9 @@ public class RoomRenderer : MonoBehaviour
         float roomLength = lengthTiles / cellSize;
 
         Vector3 roomOrigin = new Vector3(
-                            position.x - roomWidth / 2f,
+                            originPosition.x - roomWidth / 2f,
                             0,
-                            position.z - roomLength / 2f
+                            originPosition.z - roomLength / 2f
                         );
 
 
@@ -38,7 +38,7 @@ public class RoomRenderer : MonoBehaviour
                 bool isTop = i == 0;
                 bool isBottom = i == lengthTiles - 1;
 
-                // Corners
+                #region Esquinas
                 if (isTop && isLeft)
                 {
                     Transform w = Instantiate(cornerWallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
@@ -69,8 +69,9 @@ public class RoomRenderer : MonoBehaviour
                     cells.Add($"{i},{j}", w);
                     continue;
                 }
+                #endregion
 
-                // Walls
+                #region Paredes
                 if (isLeft || isRight)
                 {
                     Transform w = Instantiate(wallTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
@@ -86,10 +87,20 @@ public class RoomRenderer : MonoBehaviour
                     cells.Add($"{i},{j}", w);
                     continue;
                 }
+                #endregion
 
-                // Floor
-                Transform f = Instantiate(floorTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
-                cells.Add($"{i},{j}", f);
+                //Suelos y/o cofres
+                if (room.roomType == RoomType.safeRoom && i == lengthTiles / 2 && j == widthTiles / 2)
+                    {
+                        Transform c = Instantiate(chestTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+                        cells.Add($"{i},{j}", c);
+                        continue;
+                    }
+                else
+                {
+                    Transform f = Instantiate(floorTilePrefab, pos, Quaternion.identity, roomParent.transform).transform;
+                    cells.Add($"{i},{j}", f);
+                }
             }
         }
 
