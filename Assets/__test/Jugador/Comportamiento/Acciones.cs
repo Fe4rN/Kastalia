@@ -31,6 +31,8 @@ public class Acciones : MonoBehaviour
     private Vector3 attackDamageOffset = new Vector3(0, 0, 1);
     
     // Nueva variable para el empuje de la espada
+    [SerializeField] private float chargeMultiplier = 3f;
+    private bool isFullyCharged = false;
     [SerializeField] private float empujeFuerza = 10f;
     private bool isChargingSword = false;
     private float chargeTime = 0f;
@@ -85,12 +87,14 @@ public class Acciones : MonoBehaviour
         // Manejo del click derecho para cargar el ataque de espada
         if (Input.GetKeyDown(KeyCode.Mouse1) && currentlySelected == "Espada" && equippedWeapon != null)
         {
+            Debug.Log("[CHARGE] Botón derecho presionado - Iniciando carga");
             isRightMouseDown = true;
             StartCoroutine(ChargeSword());
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
+            Debug.Log($"[CHARGE] Botón derecho liberado - Tiempo cargado: {chargeTime.ToString("F2")}s");
             isRightMouseDown = false;
             if (isChargingSword)
             {
@@ -107,18 +111,34 @@ public class Acciones : MonoBehaviour
                 if (currentlySelected == "Espada" && equippedWeapon != null)
                 {
                     float damage = equippedWeapon.damage;
+                    Debug.Log($"[ATTACK] Daño base: {damage}");
+
+
+                    if (isFullyCharged)
+                    {
+                        damage *= chargeMultiplier;
+                        Debug.Log($"[ATTACK] Ataque CARGADO aplicado! Daño final: {damage}");
+
+                    }
                     if (isChargingSword)
                     {
-                        damage *= 3f;
-                        isChargingSword = false;
-                        chargeTime = 0f;
-                        Debug.Log("Ataque Espada Cargada");
+                        Debug.Log($"[ATTACK] Ataque INTERRUMPIDO (carga no completada)");   
+                        // isChargingSword = false;
+                        // chargeTime = 0f;
+                    }
+                    else
+                    {
+                        Debug.Log("[ATTACK] Ataque NORMAL");
                     }
 
                     // damage *= 1.5f;
 
                     StartCoroutine(SwordAttack(damage));
-                    Debug.Log("Ataque Espada");
+
+                     // Resetear estados de carga
+                    isChargingSword = false;
+                    isFullyCharged = false;
+                    chargeTime = 0f;
                 }
                 else if (currentlySelected == "Arco" && equippedWeapon != null)
                 {
@@ -263,26 +283,40 @@ public class Acciones : MonoBehaviour
         }
     }
 
-    IEnumerator ChargeSword()
+    // Corrutina ChargeSword modificada
+IEnumerator ChargeSword()
+{
+    if (isChargingSword) 
     {
-        if (isChargingSword) yield break;
-        
-        isChargingSword = true;
-        chargeTime = 0f;
-        
-        while (isRightMouseDown && chargeTime < chargeRequiredTime)
-        {
-            chargeTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        if (chargeTime >= chargeRequiredTime)
-        {
-            Debug.Log("Espada cargada lista para ataque potente!");
-        }
-        
-        isChargingSword = false;
+        Debug.Log("[CHARGE] Ya se está cargando, ignorando nueva carga");
+        yield break;
     }
+    
+    Debug.Log("[CHARGE] Iniciando corrutina de carga");
+    isChargingSword = true;
+    isFullyCharged = false;
+    chargeTime = 0f;
+    
+    while (isRightMouseDown && chargeTime < chargeRequiredTime)
+    {
+        chargeTime += Time.deltaTime;
+        Debug.Log($"[CHARGE] Progreso: {(chargeTime/chargeRequiredTime*100).ToString("F0")}%");
+        yield return null;
+    }
+    
+    if (chargeTime >= chargeRequiredTime)
+    {
+        isFullyCharged = true;
+        Debug.Log("[CHARGE] ¡Carga COMPLETADA! Listo para ataque cargado");
+    }
+    else
+    {
+        Debug.Log("[CHARGE] Carga CANCELADA antes de completarse");
+    }
+    
+    isChargingSword = false;
+    Debug.Log("[CHARGE] Corrutina de carga finalizada");
+}
 
     IEnumerator SwordAttack(float damage)
 {
