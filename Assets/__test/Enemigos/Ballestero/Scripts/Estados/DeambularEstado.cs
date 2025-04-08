@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Deambular : Estado
+public class DeambularEstado : Estado
 {
     private Enemigo stats;
     private float radio = 5f;
