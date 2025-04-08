@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Acciones : MonoBehaviour
 {
-    //Atributos del jugador
+     //Atributos del jugador
     public float vidaMaxima = 100f;
     public float vidaActual;
     //private bool estaVivo = true;
@@ -29,6 +29,13 @@ public class Acciones : MonoBehaviour
     private float arrowRadius = 0.1f;
     private float attackCooldown = 1.5f;
     private Vector3 attackDamageOffset = new Vector3(0, 0, 1);
+    
+    // Nueva variable para el empuje de la espada
+    [SerializeField] private float empujeFuerza = 10f;
+    private bool isChargingSword = false;
+    private float chargeTime = 0f;
+    private float chargeRequiredTime = 1f;
+    private bool isRightMouseDown = false;
 
     // Inventario
     public string currentlySelected;
@@ -38,10 +45,9 @@ public class Acciones : MonoBehaviour
 
     public float offensiveAbilityCooldown = 0;
     public float defensiveAbilityCooldown = 0;
-        public int defensiveAbilityHits = 0;
+    public int defensiveAbilityHits = 0;
     public float healingAbilityCooldown = 0;
-    private bool isCastingAbility = false;
-
+    private bool isCastingAbility = false;            
 
     private void Start()
     {
@@ -57,8 +63,10 @@ public class Acciones : MonoBehaviour
         }
     }
 
-    void Update()
+     void Update()
     {
+
+        
         if (GameManager.instance.isPaused) return;
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintValue : 1f;
@@ -68,13 +76,48 @@ public class Acciones : MonoBehaviour
             if (!isDashing) StartCoroutine(Dash(move));
         }
 
+        // Añade esto en el método Update para depuración
+        if (isChargingSword)
+        {
+            Debug.Log($"Cargando ataque: {chargeTime.ToString("F2")} segundos");
+        }
+
+        // Manejo del click derecho para cargar el ataque de espada
+        if (Input.GetKeyDown(KeyCode.Mouse1) && currentlySelected == "Espada" && equippedWeapon != null)
+        {
+            isRightMouseDown = true;
+            StartCoroutine(ChargeSword());
+        }
+
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            isRightMouseDown = false;
+            if (isChargingSword)
+            {
+                StopCoroutine(ChargeSword());
+                isChargingSword = false;
+                chargeTime = 0f;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             if (!isAttacking && !isDashing)
             {
                 if (currentlySelected == "Espada" && equippedWeapon != null)
                 {
-                    StartCoroutine(SwordAttack());
+                    float damage = equippedWeapon.damage;
+                    if (isChargingSword)
+                    {
+                        damage *= 3f;
+                        isChargingSword = false;
+                        chargeTime = 0f;
+                        Debug.Log("Ataque Espada Cargada");
+                    }
+
+                    // damage *= 1.5f;
+
+                    StartCoroutine(SwordAttack(damage));
                     Debug.Log("Ataque Espada");
                 }
                 else if (currentlySelected == "Arco" && equippedWeapon != null)
@@ -220,16 +263,65 @@ public class Acciones : MonoBehaviour
         }
     }
 
-
-    IEnumerator SwordAttack()
+    IEnumerator ChargeSword()
     {
-        if (isAttacking) yield break;
-        isAttacking = true;
-        Vector3 attackPosition = controller.transform.position + controller.transform.forward * attackDamageOffset.z + controller.transform.up * attackDamageOffset.y + controller.transform.right * attackDamageOffset.x;
-        comprobarEnemigosEnArea(attackPosition, attackrange, equippedWeapon.damage);
-        yield return new WaitForSeconds(attackCooldown);
-        isAttacking = false;
+        if (isChargingSword) yield break;
+        
+        isChargingSword = true;
+        chargeTime = 0f;
+        
+        while (isRightMouseDown && chargeTime < chargeRequiredTime)
+        {
+            chargeTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        if (chargeTime >= chargeRequiredTime)
+        {
+            Debug.Log("Espada cargada lista para ataque potente!");
+        }
+        
+        isChargingSword = false;
     }
+
+    IEnumerator SwordAttack(float damage)
+{
+    if (isAttacking) yield break;
+    isAttacking = true;
+    Vector3 attackPosition = controller.transform.position + controller.transform.forward * attackDamageOffset.z + controller.transform.up * attackDamageOffset.y + controller.transform.right * attackDamageOffset.x;
+    
+    // Comprobar enemigos en área y aplicar daño y empuje
+    Collider[] colliders = Physics.OverlapSphere(attackPosition, attackrange);
+    HashSet<Enemigo> uniqueEnemies = new HashSet<Enemigo>();
+
+    foreach (Collider c in colliders)
+    {
+        Enemigo enemigo = c.GetComponentInParent<Enemigo>();
+        if (enemigo != null && !uniqueEnemies.Contains(enemigo))
+        {
+            uniqueEnemies.Add(enemigo);
+            enemigo.takeDamage(damage);
+            
+            // Aplicar empuje al enemigo (con comprobación de Rigidbody)
+            Rigidbody enemyRb = enemigo.GetComponent<Rigidbody>();
+            if (enemyRb != null)
+            {
+                Vector3 pushDirection = (enemigo.transform.position - transform.position).normalized;
+                pushDirection.y = 0; // Mantener el empuje en el plano horizontal
+                enemyRb.AddForce(pushDirection * empujeFuerza, ForceMode.Impulse);
+            }
+            else
+            {
+                Debug.LogWarning($"El enemigo {enemigo.name} no tiene Rigidbody, no se puede empujar");
+                // Alternativa: Mover el enemigo directamente (menos realista)
+                // enemigo.transform.position += pushDirection * empujeFuerza * 0.1f;
+            }
+        }
+    }
+    
+    yield return new WaitForSeconds(attackCooldown);
+    isAttacking = false;
+}
 
     IEnumerator bowAttack()
     {
