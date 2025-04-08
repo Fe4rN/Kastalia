@@ -3,10 +3,11 @@ using UnityEngine;
 public class BallesteroController : Maquina
 {
     //Atributos relacionados al enemigo
-    [SerializeField] private float vidaMaxima;
+    private float vidaMaxima = 100f;
     private float vidaActual;
-    public float shootingDistance;
-    public float safeDistance;
+    public float shootingDistance = 15f;
+    public float safeDistance = 10f;
+    public float fireCooldown = 1f;
 
     //Atributos relacionados al jugador
     public Transform jugador;
@@ -18,9 +19,7 @@ public class BallesteroController : Maquina
     public NombreEstado mantenerDistanciaEstado;
     public NombreEstado atacarEstado;
 
-    
     public GameObject arrowPrefab;
-
 
     void Start()
     {
@@ -41,8 +40,8 @@ public class BallesteroController : Maquina
             {
                 jugador = FindFirstObjectByType<CharacterController>().transform;
             }
-            distanciaAJugador = getDistanceToPlayer();
         }
+        distanciaAJugador = getDistanceToPlayer();
     }
 
     private void Die()

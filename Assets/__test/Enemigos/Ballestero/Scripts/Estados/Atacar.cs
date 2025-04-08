@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +11,8 @@ public class Atacar : Estado
     BallesteroController controller;
 
     public float arrowForce = 20f;
+    private bool isFiring = false;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -21,18 +24,39 @@ public class Atacar : Estado
     {
         if (controller.jugador)
         {
-            if(controller.distanciaAJugador < controller.shootingDistance && controller.distanciaAJugador > controller.safeDistance)
+            if (controller.distanciaAJugador < controller.shootingDistance && controller.distanciaAJugador > controller.safeDistance)
             {
-                shootArrow();
+                if (!isFiring)
+                {
+                    isFiring = true;
+                    StartCoroutine(ShootArrow());
+                }
+            } else if (controller.distanciaAJugador < controller.safeDistance)
+            {
+                agent.ResetPath();
+                transform.LookAt(controller.jugador);
+                controller.SetEstado(controller.mantenerDistanciaEstado.Value);
+            } else if (controller.distanciaAJugador > controller.shootingDistance)
+            {
+                agent.ResetPath();
+                transform.LookAt(controller.jugador);
+                controller.SetEstado(controller.deambularEstado.Value);
             }
+
+
         }
     }
 
-    private void shootArrow()
+    private IEnumerator ShootArrow()
     {
-        GameObject arrow = Instantiate(controller.arrowPrefab, transform.position, Quaternion.identity);
+        Debug.Log("Disparando flecha al jugador");
+        Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 2f;
+        GameObject arrow = Instantiate(controller.arrowPrefab, spawnPos, Quaternion.identity);
         Rigidbody rb = arrow.GetComponent<Rigidbody>();
         Vector3 direction = (controller.jugador.position - transform.position).normalized;
         rb.AddForce(direction * arrowForce, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(controller.fireCooldown);
+        isFiring = false;
     }
 }
