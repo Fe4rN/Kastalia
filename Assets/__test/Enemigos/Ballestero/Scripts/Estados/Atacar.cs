@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class Atacar : Estado
 {
 
-    BallesteroController enemigo;
     NavMeshAgent agent;
     BallesteroController controller;
 
@@ -17,7 +16,6 @@ public class Atacar : Estado
     {
         agent = GetComponent<NavMeshAgent>();
         controller = maquina as BallesteroController;
-        enemigo = GetComponent<BallesteroController>();
     }
 
     void Update()
@@ -31,12 +29,14 @@ public class Atacar : Estado
                     isFiring = true;
                     StartCoroutine(ShootArrow());
                 }
-            } else if (controller.distanciaAJugador < controller.safeDistance)
+            }
+            else if (controller.distanciaAJugador < controller.safeDistance)
             {
                 agent.ResetPath();
                 transform.LookAt(controller.jugador);
                 controller.SetEstado(controller.mantenerDistanciaEstado.Value);
-            } else if (controller.distanciaAJugador > controller.shootingDistance)
+            }
+            else if (controller.distanciaAJugador > controller.shootingDistance)
             {
                 agent.ResetPath();
                 transform.LookAt(controller.jugador);
@@ -49,14 +49,15 @@ public class Atacar : Estado
 
     private IEnumerator ShootArrow()
     {
-        Debug.Log("Disparando flecha al jugador");
-        Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 2f;
-        GameObject arrow = Instantiate(controller.arrowPrefab, spawnPos, Quaternion.identity);
-        Rigidbody rb = arrow.GetComponent<Rigidbody>();
+        Vector3 spawnPos = transform.position + transform.forward * 0.5f + Vector3.up * 1.75f;
         Vector3 direction = (controller.jugador.position - transform.position).normalized;
+
+        GameObject arrow = Instantiate(controller.arrowPrefab, spawnPos, Quaternion.LookRotation(direction));
+        Rigidbody rb = arrow.GetComponent<Rigidbody>();
         rb.AddForce(direction * arrowForce, ForceMode.Impulse);
 
         yield return new WaitForSeconds(controller.fireCooldown);
         isFiring = false;
     }
+
 }

@@ -2,13 +2,16 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             Debug.Log("Player hit!");
-            collision.gameObject.GetComponent<Acciones>().takeDamage(20f);
+            other.gameObject.GetComponent<Acciones>().takeDamage(20f);
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+        if(other.CompareTag("Enemy")){
+            Destroy(gameObject);
+        }
     }
 }

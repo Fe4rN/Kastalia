@@ -120,9 +120,12 @@ GameObject:
   - component: {fileID: 3267690078847900025}
   - component: {fileID: 755351289454634036}
   - component: {fileID: 1328817221307898398}
+  - component: {fileID: 2742938890233957175}
+  - component: {fileID: 1443544947387974726}
+  - component: {fileID: 2300257585470959279}
   m_Layer: 7
   m_Name: Ballestero
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -180,14 +183,15 @@ MonoBehaviour:
   OnStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  vidaMaxima: 0
-  shootingDistance: 0
-  safeDistance: 0
+  shootingDistance: 15
+  safeDistance: 10
+  fireCooldown: 1
   jugador: {fileID: 0}
   distanciaAJugador: 0
   deambularEstado: {fileID: 11400000, guid: c686881fe18990b41a169526f7f62ad1, type: 2}
   mantenerDistanciaEstado: {fileID: 11400000, guid: 9caa46f3d4e14eb4ea12755c625d0e9b, type: 2}
   atacarEstado: {fileID: 11400000, guid: 016cee37b90cbaf418b7be71f384c8c8, type: 2}
+  arrowPrefab: {fileID: 1082511336032855041, guid: bd5ab033dd4978c4886ccba1cce15e50, type: 3}
 --- !u!114 &1328817221307898398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +206,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: {fileID: 11400000, guid: c686881fe18990b41a169526f7f62ad1, type: 2}
   inicial: 1
+--- !u!114 &2742938890233957175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133347364983744333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935e10643561f674da6ea10a0057ff11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nombre: {fileID: 11400000, guid: 9caa46f3d4e14eb4ea12755c625d0e9b, type: 2}
+  inicial: 0
+--- !u!114 &1443544947387974726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133347364983744333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28cfd4af507257e45b9139d1991b41d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nombre: {fileID: 11400000, guid: 016cee37b90cbaf418b7be71f384c8c8, type: 2}
+  inicial: 0
+  arrowForce: 20
+--- !u!114 &2300257585470959279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133347364983744333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b22df087ca1a0464297e2e26b3e0c51b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nombre: {fileID: 11400000, guid: 8c0775f297dac574b929db6be1c31e78, type: 2}
+  inicial: 0
+  squadRadius: 30
+  groupCloseEnoughDistance: 2
 --- !u!1 &7257476183881699970
 GameObject:
   m_ObjectHideFlags: 0
