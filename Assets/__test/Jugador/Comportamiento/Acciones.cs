@@ -30,7 +30,9 @@ public class Acciones : MonoBehaviour
     private float attackCooldown = 1.5f;
     private Vector3 attackDamageOffset = new Vector3(0, 0, 1);
     
-    // Nueva variable para el empuje de la espada
+// –––––––––––––––––––––––––––––––-------------------------------
+//variables: de funcionalidad de espada
+// –––––––––––––––––––––––––––––––-------------------------------
     [SerializeField] private float chargeMultiplier = 3f;
     private bool isFullyCharged = false;
     [SerializeField] private float empujeFuerza = 10f;
@@ -38,6 +40,9 @@ public class Acciones : MonoBehaviour
     private float chargeTime = 0f;
     private float chargeRequiredTime = 1f;
     private bool isRightMouseDown = false;
+
+
+// –––––––––––––––––––––––––––––––-------------------------------
 
     // Inventario
     public string currentlySelected;
@@ -122,9 +127,12 @@ public class Acciones : MonoBehaviour
                     }
                     if (isChargingSword)
                     {
-                        Debug.Log($"[ATTACK] Ataque INTERRUMPIDO (carga no completada)");   
-                        // isChargingSword = false;
-                        // chargeTime = 0f;
+                        Debug.Log($"[ATTACK] Ataque INTERRUMPIDO (carga no completada)"); 
+
+
+                        //daño suave
+                        damage *= 0.5f;  
+              
                     }
                     else
                     {
@@ -283,7 +291,9 @@ public class Acciones : MonoBehaviour
         }
     }
 
-    // Corrutina ChargeSword modificada
+// –––––––––––––––––––––––––––––––-------------------------------
+//FUNCIONALIDAD: carga de la espada
+// –––––––––––––––––––––––––––––––-------------------------------
 IEnumerator ChargeSword()
 {
     if (isChargingSword) 
@@ -317,45 +327,75 @@ IEnumerator ChargeSword()
     isChargingSword = false;
     Debug.Log("[CHARGE] Corrutina de carga finalizada");
 }
-
-    IEnumerator SwordAttack(float damage)
+// –––––––––––––––––––––––––––––––-------------------------------
+//FUNCIONALIDAD: Empuje del Enemigo tras ser dañado
+// –––––––––––––––––––––––––––––––-------------------------------
+    private void EmpujarEnemigo(Enemigo enemigo, float fuerzaEmpuje)
 {
-    if (isAttacking) yield break;
-    isAttacking = true;
-    Vector3 attackPosition = controller.transform.position + controller.transform.forward * attackDamageOffset.z + controller.transform.up * attackDamageOffset.y + controller.transform.right * attackDamageOffset.x;
+    // Calcular dirección del empuje (desde jugador hacia enemigo)
+    Vector3 direccionEmpuje = (enemigo.transform.position - transform.position).normalized;
+    direccionEmpuje.y = 0; // Mantenemos el empuje en el plano horizontal
     
-    // Comprobar enemigos en área y aplicar daño y empuje
-    Collider[] colliders = Physics.OverlapSphere(attackPosition, attackrange);
-    HashSet<Enemigo> uniqueEnemies = new HashSet<Enemigo>();
+    // Aplicar el empuje directamente al transform
+    StartCoroutine(EmpujeSuave(enemigo.transform, direccionEmpuje, fuerzaEmpuje));
+    
+    Debug.Log($"[EMPUJE] Empujando enemigo {enemigo.name} con fuerza {fuerzaEmpuje}");
+}
 
-    foreach (Collider c in colliders)
+private IEnumerator EmpujeSuave(Transform objetivo, Vector3 direccion, float fuerza)
+{
+    float duracionEmpuje = 0.5f;
+    float tiempoTranscurrido = 0f;
+    
+    while (tiempoTranscurrido < duracionEmpuje)
     {
-        Enemigo enemigo = c.GetComponentInParent<Enemigo>();
-        if (enemigo != null && !uniqueEnemies.Contains(enemigo))
+        // Calcular progreso (de 1 a 0)
+        float progreso = 1 - (tiempoTranscurrido / duracionEmpuje);
+        
+        // Mover el enemigo
+        objetivo.position += direccion * fuerza * progreso * Time.deltaTime;
+        
+        tiempoTranscurrido += Time.deltaTime;
+        yield return null;
+    }
+}
+
+
+// –––––––––––––––––––––––––––––––-------------------------------
+//FUNCIONALIDAD: Ataque de la Espada
+// –––––––––––––––––––––––––––––––-------------------------------
+    IEnumerator SwordAttack(float damage)
+    {
+        if (isAttacking) yield break;
+        isAttacking = true;
+        
+        Vector3 attackPosition = controller.transform.position + controller.transform.forward * attackDamageOffset.z + 
+                            controller.transform.up * attackDamageOffset.y + 
+                            controller.transform.right * attackDamageOffset.x;
+        
+        // Comprobar enemigos en área y aplicar daño y empuje
+        Collider[] colliders = Physics.OverlapSphere(attackPosition, attackrange);
+        HashSet<Enemigo> uniqueEnemies = new HashSet<Enemigo>();
+
+        foreach (Collider c in colliders)
         {
-            uniqueEnemies.Add(enemigo);
-            enemigo.takeDamage(damage);
-            
-            // Aplicar empuje al enemigo (con comprobación de Rigidbody)
-            Rigidbody enemyRb = enemigo.GetComponent<Rigidbody>();
-            if (enemyRb != null)
+            Enemigo enemigo = c.GetComponentInParent<Enemigo>();
+            if (enemigo != null && !uniqueEnemies.Contains(enemigo))
             {
-                Vector3 pushDirection = (enemigo.transform.position - transform.position).normalized;
-                pushDirection.y = 0; // Mantener el empuje en el plano horizontal
-                enemyRb.AddForce(pushDirection * empujeFuerza, ForceMode.Impulse);
-            }
-            else
-            {
-                Debug.LogWarning($"El enemigo {enemigo.name} no tiene Rigidbody, no se puede empujar");
-                // Alternativa: Mover el enemigo directamente (menos realista)
-                // enemigo.transform.position += pushDirection * empujeFuerza * 0.1f;
+                uniqueEnemies.Add(enemigo);
+                
+                // Aplicar daño
+                enemigo.takeDamage(damage);
+                
+                // Aplicar empuje
+                float fuerzaEmpujeActual = isFullyCharged ? empujeFuerza * 1.5f : empujeFuerza;
+                EmpujarEnemigo(enemigo, fuerzaEmpujeActual);
             }
         }
+        
+        yield return new WaitForSeconds(attackCooldown);
+        isAttacking = false;
     }
-    
-    yield return new WaitForSeconds(attackCooldown);
-    isAttacking = false;
-}
 
     IEnumerator bowAttack()
     {
