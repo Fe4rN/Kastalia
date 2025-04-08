@@ -524,7 +524,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7133347364983744333, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
   m_PrefabInstance: {fileID: 4959840095655628187}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1756690655
+--- !u!114 &1756690658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -533,16 +533,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1756690653}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c0132075d9cd9b48a81581b69c40972, type: 3}
+  m_Script: {fileID: 11500000, guid: 935e10643561f674da6ea10a0057ff11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  vidaMaxima: 0
-  deambularEstado: {fileID: 11400000, guid: c686881fe18990b41a169526f7f62ad1, type: 2}
-  mantenerDistanciaEstado: {fileID: 11400000, guid: 9caa46f3d4e14eb4ea12755c625d0e9b, type: 2}
-  atacarEstado: {fileID: 11400000, guid: 016cee37b90cbaf418b7be71f384c8c8, type: 2}
+  nombre: {fileID: 11400000, guid: 9caa46f3d4e14eb4ea12755c625d0e9b, type: 2}
+  inicial: 0
 --- !u!1001 &102656832161751867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -648,21 +643,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6262398338611914603, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 7133347364983744333, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_Name
       value: Ballestero
-      objectReference: {fileID: 0}
-    - target: {fileID: 7133347364983744333, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7257476183881699970, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -670,7 +653,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7133347364983744333, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1756690655}
+      addedObject: {fileID: 1756690658}
   m_SourcePrefab: {fileID: 100100000, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
