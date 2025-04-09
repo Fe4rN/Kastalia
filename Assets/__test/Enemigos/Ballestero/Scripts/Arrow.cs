@@ -37,10 +37,9 @@ public class Arrow : MonoBehaviour
     {
         Debug.Log("Sticking to target: " + target.name);
         rb.isKinematic = true;
-        rb.linearVelocity = Vector3.zero;
         GetComponent<Collider>().enabled = false;
 
-        transform.SetParent(target); // Maintain position/rotation
+        transform.SetParent(target);
     }
 
     IEnumerator DestroyArrowAfterTime(float time)

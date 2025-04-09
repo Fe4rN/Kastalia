@@ -15,7 +15,6 @@ public class BallesteroController : Maquina
     public NombreEstado deambularEstado;
     public NombreEstado mantenerDistanciaEstado;
     public NombreEstado atacarEstado;
-
     public GameObject arrowPrefab;
 
     void Start()

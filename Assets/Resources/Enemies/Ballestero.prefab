@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 525861638588086483}
   - component: {fileID: 4634989426279509093}
   m_Layer: 7
-  m_Name: Cube
+  m_Name: CaraBallestero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123,7 +123,6 @@ GameObject:
   - component: {fileID: 1328817221307898398}
   - component: {fileID: 2742938890233957175}
   - component: {fileID: 1443544947387974726}
-  - component: {fileID: 2300257585470959279}
   m_Layer: 7
   m_Name: Ballestero
   m_TagString: Enemy
@@ -157,7 +156,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 2.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -249,22 +248,6 @@ MonoBehaviour:
   nombre: {fileID: 11400000, guid: 016cee37b90cbaf418b7be71f384c8c8, type: 2}
   inicial: 0
   arrowForce: 20
---- !u!114 &2300257585470959279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7133347364983744333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b22df087ca1a0464297e2e26b3e0c51b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nombre: {fileID: 11400000, guid: 8c0775f297dac574b929db6be1c31e78, type: 2}
-  inicial: 0
-  squadRadius: 30
-  groupCloseEnoughDistance: 2
 --- !u!1 &7257476183881699970
 GameObject:
   m_ObjectHideFlags: 0
