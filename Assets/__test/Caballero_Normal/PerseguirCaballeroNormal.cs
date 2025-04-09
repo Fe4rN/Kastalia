@@ -22,7 +22,6 @@ public class Perseguir : Estado
         if (controller == null || controller.Player == null) return;
 
         float distancia = Vector3.Distance(transform.position, controller.Player.position);
-        Debug.Log($"[Perseguir] Distancia al jugador: {distancia}");
 
         if (distancia <= controller.AttackDistance)
         {

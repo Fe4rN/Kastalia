@@ -38,7 +38,7 @@ public class LyxController : PlayerController
             {
                 if (!isAttacking && !isDashing)
                 {
-                    float damage = playerInventory.weapon.damage;
+                    int damage = playerInventory.weapon.damage;
                     Debug.Log($"[ATTACK] Daño base: {damage}");
 
 
@@ -54,7 +54,7 @@ public class LyxController : PlayerController
 
 
                         //daño suave
-                        damage *= 0.5f;
+                        damage = Mathf.CeilToInt(damage * 0.5f);
 
                     }
                     else

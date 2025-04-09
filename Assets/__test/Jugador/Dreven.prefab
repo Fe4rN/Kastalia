@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c1cd44817db2f4ab8d7fc26840c7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabFlecha: {fileID: 0}
+  prefabFlecha: {fileID: 1082511336032855041, guid: bd5ab033dd4978c4886ccba1cce15e50, type: 3}
   puntoDisparo: {fileID: 0}
   fuerza: 30
   "da\xF1o": 10

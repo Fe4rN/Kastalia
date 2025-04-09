@@ -4,9 +4,7 @@ using UnityEngine;
 public class Arquero : MonoBehaviour
 {
     public GameObject prefabFlecha;
-    public Transform puntoDisparo;
     public float fuerza = 30f;
-    public float daño = 10f;
     public float delayDisparo = 0.1f;
     public float delayRafaga = 0.05f;
 
@@ -18,6 +16,14 @@ public class Arquero : MonoBehaviour
     private bool cargando = false;
     private bool puedeDisparar = true;
 
+
+    private PosicionCursor posicionCursor;
+    private PlayerInventory playerInventory;
+    private void Start()
+    {
+        posicionCursor = GetComponent<PosicionCursor>();
+        playerInventory = GetComponent<PlayerInventory>();
+    }
     public void DisparoLigero()
     {
         if (!puedeDisparar) return;
@@ -41,28 +47,34 @@ public class Arquero : MonoBehaviour
     }
 
     IEnumerator Disparar(int cantidad, float cooldown, float delay)
+{
+    puedeDisparar = false;
+
+    Vector3 direction = (posicionCursor.lookPoint - transform.position).normalized;
+
+    for (int i = 0; i < cantidad; i++)
     {
-        puedeDisparar = false;
+        yield return new WaitForSeconds(delay);
 
-        for (int i = 0; i < cantidad; i++)
+        // Calculate spawn position for each arrow individually
+        Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 1.75f;
+
+        // Spread logic
+        Quaternion baseRotation = Quaternion.LookRotation(direction);
+        if (cantidad > 1)
         {
-            yield return new WaitForSeconds(delay);
-
-            // Desviación en abanico para ráfaga
-            Quaternion rotacion = puntoDisparo.rotation;
-            if (cantidad > 1)
-            {
-                float spread = 5f; // grados de separación entre flechas
-                float offset = (i - (cantidad - 1) / 2f) * spread;
-                rotacion = puntoDisparo.rotation * Quaternion.Euler(0, offset, 0);
-            }
-
-            GameObject flecha = Instantiate(prefabFlecha, puntoDisparo.position, rotacion);
-            Rigidbody rb = flecha.GetComponent<Rigidbody>();
-            rb.AddForce(rotacion * Vector3.forward * fuerza, ForceMode.Impulse);
+            float spread = 5f;
+            float offset = (i - (cantidad - 1) / 2f) * spread;
+            baseRotation *= Quaternion.Euler(0, offset, 0);
         }
 
-        yield return new WaitForSeconds(cooldown);
-        puedeDisparar = true;
+        GameObject flecha = Instantiate(prefabFlecha, spawnPos, baseRotation);
+        Rigidbody rb = flecha.GetComponent<Rigidbody>();
+        rb.AddForce(baseRotation * Vector3.forward * fuerza, ForceMode.Impulse);
     }
+
+    yield return new WaitForSeconds(cooldown);
+    puedeDisparar = true;
+}
+
 }

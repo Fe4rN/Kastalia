@@ -16,7 +16,7 @@ public class Atacar : Estado
 
     void Start()
     {
-        player = FindFirstObjectByType<Acciones>().transform;
+        player = FindFirstObjectByType<PlayerController>().transform;
         agent = GetComponent<NavMeshAgent>();
         controller = maquina as CaballeroNormalController;
         agent.ResetPath();
@@ -30,38 +30,34 @@ public class Atacar : Estado
         // Check if within visual attack range and can attack
         if (distanceToPlayer <= controller.distanciaAtaque && puedeAtacar )
         {
-            puedeAtacar = false;
+            Debug.Log("Enemigo ataca al jugador");
             StartCoroutine(LoopAtaque());
         }
 
         if (distanceToPlayer > controller.AttackDistance)
         {
+            Debug.Log("Enemigo deja de atacar al jugador");
+            puedeAtacar = true;
             StopAllCoroutines();
             maquina.SetEstado(controller.perseguirEstado.Value);
-        }
-        else
-        {
-            // Orient towards the player on the x-z plane
-            Vector3 lookPos = new Vector3(player.position.x, 0, player.position.z);
-            transform.LookAt(lookPos);
         }
     }
 
 
     IEnumerator LoopAtaque()
     {
+        puedeAtacar = false;
         if (player != null)
         {
-            Acciones acciones = player.GetComponent<Acciones>();
-            if (acciones != null)
+            PlayerHealth PlayerHealth = player.GetComponent<PlayerHealth>();
+            if (PlayerHealth != null)
             {
-                acciones.takeDamage(controller.attackDamage);
-                Debug.Log("Enemigo ataca al jugador");
+                PlayerHealth.takeDamage(controller.attackDamage);
             }
 
             yield return new WaitForSeconds(1f); // Cooldown
-            puedeAtacar = true;
         }
+        puedeAtacar = true;
     }
 
     private void DistanceToPlayer()

@@ -58,18 +58,32 @@ public abstract class PlayerController : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
             {
-                playerInventory.selectedItemType = ItemType.Habilidad;
-                playerInventory.selectedAbilityType = AbilityType.Ofensiva;
+                if(offensiveAbilityController.offensiveAbilityCooldown == 0){
+                    playerInventory.selectedItemType = ItemType.Habilidad;
+                    playerInventory.selectedAbilityType = AbilityType.Ofensiva;
+                }
             }
             if (Input.GetKeyDown(KeyCode.E) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
             {
-                playerInventory.selectedItemType = ItemType.Habilidad;
-                playerInventory.selectedAbilityType = AbilityType.Defensiva;
+                if(defensiveAbilityController.defensiveAbilityCooldown == 0){
+                    playerInventory.selectedItemType = ItemType.Habilidad;
+                    playerInventory.selectedAbilityType = AbilityType.Defensiva;
+                    defensiveAbilityController.enableShield();
+                }
             }
             if (Input.GetKeyDown(KeyCode.R) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
             {
-                playerInventory.selectedItemType = ItemType.Habilidad;
-                playerInventory.selectedAbilityType = AbilityType.Curativa;
+                if(healingAbilityController.healingAbilityCooldown == 0){
+                    playerInventory.selectedItemType = ItemType.Habilidad;
+                    playerInventory.selectedAbilityType = AbilityType.Curativa;
+                    StartCoroutine(healingAbilityController.healingAbility());
+                }
+            }
+            
+            if (playerInventory.selectedItemType == ItemType.Habilidad && playerInventory.selectedAbilityType == AbilityType.Ofensiva){
+                if(Input.GetKeyDown(KeyCode.Mouse0)){
+                    StartCoroutine(offensiveAbilityController.offensiveAbility());
+                }
             }
         }
 
@@ -100,18 +114,18 @@ public abstract class PlayerController : MonoBehaviour
         isDashing = false;
     }
 
-    public void comprobarEnemigosEnArea(Vector3 attackPosition, float attackRadius, float damage)
+    public void comprobarEnemigosEnArea(Vector3 attackPosition, float attackRadius, int damage)
     {
         Collider[] colliders = Physics.OverlapSphere(attackPosition, attackRadius);
-        HashSet<Enemigo> uniqueEnemies = new HashSet<Enemigo>();
+        HashSet<EnemyHealth> uniqueEnemies = new HashSet<EnemyHealth>();
 
         foreach (Collider c in colliders)
         {
-            Enemigo enemigo = c.GetComponentInParent<Enemigo>();
+            EnemyHealth enemigo = c.GetComponentInParent<EnemyHealth>();
             if (enemigo != null && !uniqueEnemies.Contains(enemigo))
             {
                 uniqueEnemies.Add(enemigo);
-                enemigo.takeDamage(damage);
+                enemigo.TakeDamage(damage);
             }
         }
     }

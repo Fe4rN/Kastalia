@@ -15,7 +15,7 @@ public class MantenerDistanciaBallestero : Estado
 
     void Update()
 {
-    // if (GameManager.instance.isPaused) return;
+    if (GameManager.instance.isPaused) return;
 
     if (controller != null && controller.jugador != null)
     {

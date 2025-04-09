@@ -27,7 +27,9 @@ public class HealingAbility : MonoBehaviour
         healingAbilityCooldown = healingAbility.killCountCooldown;
         playerHealth.healPlayer(60);
         playerController.isCastingAbility = false;
-        //if (equippedWeapon) currentlySelected = equippedWeapon.weaponType.ToString();
+        if(playerInventory.selectedAbilityType == AbilityType.Curativa) {
+            playerInventory.selectedItemType = ItemType.Arma;
+        }
     }
 
 }

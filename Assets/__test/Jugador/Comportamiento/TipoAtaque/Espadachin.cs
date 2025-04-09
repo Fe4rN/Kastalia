@@ -7,7 +7,7 @@ public class Espadachin : MonoBehaviour
 {
     [SerializeField] float attackrange = 2f;
     [SerializeField] float chargeRequiredTime = 2f;
-    public float chargeMultiplier = 1.5f;
+    public int chargeMultiplier = 2;
     public float chargeTime = 0f;
     public bool isChargingSword = false;
     public bool isFullyCharged = false;
@@ -62,7 +62,7 @@ public class Espadachin : MonoBehaviour
     // –––––––––––––––––––––––––––––––-------------------------------
     //FUNCIONALIDAD: Empuje del Enemigo tras ser dañado
     // –––––––––––––––––––––––––––––––-------------------------------
-    private void EmpujarEnemigo(Enemigo enemigo, float fuerzaEmpuje)
+    private void EmpujarEnemigo(GameObject enemigo, float fuerzaEmpuje)
     {
         // Calcular dirección del empuje (desde jugador hacia enemigo)
         Vector3 direccionEmpuje = (enemigo.transform.position - transform.position).normalized;
@@ -96,7 +96,7 @@ public class Espadachin : MonoBehaviour
     // –––––––––––––––––––––––––––––––-------------------------------
     //FUNCIONALIDAD: Ataque de la Espada
     // –––––––––––––––––––––––––––––––-------------------------------
-    public IEnumerator SwordAttack(float damage)
+    public IEnumerator SwordAttack(int damage)
     {
         if (controller.isAttacking) yield break;
         controller.isAttacking = true;
@@ -107,21 +107,21 @@ public class Espadachin : MonoBehaviour
 
         // Comprobar enemigos en área y aplicar daño y empuje
         Collider[] colliders = Physics.OverlapSphere(attackPosition, attackrange);
-        HashSet<Enemigo> uniqueEnemies = new HashSet<Enemigo>();
+        HashSet<EnemyHealth> uniqueEnemies = new HashSet<EnemyHealth>();
 
         foreach (Collider c in colliders)
         {
-            Enemigo enemigo = c.GetComponentInParent<Enemigo>();
+            EnemyHealth enemigo = c.GetComponentInParent<EnemyHealth>();
             if (enemigo != null && !uniqueEnemies.Contains(enemigo))
             {
                 uniqueEnemies.Add(enemigo);
 
                 // Aplicar daño
-                enemigo.takeDamage(damage);
+                enemigo.TakeDamage(damage);
 
                 // Aplicar empuje
                 float fuerzaEmpujeActual = isFullyCharged ? empujeFuerza * 1.5f : empujeFuerza;
-                EmpujarEnemigo(enemigo, fuerzaEmpujeActual);
+                EmpujarEnemigo(enemigo.gameObject, fuerzaEmpujeActual);
             }
         }
 

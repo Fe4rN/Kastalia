@@ -21,16 +21,23 @@ public class Arrow : MonoBehaviour
         if (hasHit) return;
         hasHit = true;
         Debug.Log("Arrow hit: " + other.name);
-        Acciones acciones = other.gameObject.GetComponentInParent<Acciones>();
-        if (acciones != null)
+        PlayerHealth PlayerHealth = other.gameObject.GetComponentInParent<PlayerHealth>();
+        EnemyHealth EnemyHealth = other.gameObject.GetComponentInParent<EnemyHealth>();
+        if (PlayerHealth)
         {
-            Debug.Log("Acciones component found, applying damage.");
-            StickToTarget(other.transform);
-            acciones.takeDamage(20f);
-        } else {
-            Debug.Log("No Acciones component found, destroying arrow.");
-            Destroy(gameObject);
+            Debug.Log("PlayerHealth component found, applying damage.");
+            PlayerHealth.takeDamage(20f);
         }
+        else if (EnemyHealth)
+        {
+            Debug.Log("EnemyHealth component found, applying damage.");
+            EnemyHealth.TakeDamage(20);
+        } 
+        else
+        {
+            Debug.Log("No health component found, ignoring hit.");
+        }
+        StickToTarget(other.transform);
     }
 
     private void StickToTarget(Transform target)

@@ -29,7 +29,7 @@ public class DefensiveAbility : MonoBehaviour
         defensiveAbilityCooldown = defensiveAbility.killCountCooldown;
         playerController.isCastingAbility = false;
         StartCoroutine(shieldDuration());
-        if (playerInventory.selectedAbilityType == AbilityType.Ofensiva) {
+        if (playerInventory.selectedAbilityType == AbilityType.Defensiva) {
             playerInventory.selectedItemType = ItemType.Arma;
         }
     }
@@ -39,5 +39,7 @@ public class DefensiveAbility : MonoBehaviour
         yield return new WaitForSeconds(10);
         playerHealth.defensiveAbilityHits = 0;
         Debug.Log("Shield disabled");
+
+        playerInventory.selectedItemType = ItemType.Arma;
     }
 }

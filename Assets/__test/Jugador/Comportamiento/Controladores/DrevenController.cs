@@ -12,8 +12,10 @@ public class DrevenController : PlayerController
     protected override void Update()
     {
         base.Update();
-        if (Input.GetMouseButtonDown(0)) arquero.DisparoLigero();
-        if (Input.GetMouseButton(1)) arquero.EmpezarCarga();
-        if (Input.GetMouseButtonUp(1)) arquero.SoltarCarga();
+        if(playerInventory.selectedItemType == ItemType.Arma && playerInventory.weapon){
+            if (Input.GetMouseButtonDown(0)) arquero.DisparoLigero();
+            if (Input.GetMouseButton(1)) arquero.EmpezarCarga();
+            if (Input.GetMouseButtonUp(1)) arquero.SoltarCarga();
+        }
     }
 }
