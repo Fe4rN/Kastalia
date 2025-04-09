@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Atacar : Estado
+public class AtacarBallestero : Estado
 {
 
     NavMeshAgent agent;
@@ -16,6 +15,7 @@ public class Atacar : Estado
     {
         agent = GetComponent<NavMeshAgent>();
         controller = maquina as BallesteroController;
+        controller = GetComponent<BallesteroController>();
     }
 
     void Update()

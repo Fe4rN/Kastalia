@@ -5,45 +5,29 @@ using System.Collections;
 public class Perseguir : Estado
 {
     NavMeshAgent agent;
-    Transform player;
-    Enemigo controller;
+    CaballeroNormalController controller;
+
     bool esperando = false;
 
-    protected override void OnAwake()
+    void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        controller = GetComponent<Enemigo>();
+        controller = maquina as CaballeroNormalController;
+        controller = GetComponent<CaballeroNormalController>();
     }
 
-    protected override void OnEnter()
-    {
-        if (controller != null)
-            player = controller.Player;
-        esperando = false;
-
-        if (agent != null)
-            agent.isStopped = false;
-    }
-
-    protected override void OnExit()
-    {
-        StopAllCoroutines();
-        agent.ResetPath();
-        esperando = false;
-    }
-
-    protected override void OnUpdate()
+    private void Update()
     {
         if (GameManager.instance != null && GameManager.instance.isPaused) return;
-        if (controller == null || player == null) return;
+        if (controller == null || controller.Player == null) return;
 
-        float distancia = Vector3.Distance(transform.position, player.position);
+        float distancia = Vector3.Distance(transform.position, controller.Player.position);
         Debug.Log($"[Perseguir] Distancia al jugador: {distancia}");
 
         if (distancia <= controller.AttackDistance)
         {
             Debug.Log("[Perseguir] Cambiando a estado atacar");
-            maquina.SetEstado(controller.atacarEstado.Value);
+            controller.SetEstado(controller.atacarEstado.Value);
             return;
         }
 
@@ -51,9 +35,9 @@ public class Perseguir : Estado
         {
 
             Debug.Log("[Perseguir] Persiguiendo al jugador");
-            agent.SetDestination(player.position);
+            agent.SetDestination(controller.Player.position);
 
-            Vector3 direccion = player.position - transform.position;
+            Vector3 direccion = controller.Player.position - transform.position;
             direccion.y = 0;
             if (direccion != Vector3.zero)
                 transform.rotation = Quaternion.LookRotation(direccion);
@@ -72,10 +56,10 @@ public class Perseguir : Estado
         esperando = true;
         agent.ResetPath();
 
-        // Se queda mirando hacia la última posición del jugador
-        if (player != null)
+        // Se queda mirando hacia la Ãºltima posicion del jugador
+        if (controller.Player != null)
         {
-            Vector3 direccion = new Vector3(player.position.x, transform.position.y, player.position.z);
+            Vector3 direccion = new Vector3(controller.Player.position.x, transform.position.y, controller.Player.position.z);
             transform.LookAt(direccion);
         }
 

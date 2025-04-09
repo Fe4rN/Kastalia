@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MantenerDistancia : Estado
+public class MantenerDistanciaBallestero : Estado
 {
     NavMeshAgent agent;
     Transform player;

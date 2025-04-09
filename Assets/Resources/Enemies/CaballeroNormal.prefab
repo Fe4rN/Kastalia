@@ -119,8 +119,10 @@ GameObject:
   - component: {fileID: 5043424349288669106}
   - component: {fileID: 7576235927694809239}
   - component: {fileID: 2346318439766987271}
+  - component: {fileID: 596231017462924194}
   - component: {fileID: 4953254434463862538}
   - component: {fileID: 8532184381981330973}
+  - component: {fileID: 757906051922719919}
   m_Layer: 7
   m_Name: CaballeroNormal
   m_TagString: Enemy
@@ -181,13 +183,25 @@ MonoBehaviour:
   OnStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  vidaMaxima: 100
-  vidaActual: 0
   distanciaAtaque: 3
-  distanciaDeteccion: 10
-  attackDamage: 10
+  distanciaDeteccion: 20
+  attackDamage: 20
   deambularEstado: {fileID: 11400000, guid: 12978dd09c039ba42a43d88d702c611c, type: 2}
   perseguirEstado: {fileID: 11400000, guid: 18f0b41aba7231e44a4787b60456c609, type: 2}
+  atacarEstado: {fileID: 11400000, guid: b701a6a47d0f04c4a9e6dc5acfecaf51, type: 2}
+--- !u!114 &596231017462924194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8115032155769542572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51e1239563b00ff45a0e0647d4174506, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!114 &4953254434463862538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +230,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: {fileID: 11400000, guid: 18f0b41aba7231e44a4787b60456c609, type: 2}
   inicial: 0
+--- !u!114 &757906051922719919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8115032155769542572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d6f11c47cfdee47ab02cdffe1c0e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nombre: {fileID: 11400000, guid: b701a6a47d0f04c4a9e6dc5acfecaf51, type: 2}
+  inicial: 0
+  damage: 20
+  tipoDeEnemigo: 0
+  distanceToPlayer: 0
 --- !u!1 &8494910183475227562
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,69 +2,34 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Deambular : Estado
+public class DeambularCaballeroNormal : Estado
 {
-    private Enemigo stats;
     private float radio = 30f;
     private Vector3 posicionAleatoria;
-    private Coroutine rutinaActual;
-
     private NavMeshAgent agent;
-    private Enemigo controller;
+    private CaballeroNormalController controller;
     private bool estaDeambulando = false;
 
-    protected override void OnAwake()
+    void Start()
     {
-        agent = GetComponent<NavMeshAgent>(); 
-        if (agent == null)
-        {
-            Debug.LogError("NavMeshAgent no est� asignado en el GameObject.");
-        }
-
-        controller = maquina as Enemigo;
-        stats = GetComponent<Enemigo>();
+        agent = GetComponent<NavMeshAgent>();
+        controller = maquina as CaballeroNormalController;
     }
-
-    protected override void OnEnter()
-    {
-        Debug.Log("OnEnter llamado en Deambular");
-
-        if (agent == null)
-        {
-            Debug.LogError("NavMeshAgent no asignado");
-            return;
-        }
-
-        agent.isStopped = false;
-
-        if (rutinaActual != null) StopCoroutine(rutinaActual);
-        rutinaActual = StartCoroutine(DeambularCoorutina());
-        agent.isStopped = true; 
-
-    }
-
-    protected override void OnExit()
-    {
-        if (rutinaActual != null) StopCoroutine(rutinaActual);
-        rutinaActual = null;
-        agent.ResetPath();
-        estaDeambulando = false;
-    }
-
-    protected override void OnUpdate()
+    
+    void Update()
     {
         if (GameManager.instance != null && GameManager.instance.isPaused) return;
-
         if (controller != null && controller.Player != null)
         {
             float distanciaAJugador = Vector3.Distance(transform.position, controller.Player.position);
-            if (distanciaAJugador <= stats.DetectionDistance)
+            if (distanciaAJugador <= controller.DetectionDistance)
             {
-                if (rutinaActual != null) StopCoroutine(rutinaActual);
-                rutinaActual = null;
+                StopAllCoroutines();
                 estaDeambulando = false;
                 maquina.SetEstado(controller.perseguirEstado.Value);
-
+            } else if(!estaDeambulando){
+                estaDeambulando = true;
+                StartCoroutine(DeambularCoorutina());
             }
         }
     }
@@ -85,8 +50,6 @@ public class Deambular : Estado
     }
     IEnumerator DeambularCoorutina()
     {
-        estaDeambulando = true;
-
         while (true)
         {
             // Espera antes de elegir un punto (mirar)

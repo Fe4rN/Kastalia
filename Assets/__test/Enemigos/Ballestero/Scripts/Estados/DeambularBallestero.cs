@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DeambularEstado : Estado
+public class DeambularEstadoBallestero : Estado
 {
     private BallesteroController stats;
     private float radio = 5f;
