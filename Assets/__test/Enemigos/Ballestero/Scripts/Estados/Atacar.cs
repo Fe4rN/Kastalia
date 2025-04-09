@@ -20,6 +20,7 @@ public class Atacar : Estado
 
     void Update()
     {
+        transform.LookAt(controller.jugador);
         if (controller.jugador)
         {
             if (controller.distanciaAJugador < controller.shootingDistance && controller.distanciaAJugador > controller.safeDistance)
@@ -49,7 +50,7 @@ public class Atacar : Estado
 
     private IEnumerator ShootArrow()
     {
-        Vector3 spawnPos = transform.position + transform.forward * 0.5f + Vector3.up * 1.75f;
+        Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 1.75f;
         Vector3 direction = (controller.jugador.position - transform.position).normalized;
 
         GameObject arrow = Instantiate(controller.arrowPrefab, spawnPos, Quaternion.LookRotation(direction));

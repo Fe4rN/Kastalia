@@ -189,7 +189,7 @@ public class Acciones : MonoBehaviour
             if (enemigo != null && !uniqueEnemies.Contains(enemigo))
             {
                 uniqueEnemies.Add(enemigo);
-                enemigo.takeDamage(damage);
+                //enemigo.takeDamage(damage);
             }
         }
     }
@@ -208,7 +208,7 @@ public class Acciones : MonoBehaviour
             Debug.DrawLine(transform.position, hit.point, Color.red, 1f); // Debugging
             if (enemigo)
             {
-                enemigo.takeDamage(equippedWeapon.damage);
+                //enemigo.takeDamage(equippedWeapon.damage);
             }
 
         }
