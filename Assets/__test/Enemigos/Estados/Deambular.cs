@@ -83,9 +83,6 @@ public class Deambular : Estado
         }
         return transform.position; 
     }
-}
-
-
     IEnumerator DeambularCoorutina()
     {
         estaDeambulando = true;
