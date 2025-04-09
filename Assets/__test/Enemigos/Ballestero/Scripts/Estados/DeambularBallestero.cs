@@ -10,20 +10,17 @@ public class DeambularEstadoBallestero : Estado
     NavMeshAgent agent;
     BallesteroController controller;
     private bool estaDeambulando = false;
-    private bool isWondering = true;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         controller = maquina as BallesteroController;
         stats = GetComponent<BallesteroController>();
-        StartCoroutine(MustveBeenTheWind());
     }
 
     void Update()
     {
-        // if (GameManager.instance.isPaused) return;
-        if(isWondering) return;
+        if (GameManager.instance.isPaused) return;
         if (controller != null && controller.jugador != null)
         {
             Debug.Log("Dentro del Update de DeambularEstado");
@@ -99,23 +96,5 @@ public class DeambularEstadoBallestero : Estado
 
             estaDeambulando = false;
         }
-    }
-
-    IEnumerator MustveBeenTheWind()
-    {
-        isWondering = true;
-        float randomPause = Random.Range(3f, 5f);
-        Vector3 lastKnownPlayerDirection = (controller.jugador.position - transform.position).normalized;
-
-        float timer = 0f;
-        while (timer < randomPause)
-        {
-            Vector3 lookPoint = transform.position + lastKnownPlayerDirection;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookPoint - transform.position), Time.deltaTime * 2f);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        isWondering = false;
     }
 }
