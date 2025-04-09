@@ -3,6 +3,7 @@ using UnityEngine;
 public class BallesteroController : Maquina
 {
     //Atributos relacionados al enemigo
+    public float attackDamage = 20f;
     public float shootingDistance = 15f;
     public float safeDistance = 10f;
     public float fireCooldown = 1f;

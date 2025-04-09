@@ -54,6 +54,7 @@ public class AtacarBallestero : Estado
         Vector3 direction = (controller.jugador.position - transform.position).normalized;
 
         GameObject arrow = Instantiate(controller.arrowPrefab, spawnPos, Quaternion.LookRotation(direction));
+        arrow.GetComponent<Arrow>().setDamage(controller.attackDamage);
         Rigidbody rb = arrow.GetComponent<Rigidbody>();
         rb.AddForce(direction * arrowForce, ForceMode.Impulse);
 

@@ -69,6 +69,7 @@ public class Arquero : MonoBehaviour
         }
 
         GameObject flecha = Instantiate(prefabFlecha, spawnPos, baseRotation);
+        flecha.GetComponent<Arrow>().setDamage(playerInventory.weapon.damage);
         Rigidbody rb = flecha.GetComponent<Rigidbody>();
         rb.AddForce(baseRotation * Vector3.forward * fuerza, ForceMode.Impulse);
     }
