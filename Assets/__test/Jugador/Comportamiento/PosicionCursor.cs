@@ -14,7 +14,7 @@ public class PosicionCursor : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No se encontró un objeto con la etiqueta 'Player'.");
+            Debug.LogWarning("No se encontrï¿½ un objeto con la etiqueta 'Player'.");
         }
 
         layerMask = ~LayerMask.GetMask("Player", "Paredes", "Enemies");

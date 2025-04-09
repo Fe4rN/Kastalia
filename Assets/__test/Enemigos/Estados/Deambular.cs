@@ -18,7 +18,7 @@ public class Deambular : Estado
         agent = GetComponent<NavMeshAgent>(); 
         if (agent == null)
         {
-            Debug.LogError("NavMeshAgent no está asignado en el GameObject.");
+            Debug.LogError("NavMeshAgent no estï¿½ asignado en el GameObject.");
         }
 
         controller = maquina as Enemigo;
@@ -83,6 +83,8 @@ public class Deambular : Estado
         }
         return transform.position; 
     }
+}
+
 
     IEnumerator DeambularCoorutina()
     {

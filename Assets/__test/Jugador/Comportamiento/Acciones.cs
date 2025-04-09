@@ -184,15 +184,15 @@ public class Acciones : MonoBehaviour
     private void comprobarEnemigosEnArea(Vector3 attackPosition, float attackRadius, float damage)
     {
         Collider[] colliders = Physics.OverlapSphere(attackPosition, attackrange);
-        HashSet<Enemigo> uniqueEnemies = new HashSet<Enemigo>();
+        HashSet<BallesteroController> uniqueEnemies = new HashSet<BallesteroController>();
 
         foreach (Collider c in colliders)
         {
-            Enemigo enemigo = c.GetComponentInParent<Enemigo>();
+            BallesteroController enemigo = c.GetComponentInParent<BallesteroController>();
             if (enemigo != null && !uniqueEnemies.Contains(enemigo))
             {
                 uniqueEnemies.Add(enemigo);
-                enemigo.takeDamage(damage);
+                //enemigo.takeDamage(damage);
             }
         }
     }
@@ -207,11 +207,11 @@ public class Acciones : MonoBehaviour
 
         if (Physics.SphereCast(rayo, arrowRadius, out hit, bowReach))
         {
-            Enemigo enemigo = hit.collider.GetComponentInParent<Enemigo>();
+            BallesteroController enemigo = hit.collider.GetComponentInParent<BallesteroController>();
             Debug.DrawLine(transform.position, hit.point, Color.red, 1f); // Debugging
             if (enemigo)
             {
-                enemigo.takeDamage(equippedWeapon.damage);
+                //enemigo.takeDamage(equippedWeapon.damage);
             }
 
         }
