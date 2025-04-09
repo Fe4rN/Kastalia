@@ -1,42 +1,86 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class Perseguir : Estado
 {
     NavMeshAgent agent;
     Transform player;
     Enemigo controller;
+    bool esperando = false;
 
-    void Start()
+    protected override void OnAwake()
     {
         agent = GetComponent<NavMeshAgent>();
-        controller = maquina as Enemigo;
-        player = controller.Player;
+        controller = GetComponent<Enemigo>();
     }
 
-    void Update()
+    protected override void OnEnter()
     {
-        if (agent == null) return;
+        if (controller != null)
+            player = controller.Player;
+        esperando = false;
 
-        if (player == null)
+        if (agent != null)
+            agent.isStopped = false;
+    }
+
+    protected override void OnExit()
+    {
+        StopAllCoroutines();
+        agent.ResetPath();
+        esperando = false;
+    }
+
+    protected override void OnUpdate()
+    {
+        if (GameManager.instance != null && GameManager.instance.isPaused) return;
+        if (controller == null || player == null) return;
+
+        float distancia = Vector3.Distance(transform.position, player.position);
+        Debug.Log($"[Perseguir] Distancia al jugador: {distancia}");
+
+        if (distancia <= controller.AttackDistance)
         {
-            controller.SetEstado(controller.deambularEstado.Value);
+            Debug.Log("[Perseguir] Cambiando a estado atacar");
+            maquina.SetEstado(controller.atacarEstado.Value);
             return;
         }
 
-        float distanciaAJugador = Vector3.Distance(agent.transform.position, player.position);
-        if (distanciaAJugador <= controller.AttackDistance)
+        if (distancia <= controller.DetectionDistance)
         {
-            player.GetComponent<Acciones>().takeDamage(controller.attackDamage);
-        }
-        if (distanciaAJugador <= controller.DetectionDistance)
-        {
+
+            Debug.Log("[Perseguir] Persiguiendo al jugador");
             agent.SetDestination(player.position);
-            agent.transform.LookAt(new Vector3(player.position.x, agent.transform.position.y, player.position.z));
+
+            Vector3 direccion = player.position - transform.position;
+            direccion.y = 0;
+            if (direccion != Vector3.zero)
+                transform.rotation = Quaternion.LookRotation(direccion);
+
+
         }
-        else
+        else if (!esperando)
         {
-            controller.SetEstado(controller.deambularEstado.Value);
+            Debug.Log("[Perseguir] Jugador fuera de rango. Esperando...");
+            StartCoroutine(EsperarYVolverADeambular());
         }
+    }
+
+    IEnumerator EsperarYVolverADeambular()
+    {
+        esperando = true;
+        agent.ResetPath();
+
+        // Se queda mirando hacia la última posición del jugador
+        if (player != null)
+        {
+            Vector3 direccion = new Vector3(player.position.x, transform.position.y, player.position.z);
+            transform.LookAt(direccion);
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        controller.SetEstado(controller.deambularEstado.Value);
     }
 }

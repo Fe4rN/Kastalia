@@ -46,20 +46,23 @@ public class Acciones : MonoBehaviour
     private void Start()
     {
         controller = GetComponent<CharacterController>();
+      
         vidaActual = vidaMaxima;
-        if (GameManager.instance.currentCharacter == "Lyx")
+        /*if (GameManager.instance.currentCharacter == "Lyx")
         {
             allowedWeaponType = WeaponType.Espada;
         }
         else if (GameManager.instance.currentCharacter == "Dreven")
         {
             allowedWeaponType = WeaponType.Arco;
-        }
+        //}*/
     }
 
     void Update()
     {
-        if (GameManager.instance.isPaused) return;
+       
+
+      //  if (GameManager.instance.isPaused) return;
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintValue : 1f;
         controller.Move(move * Time.deltaTime * playerSpeed * speedMultiplier);

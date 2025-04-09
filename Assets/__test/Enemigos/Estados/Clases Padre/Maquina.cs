@@ -4,11 +4,9 @@ using UnityEngine.Events;
 [DefaultExecutionOrder(-100)]
 public abstract class Maquina : MonoBehaviour
 {
-
     public UnityEvent<string> OnStateChanged;
 
     Estado[] estados;
-
     Estado _estado;
 
     public Estado Estado
@@ -17,12 +15,19 @@ public abstract class Maquina : MonoBehaviour
         set
         {
             if (_estado == value) return;
+
+            if (_estado != null)
+                _estado.InvocarOnExit(); // Llamamos a InvocarOnExit en el estado anterior
+
             _estado = value;
+
             foreach (Estado estado in estados)
-            {
                 estado.enabled = (estado == _estado);
-            }
-            OnStateChanged.Invoke(_estado.Nombre);
+
+            if (_estado != null)
+                _estado.InvocarOnEnter(); // Llamamos a InvocarOnEnter en el nuevo estado
+
+            OnStateChanged?.Invoke(_estado.Nombre);
         }
     }
 
@@ -31,13 +36,30 @@ public abstract class Maquina : MonoBehaviour
         estados = GetComponents<Estado>();
         foreach (Estado estado in estados)
         {
-            if (estado.Inicial) Estado = estado;
+            if (estado.Inicial)
+            {
+                Estado = estado;
+          
+            }
         }
-        if (Estado == null) Estado = estados[0];
+
+        if (Estado == null && estados.Length > 0)
+        {
+            Estado = estados[0];
+        }
+
         OnAwake();
     }
 
     protected virtual void OnAwake() { }
+
+    void Update()
+    {
+        if (_estado != null)
+        {
+            _estado.InvocarOnUpdate(); // Llamamos a InvocarOnUpdate del estado actual
+        }
+    }
 
     public void SetEstado(string nombre)
     {
@@ -49,6 +71,7 @@ public abstract class Maquina : MonoBehaviour
                 return;
             }
         }
+
         Debug.LogError($"No hay un estado {nombre}");
     }
 }

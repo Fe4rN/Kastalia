@@ -5,72 +5,105 @@ using UnityEngine.AI;
 public class Deambular : Estado
 {
     private Enemigo stats;
-    private float radio = 5f;
+    private float radio = 30f;
     private Vector3 posicionAleatoria;
-    NavMeshAgent agent;
-    Enemigo controller;
+    private Coroutine rutinaActual;
+
+    private NavMeshAgent agent;
+    private Enemigo controller;
     private bool estaDeambulando = false;
 
-    private void Start()
+    protected override void OnAwake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>(); 
+        if (agent == null)
+        {
+            Debug.LogError("NavMeshAgent no está asignado en el GameObject.");
+        }
+
         controller = maquina as Enemigo;
         stats = GetComponent<Enemigo>();
     }
 
-    void Update()
+    protected override void OnEnter()
     {
-        if (GameManager.instance.isPaused) return;
+        Debug.Log("OnEnter llamado en Deambular");
+
+        if (agent == null)
+        {
+            Debug.LogError("NavMeshAgent no asignado");
+            return;
+        }
+
+        agent.isStopped = false;
+
+        if (rutinaActual != null) StopCoroutine(rutinaActual);
+        rutinaActual = StartCoroutine(DeambularCoorutina());
+        agent.isStopped = true; 
+
+    }
+
+    protected override void OnExit()
+    {
+        if (rutinaActual != null) StopCoroutine(rutinaActual);
+        rutinaActual = null;
+        agent.ResetPath();
+        estaDeambulando = false;
+    }
+
+    protected override void OnUpdate()
+    {
+        if (GameManager.instance != null && GameManager.instance.isPaused) return;
 
         if (controller != null && controller.Player != null)
         {
-            float distanciaAJugador = Vector3.Distance(agent.transform.position, controller.Player.position);
-            if (distanciaAJugador <= stats.DetectionDistance && estaDeambulando)
+            float distanciaAJugador = Vector3.Distance(transform.position, controller.Player.position);
+            if (distanciaAJugador <= stats.DetectionDistance)
             {
-                StopCoroutine(DeambularCoorutina());
+                if (rutinaActual != null) StopCoroutine(rutinaActual);
+                rutinaActual = null;
                 estaDeambulando = false;
-                controller.SetEstado(controller.perseguirEstado.Value);
-            }
-            else
-            {
-                if (!estaDeambulando)
-                {
-                    StartCoroutine(DeambularCoorutina());
-                }
+                maquina.SetEstado(controller.perseguirEstado.Value);
+
             }
         }
     }
 
     private Vector3 ElegirPosicionAleatoria()
     {
-        Vector2 direccionAleatoria = Random.insideUnitCircle * radio;
-        return agent.transform.position + new Vector3(direccionAleatoria.x, 0, direccionAleatoria.y);
+        for (int i = 0; i < 10; i++)
+        {
+            Vector2 direccion2D = Random.insideUnitCircle * radio;
+            Vector3 punto = transform.position + new Vector3(direccion2D.x, 0, direccion2D.y);
+
+            if (NavMesh.SamplePosition(punto, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+        }
+        return transform.position; 
     }
 
     IEnumerator DeambularCoorutina()
     {
-        if (agent == null) yield break;
-        if (!estaDeambulando)
+        estaDeambulando = true;
+
+        while (true)
         {
-            estaDeambulando = true;
+            // Espera antes de elegir un punto (mirar)
+            yield return new WaitForSeconds(Random.Range(2f, 5f));
+
             posicionAleatoria = ElegirPosicionAleatoria();
+            agent.SetDestination(posicionAleatoria);
+            transform.LookAt(posicionAleatoria);
 
-            while (posicionAleatoria != null && Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f)
+            while (agent.pathPending || agent.remainingDistance > 0.5f)
             {
-
-                agent.SetDestination(posicionAleatoria);
-                agent.transform.LookAt(posicionAleatoria);
-
-                while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
-                {
-                    yield return null;
-                }
-
-                float tiempoEspera = Random.Range(1f, 4f);
-                yield return new WaitForSeconds(tiempoEspera);
+                yield return null;
             }
 
-            estaDeambulando = false;
+          
+            yield return new WaitForSeconds(Random.Range(2f, 5f));
         }
     }
 }

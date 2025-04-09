@@ -7,12 +7,22 @@ public class PosicionCursor : MonoBehaviour
     private LayerMask layerMask;
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        layerMask = ~LayerMask.GetMask("Player", "Paredes, Enemies");
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+        }
+        else
+        {
+            Debug.LogWarning("No se encontró un objeto con la etiqueta 'Player'.");
+        }
+
+        layerMask = ~LayerMask.GetMask("Player", "Paredes", "Enemies");
     }
+
     void Update()
     {
-        if(GameManager.instance.isPaused) return;
+        //if(GameManager.instance.isPaused) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -23,5 +33,7 @@ public class PosicionCursor : MonoBehaviour
             lookPoint = Yremoved;
             player.LookAt(Yremoved);
         }
+        if (player == null) return;
+
     }
 }
