@@ -118,8 +118,14 @@ GameObject:
   m_Component:
   - component: {fileID: 3521451124259816824}
   - component: {fileID: 456391466520368520}
-  - component: {fileID: 7946689179344897311}
-  - component: {fileID: 2706057142819754920}
+  - component: {fileID: 1982072658132262059}
+  - component: {fileID: 3248331834327170092}
+  - component: {fileID: 5396867147106388286}
+  - component: {fileID: 2329343856140047616}
+  - component: {fileID: 6416512566687185867}
+  - component: {fileID: 4590723734969508553}
+  - component: {fileID: 2593802296230818012}
+  - component: {fileID: 7460853828753018524}
   m_Layer: 6
   m_Name: Lyx
   m_TagString: Player
@@ -169,7 +175,117 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &7946689179344897311
+--- !u!114 &1982072658132262059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33286ec230d730a4fbbff0632a600471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDashing: 0
+  playerSpeed: 2
+  sprintValue: 2
+  dashSpeed: 20
+  dashTime: 0.1
+  isAttacking: 0
+  isCastingAbility: 0
+--- !u!114 &3248331834327170092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ad8db08504ced4e91fb01190706079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackrange: 2
+  chargeRequiredTime: 2
+  chargeMultiplier: 1.5
+  chargeTime: 0
+  isChargingSword: 0
+  isFullyCharged: 0
+  isRightMouseDown: 0
+  empujeFuerza: 5
+  attackCooldown: 0.5
+--- !u!114 &5396867147106388286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c45f31fd62efb247befd9415572b728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidaMaxima: 100
+  vidaActual: 0
+  defensiveAbilityHits: 0
+--- !u!114 &2329343856140047616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67d662c6c11b9e043af53901cb55e734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedWeaponType: 0
+  weapon: {fileID: 0}
+  selectedItemType: 0
+  selectedAbilityType: 0
+--- !u!114 &6416512566687185867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6a456d34887e5489923516c9c63988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offensiveAbilityCooldown: 0
+--- !u!114 &4590723734969508553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37ec869d62a5064a96eec6c35002f3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defensiveAbilityCooldown: 0
+--- !u!114 &2593802296230818012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fabed66b44a6934a876c1c15b464dd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healingAbilityCooldown: 0
+--- !u!114 &7460853828753018524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,24 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376fe5571fdaa7b44b0ed33f34ef7e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2706057142819754920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8343663245281204225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f3e579d41d93684588738556fab1acf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vidaMaxima: 100
-  playerSpeed: 2
-  sprintValue: 2
-  dashSpeed: 20
-  dashTime: 0.1
-  attackrange: 1.5
+  lookPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &8494093150985759838
 GameObject:
   m_ObjectHideFlags: 0
