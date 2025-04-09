@@ -7,7 +7,7 @@ public class OffensiveAbility : MonoBehaviour
     private PlayerInventory playerInventory;
     private PlayerController playerController;
     private PosicionCursor posicionCursor;
-    private int offensiveAbilityCooldown = 0;
+    public int offensiveAbilityCooldown = 0;
 
     void Start(){
         playerInventory = GetComponent<PlayerInventory>();

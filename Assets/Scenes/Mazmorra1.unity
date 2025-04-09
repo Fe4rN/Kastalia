@@ -819,7 +819,6 @@ MonoBehaviour:
   Lyx: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
   Dreven: {fileID: 3699512526310861274, guid: d636ff1da9651ce42b3f1b799bb45e6f, type: 3}
   isPaused: 0
-  LoadMode: 
 --- !u!4 &524873435
 Transform:
   m_ObjectHideFlags: 0
@@ -1365,16 +1364,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e4e69e8deec3b4a9de6df314ce73f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthText: {fileID: 1044082614}
-  weaponButtonText: {fileID: 409202218}
-  weaponButton: {fileID: 1723835287}
-  offensiveAbilityButtonText: {fileID: 897106782}
-  offensiveAbilityButton: {fileID: 1670821097}
-  defensiveAbilityButtonText: {fileID: 873062647}
-  defensiveAbilityButton: {fileID: 2122318943}
-  healingAbilityButtonText: {fileID: 988687276}
-  healingAbilityButton: {fileID: 1127391583}
-  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!114 &985789727
 MonoBehaviour:
   m_ObjectHideFlags: 0

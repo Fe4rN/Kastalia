@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public string currentlySelected = "None";
     public WeaponType allowedWeaponType;
     public Weapon weapon;
+    public ItemType selectedItemType;
+    public AbilityType selectedAbilityType;
     public Dictionary<AbilityType, Ability> equippedAbilities = new Dictionary<AbilityType, Ability>();
 
 

@@ -27,7 +27,7 @@ public class Perseguir : Estado
         float distanciaAJugador = Vector3.Distance(agent.transform.position, player.position);
         if (distanciaAJugador <= controller.AttackDistance)
         {
-            player.GetComponent<Acciones>().takeDamage(controller.attackDamage);
+            player.GetComponent<PlayerHealth>().takeDamage(controller.attackDamage);
         }
         if (distanciaAJugador <= controller.DetectionDistance)
         {

@@ -54,10 +54,12 @@ public class Enemigo : Maquina
     }
     private void Die(){
         //Para futuras implementaciones
-        Acciones statsJugador = jugador.GetComponent<Acciones>();
-        if(statsJugador.offensiveAbilityCooldown > 0) statsJugador.offensiveAbilityCooldown -= 1;
-        if(statsJugador.defensiveAbilityCooldown > 0) statsJugador.defensiveAbilityCooldown -= 1;
-        if(statsJugador.healingAbilityCooldown > 0) statsJugador.healingAbilityCooldown -= 1;
+        OffensiveAbility offensiveAbilityController = jugador.GetComponent<OffensiveAbility>();
+        DefensiveAbility defensiveAbilityController = jugador.GetComponent<DefensiveAbility>();
+        HealingAbility healingAbilityController = jugador.GetComponent<HealingAbility>();
+        if(offensiveAbilityController.offensiveAbilityCooldown > 0) offensiveAbilityController.offensiveAbilityCooldown -= 1;
+        if(defensiveAbilityController.defensiveAbilityCooldown > 0) defensiveAbilityController.defensiveAbilityCooldown -= 1;
+        if(healingAbilityController.healingAbilityCooldown > 0) healingAbilityController.healingAbilityCooldown -= 1;
         StopAllCoroutines();
         Destroy(gameObject);
     }

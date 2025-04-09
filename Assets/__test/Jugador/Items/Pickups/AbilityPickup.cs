@@ -6,11 +6,11 @@ public class AbilityPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Acciones jugador = other.GetComponent<Acciones>();
+        PlayerInventory inventario = other.GetComponent<PlayerInventory>();
 
-        if(jugador){
-            jugador.EquipAbility(abilityData);
-            if (jugador.equippedAbilities.ContainsKey(abilityData.abilityType)){
+        if(inventario){
+            inventario.EquipAbility(abilityData);
+            if (inventario.equippedAbilities.ContainsKey(abilityData.abilityType)){
                 Destroy(gameObject);
             }
         }

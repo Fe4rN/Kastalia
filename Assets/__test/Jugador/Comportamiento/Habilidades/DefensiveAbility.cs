@@ -3,10 +3,17 @@ using UnityEngine;
 
 public class DefensiveAbility : MonoBehaviour
 {
-    public PlayerController playerController;
-    public PlayerInventory playerInventory;
-    public PlayerHealth playerHealth;
+    private PlayerController playerController;
+    private PlayerInventory playerInventory;
+    private PlayerHealth playerHealth;
     public int defensiveAbilityCooldown = 0;
+
+
+    void Start(){
+        playerInventory = GetComponent<PlayerInventory>();
+        playerController = GetComponent<PlayerController>();
+        playerHealth = GetComponent<PlayerHealth>();
+    }
 
     public void enableShield()
     {
@@ -22,7 +29,9 @@ public class DefensiveAbility : MonoBehaviour
         defensiveAbilityCooldown = defensiveAbility.killCountCooldown;
         playerController.isCastingAbility = false;
         StartCoroutine(shieldDuration());
-        //if (equippedWeapon) currentlySelected = equippedWeapon.weaponType.ToString();
+        if (playerInventory.selectedAbilityType == AbilityType.Ofensiva) {
+            playerInventory.selectedItemType = ItemType.Arma;
+        }
     }
 
     public IEnumerator shieldDuration()

@@ -1,14 +1,20 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.Interactions;
 
 public class HealingAbility : MonoBehaviour
 {
     PlayerController playerController;
     PlayerInventory playerInventory;
     PlayerHealth playerHealth;
-    private int healingAbilityCooldown = 0;
+    public int healingAbilityCooldown = 0;
 
+
+    void Start()
+    {
+        playerInventory = GetComponent<PlayerInventory>();
+        playerController = GetComponent<PlayerController>();
+        playerHealth = GetComponent<PlayerHealth>();
+    }
 
     public IEnumerator healingAbility()
     {
