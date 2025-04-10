@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BallesteroController : Maquina
 {
+    public EnemyType tipoEnemigo = EnemyType.Ballestero;
     //Atributos relacionados al enemigo
     public float attackDamage = 20f;
     public float shootingDistance = 15f;
