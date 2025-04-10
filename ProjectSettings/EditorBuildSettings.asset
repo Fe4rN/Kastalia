@@ -18,11 +18,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Opciones.unity
     guid: c62ee3cb3c12fab4ba7ef8e6e7c8e67e
   - enabled: 1
-    path: Assets/Scenes/BSPDemo.unity
-    guid: 560de36eff577a64fa41495b265ade5a
-  - enabled: 1
     path: Assets/Scenes/CharacterSelection.unity
     guid: 98e539cd79890cf45a02154b282d437d
+  - enabled: 1
+    path: Assets/__test/Minimapa/minimap.unity
+    guid: 68029e5dbb0ba78409e0304c6a25b137
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

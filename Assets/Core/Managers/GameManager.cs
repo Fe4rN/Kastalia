@@ -1,4 +1,4 @@
-using UnityEditor;
+ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
             SceneManager.UnloadSceneAsync("MainMenu");
             isFromMainMenu = false;
         }
-        SceneManager.LoadSceneAsync("Mazmorra1");
+        SceneManager.LoadSceneAsync("minimap");
         SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
     }
 
