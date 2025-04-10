@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
             SceneManager.UnloadSceneAsync("MainMenu");
             isFromMainMenu = false;
         }
-        SceneManager.LoadSceneAsync("minimap");
+        SceneManager.LoadSceneAsync("Mazmorra1");
         SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
     }
 
