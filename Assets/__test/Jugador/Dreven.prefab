@@ -189,7 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDashing: 0
   gravityValue: -9.81
-  playerSpeed: 2
+  playerSpeed: 20
   sprintValue: 2
   dashSpeed: 20
   dashTime: 0.1
@@ -208,9 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabFlecha: {fileID: 1082511336032855041, guid: bd5ab033dd4978c4886ccba1cce15e50, type: 3}
-  puntoDisparo: {fileID: 0}
   fuerza: 30
-  "da\xF1o": 10
   delayDisparo: 0.1
   delayRafaga: 0.05
 --- !u!114 &5396867147106388286
