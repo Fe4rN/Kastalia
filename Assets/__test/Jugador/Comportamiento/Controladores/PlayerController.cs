@@ -25,6 +25,8 @@ public abstract class PlayerController : MonoBehaviour
     public bool isAttacking = false;
     public bool isCastingAbility = false;
 
+    [SerializeField] Transform mano;
+
     protected virtual void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -55,6 +57,7 @@ public abstract class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha1) && playerInventory.weapon != null)
             {
                 playerInventory.selectedItemType = ItemType.Arma;
+                ShowWeapon(true);
             }
             if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
             {
@@ -69,6 +72,7 @@ public abstract class PlayerController : MonoBehaviour
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Defensiva;
                     defensiveAbilityController.enableShield();
+                    ShowWeapon(true);
                 }
             }
             if (Input.GetKeyDown(KeyCode.R) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
@@ -77,6 +81,7 @@ public abstract class PlayerController : MonoBehaviour
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Curativa;
                     StartCoroutine(healingAbilityController.healingAbility());
+                    ShowWeapon(true);
                 }
             }
             
@@ -128,5 +133,9 @@ public abstract class PlayerController : MonoBehaviour
                 enemigo.TakeDamage(damage);
             }
         }
+    }
+
+    public void ShowWeapon(bool value){
+        mano.GetChild(0).gameObject.SetActive(value);
     }
 }

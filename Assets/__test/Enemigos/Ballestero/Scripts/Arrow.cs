@@ -18,22 +18,19 @@ public class Arrow : MonoBehaviour
     {
         if (hasHit) return;
         hasHit = true;
-        Debug.Log("Arrow hit: " + other.name);
         PlayerHealth PlayerHealth = other.gameObject.GetComponentInParent<PlayerHealth>();
         EnemyHealth EnemyHealth = other.gameObject.GetComponentInParent<EnemyHealth>();
         if (PlayerHealth)
         {
-            Debug.Log("PlayerHealth component found, applying damage.");
             PlayerHealth.takeDamage(damage);
         }
         else if (EnemyHealth)
         {
-            Debug.Log("EnemyHealth component found, applying damage.");
             EnemyHealth.TakeDamage(Mathf.CeilToInt(damage));
         } 
         else
         {
-            Debug.Log("No health component found, ignoring hit.");
+            //Implementacion futura para objetos
         }
         StickToTarget(other.transform);
     }
@@ -44,7 +41,6 @@ public class Arrow : MonoBehaviour
 
     private void StickToTarget(Transform target)
     {
-        Debug.Log("Sticking to target: " + target.name);
         rb.isKinematic = true;
         GetComponent<Collider>().enabled = false;
 

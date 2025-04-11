@@ -37,6 +37,6 @@ public class OffensiveAbility : MonoBehaviour
 
         playerController.comprobarEnemigosEnArea(targetPosition, offensiveAbility.areaOfEffect, offensiveAbility.damage);
         offensiveAbilityCooldown = offensiveAbility.killCountCooldown;
-        // if (playerInventory.equippedWeapon) currentlySelected = equippedWeapon.weaponType.ToString();
+        playerController.ShowWeapon(true);
     }
 }

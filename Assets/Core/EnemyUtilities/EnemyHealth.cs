@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100;
+    public int maxHealth = 100;
     private int currentHealth;
     public GameObject jugador;
 
@@ -30,6 +30,10 @@ public class EnemyHealth : MonoBehaviour
             currentHealth = 0;
             Die();
         }
+    }
+    public void SetHealth(int value){
+        if(value <= 0) return;
+        maxHealth = value; currentHealth = value;
     }
 
     IEnumerator FlashOnHit()

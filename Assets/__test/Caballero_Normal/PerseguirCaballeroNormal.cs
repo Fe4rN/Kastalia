@@ -25,15 +25,12 @@ public class Perseguir : Estado
 
         if (distancia <= controller.AttackDistance)
         {
-            Debug.Log("[Perseguir] Cambiando a estado atacar");
             controller.SetEstado(controller.atacarEstado.Value);
             return;
         }
 
         if (distancia <= controller.DetectionDistance)
         {
-
-            Debug.Log("[Perseguir] Persiguiendo al jugador");
             agent.SetDestination(controller.Player.position);
 
             Vector3 direccion = controller.Player.position - transform.position;
@@ -45,7 +42,6 @@ public class Perseguir : Estado
         }
         else if (!esperando)
         {
-            Debug.Log("[Perseguir] Jugador fuera de rango. Esperando...");
             StartCoroutine(EsperarYVolverADeambular());
         }
     }
