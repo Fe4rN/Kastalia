@@ -1,8 +1,8 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
-public class DeambularEstadoBallestero : Estado
+public class DeambularBombardero : Estado
 {
     private float radio = 5f;
     private Vector3 posicionAleatoria;

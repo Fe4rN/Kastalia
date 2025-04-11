@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57832618425132a499684bff79ebc642, type: 3}
-  m_Name: AtacarBombardero
+  m_Name: MantenerDistanciaBombardero
   m_EditorClassIdentifier: 
-  m_Value: AtacarBombardero
+  m_Value: MantenerDistanciaBombardero

@@ -1,16 +1,16 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MantenerDistanciaBallestero : Estado
+public class MantenerDistanciaBombardero : Estado
 {
     NavMeshAgent agent;
-    Transform player;
-    BallesteroController controller;
+    BombarderoController controller;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        controller = maquina as BallesteroController;
-        player = controller.jugador;
+        controller = maquina as BombarderoController;
     }
 
     void Update()
@@ -24,10 +24,12 @@ public class MantenerDistanciaBallestero : Estado
 
             if (distancia < controller.safeDistance)
             {
+                agent.ResetPath();
                 transform.LookAt(controller.jugador);
                 if (!controller.isFiring)
                 {
-                    StartCoroutine(controller.ShootArrow());
+                    controller.isFiring = true;
+                    StartCoroutine(controller.ShootBomba());
                 }
                 Vector3 fleePosition = transform.position - directionToPlayer * 2f;
                 NavMeshHit hit;
@@ -48,6 +50,4 @@ public class MantenerDistanciaBallestero : Estado
             }
         }
     }
-
 }
-

@@ -4,133 +4,107 @@ using System.Collections;
 public class Bomba : MonoBehaviour
 {
     [Header("Basic Settings")]
-    [SerializeField] private float TTL = 3f;
     [SerializeField] private float pushForce = 2f;
     [SerializeField] private float gravityScale = 2f;
     [SerializeField] private float bounceFactor = 0.5f; // How much it bounces off player
-    
+
     [Header("Damage Settings")]
     [SerializeField] private float directHitDamage = 5f; // Reduced from 10f
     [SerializeField] private float explosionDamage = 30f; // Increased from 20f
-    
+
     [Header("Proximity Explosion")]
-    [SerializeField] private bool enableProximityDamage = true;
     [SerializeField] private float proximityRadius = 3f;
-    [SerializeField] private float explosionDelay = 1f;
-    [SerializeField] private GameObject explosionEffect;
-    
+    [SerializeField] private float explosionDelay = 5f;
+
+    [SerializeField] private GameObject explosionRadiusIndicatorPrefab;
+    [SerializeField] private GameObject dangerRadiusIndicatorPrefab;
+
     private Rigidbody rb;
     private bool hasHit = false;
-    private Acciones playerActions;
-    private Vector3 hitVelocity;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        playerActions = FindObjectOfType<Acciones>();
-        StartCoroutine(DestroyArrowAfterTime(TTL));
     }
 
-    void FixedUpdate()
+
+    void Update()
     {
-        // Apply additional gravity
-        rb.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (hasHit) return;
-        
         hasHit = true;
-        hitVelocity = rb.linearVelocity;
+        rb.linearVelocity = Vector3.zero;
+        StartCoroutine(startTicking(explosionDelay));
 
-        // Handle player hit
-        Acciones hitActions = other.GetComponentInParent<Acciones>();
-        if (hitActions != null)
+        PlayerHealth playerHealth = other.gameObject.GetComponentInParent<PlayerHealth>();
+        EnemyHealth enemyHealth = other.gameObject.GetComponentInParent<EnemyHealth>();
+        if (playerHealth)
         {
-            HandlePlayerHit(other.transform, hitActions);
+            playerHealth.takeDamage(directHitDamage);
         }
-        else // Handle environment hit
+        else if (enemyHealth)
         {
-            HandleEnvironmentHit();
-        }
-    }
-
-    private void HandlePlayerHit(Transform playerTransform, Acciones actions)
-    {
-        // Apply damage and push
-        actions.takeDamage(directHitDamage);
-        PushTarget(playerTransform);
-        
-        // Bounce off player
-        Vector3 bounceDirection = Vector3.Reflect(hitVelocity.normalized, playerTransform.forward);
-        rb.linearVelocity = bounceDirection * hitVelocity.magnitude * bounceFactor;
-        
-        // Enable explosion countdown
-        if (enableProximityDamage)
-        {
-            StartCoroutine(ExplosionCountdown());
+            enemyHealth.TakeDamage(Mathf.CeilToInt(directHitDamage));
         }
     }
 
-    private void HandleEnvironmentHit()
+    private IEnumerator startTicking(float time)
     {
-        // Enable explosion countdown when hitting environment
-        if (enableProximityDamage)
+        //ShowDangerArea(time);
+        yield return new WaitForSeconds(time);
+        DealExplosionDamage(transform.position);
+        ShowExplosionRadius();
+    }
+
+    // Código que muestra el área de peligro, no funciona como se esperaba
+
+    // private void ShowDangerArea(float time){
+    //     if (dangerRadiusIndicatorPrefab)
+    //     {
+    //         GameObject effect = Instantiate(
+    //             dangerRadiusIndicatorPrefab,
+    //             transform.position,
+    //             Quaternion.identity
+    //         );
+    //         effect.transform.localScale = new Vector3(proximityRadius, .01f, proximityRadius);
+    //         Destroy(effect, time);
+    //     }
+    // }
+
+    private void ShowExplosionRadius()
+    {
+        if (explosionRadiusIndicatorPrefab)
         {
-            StartCoroutine(ExplosionCountdown());
-        }
-        else
-        {
-            Destroy(gameObject);
+            GameObject indicator = Instantiate(
+                explosionRadiusIndicatorPrefab,
+                transform.position,
+                Quaternion.identity
+            );
+            float scale = proximityRadius * 2f;
+            indicator.transform.localScale = new Vector3(scale, scale, scale);
+            DestroyImmediate(gameObject);
+
+            Destroy(indicator, .5f);
         }
     }
 
-    private IEnumerator ExplosionCountdown()
+    private void DealExplosionDamage(Vector3 bombPosition)
     {
-        yield return new WaitForSeconds(explosionDelay);
+        Collider[] colliders = Physics.OverlapSphere(bombPosition, proximityRadius);
 
-        // Check for player in explosion radius
-        if (playerActions != null)
+        foreach (Collider collider in colliders)
         {
-            float distance = Vector3.Distance(transform.position, playerActions.transform.position);
-            if (distance <= proximityRadius)
+            if (Physics.Linecast(bombPosition, collider.transform.position, out RaycastHit hit))
             {
-                playerActions.takeDamage(explosionDamage);
-                PushTarget(playerActions.transform);
-                
-                if (explosionEffect != null)
+                if (hit.collider == collider)
                 {
-                    Instantiate(explosionEffect, transform.position, Quaternion.identity);
+                    collider.GetComponentInParent<PlayerHealth>()?.takeDamage(explosionDamage);
+                    collider.GetComponentInParent<EnemyHealth>()?.TakeDamage(Mathf.CeilToInt(explosionDamage));
                 }
             }
-        }
-        
-        Destroy(gameObject);
-    }
-
-    private void PushTarget(Transform target)
-    {
-        Rigidbody targetRb = target.GetComponentInParent<Rigidbody>();
-        if (targetRb != null)
-        {
-            Vector3 pushDirection = (target.position - transform.position).normalized;
-            targetRb.AddForce(pushDirection * pushForce, ForceMode.Impulse);
-        }
-    }
-
-    private IEnumerator DestroyArrowAfterTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-        Destroy(gameObject);
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (enableProximityDamage)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, proximityRadius);
         }
     }
 }

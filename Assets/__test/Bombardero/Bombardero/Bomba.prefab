@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5029216024713975265}
   - component: {fileID: -2412997061119522191}
-  - component: {fileID: -7135159156874633150}
+  - component: {fileID: 83671725333258619}
   - component: {fileID: 622832930204987678}
   m_Layer: 0
   m_Name: Bomba
@@ -62,8 +62,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &-7135159156874633150
-CapsuleCollider:
+--- !u!135 &83671725333258619
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -80,10 +80,8 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
+  serializedVersion: 3
+  m_Radius: 0.28
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &622832930204987678
 MonoBehaviour:
@@ -97,16 +95,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa8bdf30bb4f4c930e48ae72d8d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TTL: 3
   pushForce: 2
   gravityScale: 2
   bounceFactor: 0.5
   directHitDamage: 5
   explosionDamage: 30
-  enableProximityDamage: 1
   proximityRadius: 3
-  explosionDelay: 1
-  explosionEffect: {fileID: 0}
+  explosionDelay: 5
+  explosionRadiusIndicatorPrefab: {fileID: 6958298041589657097, guid: fb603c72c8ea55b4d8f6f5bb38e43f9c, type: 3}
+  dangerRadiusIndicatorPrefab: {fileID: 1575281365175201325, guid: 11f824de55e7efe4489c1aa3b888cc1d, type: 3}
 --- !u!1 &7912488119121682959
 GameObject:
   m_ObjectHideFlags: 0
