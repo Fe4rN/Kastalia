@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  jugador: {fileID: 0}
 --- !u!114 &755351289454634036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,9 +197,11 @@ MonoBehaviour:
   OnStateChanged:
     m_PersistentCalls:
       m_Calls: []
+  tipoEnemigo: 2
+  attackDamage: 20
   shootingDistance: 15
   safeDistance: 10
-  fireCooldown: 1
+  fireCooldown: 2
   jugador: {fileID: 0}
   distanciaAJugador: 0
   deambularEstado: {fileID: 11400000, guid: c686881fe18990b41a169526f7f62ad1, type: 2}
