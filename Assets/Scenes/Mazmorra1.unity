@@ -365,7 +365,7 @@ Transform:
   m_GameObject: {fileID: 249283974}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -20.71}
+  m_LocalPosition: {x: 0, y: 1, z: -9.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -422,6 +422,10 @@ PrefabInstance:
     - target: {fileID: 7133347364983744333, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_Name
       value: Ballestero
+      objectReference: {fileID: 0}
+    - target: {fileID: 7133347364983744333, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -810,56 +814,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!1 &524873433
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 524873435}
-  - component: {fileID: 524873434}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &524873434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524873433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0aee448e4a187439cba17afd7a8b29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterIndex: 0
-  playerSpawned: 0
-  currentCharacter: 
-  Lyx: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-  Dreven: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-  isPaused: 0
---- !u!4 &524873435
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524873433}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &820928489
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,11 +844,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyQuantity: 0
-  isPlayerLoadedIn: 0
-  isLevelLoaded: 0
   enemyPrefab: {fileID: 8115032155769542572, guid: 267ce24bb5897234480b5024a8689c80, type: 3}
+  lyxPrefab: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
+  drevenPrefab: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
   player: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
+  isLevelLoaded: 0
 --- !u!4 &820928491
 Transform:
   m_ObjectHideFlags: 0
@@ -1370,7 +1325,6 @@ GameObject:
   - component: {fileID: 985789729}
   - component: {fileID: 985789728}
   - component: {fileID: 985789727}
-  - component: {fileID: 985789726}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -1378,18 +1332,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &985789726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 985789725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03e4e69e8deec3b4a9de6df314ce73f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &985789727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3366,7 +3308,6 @@ SceneRoots:
   - {fileID: 229967762}
   - {fileID: 985789730}
   - {fileID: 110341462}
-  - {fileID: 524873435}
   - {fileID: 1155709349}
   - {fileID: 820928491}
   - {fileID: 741244797707367444}

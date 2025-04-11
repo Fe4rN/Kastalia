@@ -1,33 +1,33 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    
     public static GameManager instance;
     public int characterIndex = -1;
+    public int lastCharacterIndex = -1;
     public bool playerSpawned = false;
     public string currentCharacter;
-    // Personajes
 
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
 
-    public bool isPaused = false;
-    private bool isFromMainMenu = true;
+    public GameObject personajeSeleccionado;
 
-    private void Awake()
+    public bool isPaused = false;
+    public bool isLevelLoaded = false;
+
+    void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
 
@@ -40,48 +40,27 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-                ResumeGame();
-            else
-                PauseGame();
-        }
-
-        if (characterIndex != -1 && !playerSpawned)
-        {
-            switch (characterIndex)
-            {
-                case 1:
-                    currentCharacter = "Lyx";
-                    playerSpawned = true;
-                    SceneManager.UnloadSceneAsync("CharacterSelection");
-                    break;
-                case 2:
-                    currentCharacter = "Dreven";
-                    playerSpawned = true;
-                    SceneManager.UnloadSceneAsync("CharacterSelection");
-                    break;
-                default:
-                    playerSpawned = false;
-                    break;
-            }
+            if (isPaused) ResumeGame();
+            else PauseGame();
         }
     }
 
     public void RestartGame()
     {
         SceneManager.UnloadSceneAsync("Mazmorra1");
-        characterIndex = -1;
         playerSpawned = false;
         StartMainGameLoop();
     }
 
-    public void StartMainGameLoop(){
-        if(isFromMainMenu){
-            SceneManager.UnloadSceneAsync("MainMenu");
-            isFromMainMenu = false;
-        }
-        SceneManager.LoadSceneAsync("Mazmorra1");
-        SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
+    public void StartMainGameLoop()
+    {
+        StartCoroutine(CargarMazmorraYSeleccion());
+    }
+
+    private IEnumerator CargarMazmorraYSeleccion()
+    {
+        yield return SceneManager.LoadSceneAsync("Mazmorra1");
+        yield return SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
     }
 
     public void PauseGame()
@@ -98,7 +77,45 @@ public class GameManager : MonoBehaviour
         isPaused = false;
     }
 
-    private void StartMainMenu(){
+    private void StartMainMenu()
+    {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void Reintentar()
+    {
+        Time.timeScale = 1f;
+
+        characterIndex = lastCharacterIndex;
+        playerSpawned = false;
+        isLevelLoaded = false;
+
+        SceneManager.LoadScene("Mazmorra1"); // el prefab sigue guardado en personajeSeleccionado
+    }
+
+    public void VolverAlMenuPrincipal()
+    {
+        characterIndex = -1;
+        personajeSeleccionado = null;
+        playerSpawned = false;
+        isPaused = false;
+        isLevelLoaded = false;
+
+        if (LevelManager.instance != null)
+        {
+            LevelManager.instance.ResetLevelState(true);
+        }
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public bool IsSceneLoaded(string sceneName)
+    {
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            if (SceneManager.GetSceneAt(i).name == sceneName)
+                return true;
+        }
+        return false;
     }
 }

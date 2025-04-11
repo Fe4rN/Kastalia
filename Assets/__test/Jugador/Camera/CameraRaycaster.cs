@@ -13,7 +13,7 @@ public class CameraRaycaster : MonoBehaviour
 
     void Update()
     {
-        if (!playerTransformFound)
+        if (!player)
         {
             findPlayerTransform();
             return;
