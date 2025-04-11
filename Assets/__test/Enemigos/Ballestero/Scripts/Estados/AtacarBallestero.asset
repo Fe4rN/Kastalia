@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57832618425132a499684bff79ebc642, type: 3}
   m_Name: AtacarBallestero
   m_EditorClassIdentifier: 
-  m_Value: Atacar
+  m_Value: AtacarBallestero

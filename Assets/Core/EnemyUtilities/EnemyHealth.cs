@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public GameObject DamagePopupPrefab;
     public int maxHealth = 100;
     private int currentHealth;
     public GameObject jugador;
@@ -21,6 +24,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if(DamagePopupPrefab && currentHealth > 0) ShowDamagePopup(damage);
         if(currentHealth - damage > 0){
             currentHealth -= damage;
             StartCoroutine(FlashOnHit());
@@ -31,6 +35,13 @@ public class EnemyHealth : MonoBehaviour
             Die();
         }
     }
+
+    private void ShowDamagePopup(int damage)
+    {
+        GameObject popup = Instantiate(DamagePopupPrefab, transform.position, Quaternion.identity, transform);
+        popup.GetComponent<TextMeshPro>().text = damage.ToString();
+    }
+
     public void SetHealth(int value){
         if(value <= 0) return;
         maxHealth = value; currentHealth = value;

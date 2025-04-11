@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e1239563b00ff45a0e0647d4174506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamagePopupPrefab: {fileID: 5965361568598309768, guid: 5f1ab5e2d73506e4f8df805b9a4f569c, type: 3}
   maxHealth: 100
   jugador: {fileID: 0}
 --- !u!114 &755351289454634036
@@ -202,6 +203,7 @@ MonoBehaviour:
   shootingDistance: 15
   safeDistance: 10
   fireCooldown: 2
+  isFiring: 0
   jugador: {fileID: 0}
   distanciaAJugador: 0
   deambularEstado: {fileID: 11400000, guid: c686881fe18990b41a169526f7f62ad1, type: 2}
@@ -250,7 +252,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: {fileID: 11400000, guid: 016cee37b90cbaf418b7be71f384c8c8, type: 2}
   inicial: 0
-  arrowForce: 20
 --- !u!1 &7257476183881699970
 GameObject:
   m_ObjectHideFlags: 0

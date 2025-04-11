@@ -26,7 +26,6 @@ public class CameraRaycaster : MonoBehaviour
         {
             foreach (var item in hits)
             {
-                Debug.Log(item.transform.name);
                 if (item.transform.TryGetComponent<ObstaculoTransparente>(out ObstaculoTransparente obstaculo))
                 {
                     obstaculo.hitted = true;

@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e1239563b00ff45a0e0647d4174506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamagePopupPrefab: {fileID: 5965361568598309768, guid: 5f1ab5e2d73506e4f8df805b9a4f569c, type: 3}
   maxHealth: 100
   jugador: {fileID: 0}
 --- !u!114 &4953254434463862538

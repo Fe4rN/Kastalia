@@ -7,13 +7,13 @@ public class DeambularEstadoBallestero : Estado
     private float radio = 5f;
     private Vector3 posicionAleatoria;
     NavMeshAgent agent;
-    BombarderoController controller;
+    BallesteroController controller;
     private bool estaDeambulando = false;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        controller = maquina as BombarderoController;
+        controller = maquina as BallesteroController;
     }
 
     void Update()
@@ -47,46 +47,40 @@ public class DeambularEstadoBallestero : Estado
 
     private Vector3 ElegirPosicionAleatoria()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * radio;
-        randomDirection.y = 0;
-        Vector3 targetPosition = agent.transform.position + randomDirection;
+        for (int i = 0; i < 10; i++)
+        {
+            Vector2 direccion2D = Random.insideUnitCircle * radio;
+            Vector3 punto = transform.position + new Vector3(direccion2D.x, 0, direccion2D.y);
 
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(targetPosition, out hit, radio, NavMesh.AllAreas))
-        {
-            return hit.position;
+            if (NavMesh.SamplePosition(punto, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
         }
-        else
-        {
-            return agent.transform.position;
-        }
+        return transform.position;
     }
 
 
     IEnumerator DeambularCoorutina()
     {
-        if (agent == null) yield break;
-        if (!estaDeambulando)
+        estaDeambulando = true;
+        posicionAleatoria = ElegirPosicionAleatoria();
+
+        while (posicionAleatoria != null && Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f)
         {
-            estaDeambulando = true;
-            posicionAleatoria = ElegirPosicionAleatoria();
 
-            while (posicionAleatoria != null && Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f)
+            agent.SetDestination(posicionAleatoria);
+            agent.transform.LookAt(posicionAleatoria);
+
+            while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
             {
-
-                agent.SetDestination(posicionAleatoria);
-                agent.transform.LookAt(posicionAleatoria);
-
-                while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
-                {
-                    yield return null;
-                }
-
-                float tiempoEspera = Random.Range(1f, 4f);
-                yield return new WaitForSeconds(tiempoEspera);
+                yield return null;
             }
 
-            estaDeambulando = false;
+            float tiempoEspera = Random.Range(1f, 4f);
+            yield return new WaitForSeconds(tiempoEspera);
         }
+
+        estaDeambulando = false;
     }
 }
