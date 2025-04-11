@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class CaballeroNormalController : Maquina
 {
+    public EnemyType tipoEnemigo = EnemyType.CaballeroNormal;
     Transform jugador;
     public float distanciaAtaque = 3f;
     [SerializeField] float distanciaDeteccion = 5f;
-    float distanceToPlayer;
 
     public float attackDamage = 10f;
 

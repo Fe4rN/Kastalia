@@ -15,7 +15,7 @@ public class MantenerDistanciaBallestero : Estado
 
     void Update()
 {
-    // if (GameManager.instance.isPaused) return;
+    if (GameManager.instance.isPaused) return;
 
     if (controller != null && controller.jugador != null)
     {
@@ -24,6 +24,11 @@ public class MantenerDistanciaBallestero : Estado
 
         if (distancia < controller.safeDistance)
         {
+            transform.LookAt(controller.jugador);
+            if(!controller.isFiring)
+            {
+                StartCoroutine(controller.ShootArrow());
+            }
             Vector3 fleePosition = transform.position - directionToPlayer * 2f;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(fleePosition, out hit, 2f, NavMesh.AllAreas))

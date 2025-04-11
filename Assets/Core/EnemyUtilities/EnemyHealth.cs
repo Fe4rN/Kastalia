@@ -5,7 +5,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
-    private GameObject jugador;
+    public GameObject jugador;
 
     private void Start()
     {
@@ -13,15 +13,23 @@ public class EnemyHealth : MonoBehaviour
         jugador = GameObject.FindGameObjectWithTag("Player");
     }
 
+    private void Update()
+    {
+        if(jugador) return;
+        jugador = GameObject.FindGameObjectWithTag("Player");
+    }
+
     public void TakeDamage(int damage)
     {
-        if (currentHealth - damage > 0) currentHealth -= damage;
+        if(currentHealth - damage > 0){
+            currentHealth -= damage;
+            StartCoroutine(FlashOnHit());
+        }
         else
         {
             currentHealth = 0;
             Die();
         }
-        StartCoroutine(FlashOnHit());
     }
 
     IEnumerator FlashOnHit()
@@ -35,10 +43,12 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         //Para futuras implementaciones
-        Acciones statsJugador = jugador.GetComponent<Acciones>();
-        if (statsJugador.offensiveAbilityCooldown > 0) statsJugador.offensiveAbilityCooldown -= 1;
-        if (statsJugador.defensiveAbilityCooldown > 0) statsJugador.defensiveAbilityCooldown -= 1;
-        if (statsJugador.healingAbilityCooldown > 0) statsJugador.healingAbilityCooldown -= 1;
+        OffensiveAbility offensiveAbilityController = jugador.GetComponent<OffensiveAbility>();
+        DefensiveAbility defensiveAbilityController = jugador.GetComponent<DefensiveAbility>();
+        HealingAbility healingAbilityController = jugador.GetComponent<HealingAbility>();
+        if (offensiveAbilityController.offensiveAbilityCooldown > 0) offensiveAbilityController.offensiveAbilityCooldown -= 1;
+        if (defensiveAbilityController.defensiveAbilityCooldown > 0) defensiveAbilityController.defensiveAbilityCooldown -= 1;
+        if (healingAbilityController.healingAbilityCooldown > 0) healingAbilityController.healingAbilityCooldown -= 1;
         StopAllCoroutines();
         Destroy(gameObject);
     }

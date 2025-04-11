@@ -75,3 +75,11 @@ public abstract class Maquina : MonoBehaviour
         Debug.LogError($"No hay un estado {nombre}");
     }
 }
+
+public enum EnemyType {
+    CaballeroNormal,
+    CaballeroReal,
+    Ballestero,
+    Bombardero,
+    Kaspar
+}

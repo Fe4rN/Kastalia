@@ -23,10 +23,8 @@ public class DeambularEstadoBallestero : Estado
         if (GameManager.instance.isPaused) return;
         if (controller != null && controller.jugador != null)
         {
-            Debug.Log("Dentro del Update de DeambularEstado");
             if (controller.distanciaAJugador <= stats.shootingDistance && controller.distanciaAJugador > stats.safeDistance)
             {
-                Debug.Log("Atacando al jugador");
                 StopCoroutine(DeambularCoorutina());
                 estaDeambulando = false;
                 transform.LookAt(controller.jugador);
@@ -34,7 +32,6 @@ public class DeambularEstadoBallestero : Estado
             }
             else if (controller.distanciaAJugador <= stats.safeDistance)
             {
-                Debug.Log("Manteniendo distancia del jugador");
                 StopCoroutine(DeambularCoorutina());
                 estaDeambulando = false;
                 transform.LookAt(controller.jugador);
@@ -44,7 +41,6 @@ public class DeambularEstadoBallestero : Estado
             {
                 if (!estaDeambulando)
                 {
-                    Debug.Log("Deambulando");
                     StartCoroutine(DeambularCoorutina());
                 }
             }
@@ -71,7 +67,6 @@ public class DeambularEstadoBallestero : Estado
 
     IEnumerator DeambularCoorutina()
     {
-        Debug.Log("Deambulando2");
         if (agent == null) yield break;
         if (!estaDeambulando)
         {
@@ -91,7 +86,6 @@ public class DeambularEstadoBallestero : Estado
 
                 float tiempoEspera = Random.Range(1f, 4f);
                 yield return new WaitForSeconds(tiempoEspera);
-                Debug.Log("Esperando " + tiempoEspera + " segundos antes de elegir una nueva posición.");
             }
 
             estaDeambulando = false;

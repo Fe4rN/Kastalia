@@ -6,11 +6,11 @@ public class WeaponPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Acciones jugador = other.GetComponent<Acciones>();
+        PlayerInventory inventario = other.GetComponent<PlayerInventory>();
 
-        if(jugador){
-            jugador.EquipWeapon(weaponData);
-            if (jugador.equippedWeapon != null && jugador.equippedWeapon == weaponData){
+        if(inventario){
+            inventario.EquipWeapon(weaponData);
+            if (inventario.weapon == weaponData){
                 Destroy(gameObject);
             }
         }

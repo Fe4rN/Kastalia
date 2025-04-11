@@ -156,7 +156,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -183,6 +183,7 @@ MonoBehaviour:
   OnStateChanged:
     m_PersistentCalls:
       m_Calls: []
+  tipoEnemigo: 0
   distanciaAtaque: 3
   distanciaDeteccion: 20
   attackDamage: 20
@@ -202,6 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  jugador: {fileID: 0}
 --- !u!114 &4953254434463862538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,7 +315,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 717009b097eabc044bf9bc3a7e732e09, type: 2}
+  - {fileID: 2100000, guid: dceaf89569985934389f019ba8d4f773, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

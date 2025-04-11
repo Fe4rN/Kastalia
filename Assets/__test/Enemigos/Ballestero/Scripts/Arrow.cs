@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using NUnit.Framework;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
@@ -10,6 +7,7 @@ public class Arrow : MonoBehaviour
     [SerializeField] private float TTL = 3f;
     private Rigidbody rb;
     private bool hasHit = false;
+    private float damage;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -21,16 +19,27 @@ public class Arrow : MonoBehaviour
         if (hasHit) return;
         hasHit = true;
         Debug.Log("Arrow hit: " + other.name);
-        Acciones acciones = other.gameObject.GetComponentInParent<Acciones>();
-        if (acciones != null)
+        PlayerHealth PlayerHealth = other.gameObject.GetComponentInParent<PlayerHealth>();
+        EnemyHealth EnemyHealth = other.gameObject.GetComponentInParent<EnemyHealth>();
+        if (PlayerHealth)
         {
-            Debug.Log("Acciones component found, applying damage.");
-            StickToTarget(other.transform);
-            acciones.takeDamage(20f);
-        } else {
-            Debug.Log("No Acciones component found, destroying arrow.");
-            Destroy(gameObject);
+            Debug.Log("PlayerHealth component found, applying damage.");
+            PlayerHealth.takeDamage(damage);
         }
+        else if (EnemyHealth)
+        {
+            Debug.Log("EnemyHealth component found, applying damage.");
+            EnemyHealth.TakeDamage(Mathf.CeilToInt(damage));
+        } 
+        else
+        {
+            Debug.Log("No health component found, ignoring hit.");
+        }
+        StickToTarget(other.transform);
+    }
+
+    public void setDamage(float damage){
+        this.damage = damage;
     }
 
     private void StickToTarget(Transform target)
