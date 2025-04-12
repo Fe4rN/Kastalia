@@ -8,11 +8,14 @@ public class WeaponPickup : MonoBehaviour
     {
         PlayerInventory inventario = other.GetComponent<PlayerInventory>();
 
-        if(inventario){
+        if (inventario && !inventario.HasWeapon(weaponData))
+        {
             inventario.EquipWeapon(weaponData);
-            if (inventario.weapon == weaponData){
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("Ya tienes esta arma equipada.");
         }
     }
 }

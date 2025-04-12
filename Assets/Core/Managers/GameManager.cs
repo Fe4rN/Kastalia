@@ -56,15 +56,15 @@ public class GameManager : MonoBehaviour
 
         if (LevelManager.instance != null)
             LevelManager.instance.ResetLevelState(true);
+        if (LevelManager.instance != null)
+            LevelManager.instance.ResetLevelState(true);
 
-        // 🔥 Eliminamos reinicio del cronómetro aquí para hacerlo tras selección real
-        // if (IsSceneLoaded("Derrota") || IsSceneLoaded("MainMenu"))
-        // {
-        // }
-
-        StartCoroutine(CargarMazmorraYSeleccion());
+        // Limpiar cofres anteriores
+        ItemDropTracker.Reiniciar();
     }
 
+    StartCoroutine(CargarMazmorraYSeleccion());
+}
     private IEnumerator CargarMazmorraYSeleccion()
     {
         yield return SceneManager.LoadSceneAsync("Mazmorra1");
@@ -87,32 +87,36 @@ public class GameManager : MonoBehaviour
 
     public void StartMainMenu()
     {
-        playerSpawned = false;
-        characterIndex = -1;
-        LevelManager.instance.isLevelLoaded = false;
-        StartCoroutine(UnloadAllAndLoadMainMenu());
+        SceneManager.LoadScene("MainMenu");
     }
 
-    public void WinGame()
+    public void VolverAlMenuPrincipal()
+{
+    characterIndex = -1;
+    personajeSeleccionado = null;
+    playerSpawned = false;
+    isPaused = false;
+    isLevelLoaded = false;
+
+    if (LevelManager.instance != null)
     {
-        isPaused = true;
-        SceneManager.LoadScene("Menu_Victoria", LoadSceneMode.Additive);
+        LevelManager.instance.ResetLevelState(true);
     }
 
-    public void SalirDelJuego()
+    if (Cronometro.instance != null)
     {
-        Debug.Log("Saliendo del juego...");
-
-        Application.Quit();
+        Cronometro.instance.ReiniciarCronometro();
     }
 
-    private IEnumerator UnloadAllAndLoadMainMenu()
-    {
-        // First load MainMenu additively to avoid black screen
-        AsyncOperation loadOp = SceneManager.LoadSceneAsync("MainMenu");
-        yield return loadOp;
+    // 🔁 Limpiar ítems de cofres al volver al menú principal
+    ItemDropTracker.Reiniciar();
 
-        // Once loaded, unload all other scenes
+    SceneManager.LoadScene("MainMenu");
+}
+
+
+    public bool IsSceneLoaded(string sceneName)
+    {
         for (int i = 0; i < SceneManager.sceneCount; i++)
         {
             Scene scene = SceneManager.GetSceneAt(i);
