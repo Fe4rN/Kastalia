@@ -24,6 +24,6 @@ public class Menu_Victoria : MonoBehaviour
     }
 
     public void SalirDelJuego() {
-        GameManager.instance.SalirDelJuego();
+        GameManager.instance.QuitGame();
     }
 }

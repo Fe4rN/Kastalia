@@ -61,10 +61,14 @@ public class GameManager : MonoBehaviour
 
         // Limpiar cofres anteriores
         ItemDropTracker.Reiniciar();
+        StartCoroutine(CargarMazmorraYSeleccion());
     }
 
-    StartCoroutine(CargarMazmorraYSeleccion());
-}
+    public void WinGame(){
+        isPaused = true;
+        SceneManager.LoadSceneAsync("Menu_Victoria", LoadSceneMode.Additive);
+    }
+
     private IEnumerator CargarMazmorraYSeleccion()
     {
         yield return SceneManager.LoadSceneAsync("Mazmorra1");
@@ -91,47 +95,31 @@ public class GameManager : MonoBehaviour
     }
 
     public void VolverAlMenuPrincipal()
-{
-    characterIndex = -1;
-    personajeSeleccionado = null;
-    playerSpawned = false;
-    isPaused = false;
-    isLevelLoaded = false;
-
-    if (LevelManager.instance != null)
     {
-        LevelManager.instance.ResetLevelState(true);
-    }
+        characterIndex = -1;
+        personajeSeleccionado = null;
+        playerSpawned = false;
+        isPaused = false;
+        isLevelLoaded = false;
 
-    if (Cronometro.instance != null)
-    {
-        Cronometro.instance.ReiniciarCronometro();
-    }
-
-    // 🔁 Limpiar ítems de cofres al volver al menú principal
-    ItemDropTracker.Reiniciar();
-
-    SceneManager.LoadScene("MainMenu");
-}
-
-
-    public bool IsSceneLoaded(string sceneName)
-    {
-        for (int i = 0; i < SceneManager.sceneCount; i++)
+        if (LevelManager.instance != null)
         {
-            Scene scene = SceneManager.GetSceneAt(i);
-            if (scene.name != "MainMenu")
-            {
-                AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(scene);
-                yield return unloadOp;
-            }
+            LevelManager.instance.ResetLevelState(true);
         }
 
-        // Finally, set MainMenu as active
-        Scene mainMenuScene = SceneManager.GetSceneByName("MainMenu");
-        if (mainMenuScene.IsValid())
+        if (Cronometro.instance != null)
         {
-            SceneManager.SetActiveScene(mainMenuScene);
+            Cronometro.instance.ReiniciarCronometro();
         }
+
+        // 🔁 Limpiar ítems de cofres al volver al menú principal
+        ItemDropTracker.Reiniciar();
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
