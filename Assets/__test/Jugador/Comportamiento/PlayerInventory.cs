@@ -9,12 +9,21 @@ public class PlayerInventory : MonoBehaviour
     public AbilityType selectedAbilityType;
     public Dictionary<AbilityType, Ability> equippedAbilities = new Dictionary<AbilityType, Ability>();
 
+    PlayerController controller;
+
+    void Start()
+    {
+        controller = GetComponent<PlayerController>();
+    }
+
 
     public void EquipWeapon(Weapon weapon)
     {
         if (weapon.weaponType == allowedWeaponType)
         {
             this.weapon = weapon;
+            controller.ShowWeapon(true);
+            
         }
     }
 

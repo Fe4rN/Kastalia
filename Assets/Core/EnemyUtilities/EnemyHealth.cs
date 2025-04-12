@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100;
+    public GameObject DamagePopupPrefab;
+    public int maxHealth = 100;
     private int currentHealth;
     public GameObject jugador;
 
@@ -30,10 +33,8 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isDead) return;
-
-        if (currentHealth - damage > 0)
-        {
+        if(DamagePopupPrefab && currentHealth > 0) ShowDamagePopup(damage);
+        if(currentHealth - damage > 0){
             currentHealth -= damage;
             StartCoroutine(FlashOnHit());
         }
@@ -42,6 +43,17 @@ public class EnemyHealth : MonoBehaviour
             currentHealth = 0;
             Die();
         }
+    }
+
+    private void ShowDamagePopup(int damage)
+    {
+        GameObject popup = Instantiate(DamagePopupPrefab, transform.position, Quaternion.identity, transform);
+        popup.GetComponent<TextMeshPro>().text = damage.ToString();
+    }
+
+    public void SetHealth(int value){
+        if(value <= 0) return;
+        maxHealth = value; currentHealth = value;
     }
 
     IEnumerator FlashOnHit()
@@ -54,7 +66,7 @@ public class EnemyHealth : MonoBehaviour
     }
     private void Die()
     {
-        if (isDead) return; // Evita que Die() se ejecute más de una vez
+        if (isDead) return; // Evita que Die() se ejecute mï¿½s de una vez
         isDead = true;
 
         // Para futuras implementaciones
@@ -86,7 +98,7 @@ public class EnemyHealth : MonoBehaviour
             }
             else
             {
-                Debug.LogError("¡No se encontró ningún EnemyManager en la escena!");
+                Debug.LogError("ï¿½No se encontrï¿½ ningï¿½n EnemyManager en la escena!");
             }
         }
 

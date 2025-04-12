@@ -8,9 +8,6 @@ public class AtacarBallestero : Estado
     NavMeshAgent agent;
     BallesteroController controller;
 
-    public float arrowForce = 20f;
-    private bool isFiring = false;
-
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -25,10 +22,9 @@ public class AtacarBallestero : Estado
         {
             if (controller.distanciaAJugador < controller.shootingDistance && controller.distanciaAJugador > controller.safeDistance)
             {
-                if (!isFiring)
+                if (!controller.isFiring)
                 {
-                    isFiring = true;
-                    StartCoroutine(ShootArrow());
+                    StartCoroutine(controller.ShootArrow());
                 }
             }
             else if (controller.distanciaAJugador < controller.safeDistance)
@@ -48,18 +44,6 @@ public class AtacarBallestero : Estado
         }
     }
 
-    private IEnumerator ShootArrow()
-    {
-        Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 1.75f;
-        Vector3 direction = (controller.jugador.position - transform.position).normalized;
-
-        GameObject arrow = Instantiate(controller.arrowPrefab, spawnPos, Quaternion.LookRotation(direction));
-        arrow.GetComponent<Arrow>().setDamage(controller.attackDamage);
-        Rigidbody rb = arrow.GetComponent<Rigidbody>();
-        rb.AddForce(direction * arrowForce, ForceMode.Impulse);
-
-        yield return new WaitForSeconds(controller.fireCooldown);
-        isFiring = false;
-    }
+    
 
 }

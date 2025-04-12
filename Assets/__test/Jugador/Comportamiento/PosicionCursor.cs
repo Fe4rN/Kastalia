@@ -17,12 +17,12 @@ public class PosicionCursor : MonoBehaviour
             Debug.LogWarning("No se encontr� un objeto con la etiqueta 'Player'.");
         }
 
-        layerMask = ~LayerMask.GetMask("Player", "Paredes", "Enemies");
+        layerMask = ~LayerMask.GetMask("Player", "Paredes");
     }
 
     void Update()
     {
-        //if(GameManager.instance.isPaused) return;
+        if(GameManager.instance.isPaused) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 

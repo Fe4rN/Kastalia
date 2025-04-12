@@ -17,14 +17,12 @@ public class LyxController : PlayerController
             // Manejo del click derecho para cargar el ataque de espada
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                Debug.Log("[CHARGE] Botón derecho presionado - Iniciando carga");
                 espadachin.isRightMouseDown = true;
                 StartCoroutine(espadachin.ChargeSword());
             }
 
             if (Input.GetKeyUp(KeyCode.Mouse1))
             {
-                Debug.Log($"[CHARGE] Botón derecho liberado - Tiempo cargado: {espadachin.chargeTime.ToString("F2")}s");
                 espadachin.isRightMouseDown = false;
                 if (espadachin.isChargingSword)
                 {
@@ -39,27 +37,20 @@ public class LyxController : PlayerController
                 if (!isAttacking && !isDashing)
                 {
                     int damage = playerInventory.weapon.damage;
-                    Debug.Log($"[ATTACK] Daño base: {damage}");
 
 
                     if (espadachin.isFullyCharged)
                     {
                         damage *= espadachin.chargeMultiplier;
-                        Debug.Log($"[ATTACK] Ataque CARGADO aplicado! Daño final: {damage}");
 
                     }
                     if (espadachin.isChargingSword)
                     {
-                        Debug.Log($"[ATTACK] Ataque INTERRUMPIDO (carga no completada)");
 
 
                         //daño suave
                         damage = Mathf.CeilToInt(damage * 0.5f);
 
-                    }
-                    else
-                    {
-                        Debug.Log("[ATTACK] Ataque NORMAL");
                     }
 
                     // damage *= 1.5f;

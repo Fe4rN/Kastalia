@@ -14,35 +14,40 @@ public class MantenerDistanciaBallestero : Estado
     }
 
     void Update()
-{
-    if (GameManager.instance.isPaused) return;
-
-    if (controller != null && controller.jugador != null)
     {
-        float distancia = controller.distanciaAJugador;
-        Vector3 directionToPlayer = (controller.jugador.position - transform.position).normalized;
+        if (GameManager.instance.isPaused) return;
 
-        if (distancia < controller.safeDistance)
+        if (controller != null && controller.jugador != null)
         {
-            Vector3 fleePosition = transform.position - directionToPlayer * 2f;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(fleePosition, out hit, 2f, NavMesh.AllAreas))
+            float distancia = controller.distanciaAJugador;
+            Vector3 directionToPlayer = (controller.jugador.position - transform.position).normalized;
+
+            if (distancia < controller.safeDistance)
             {
-                agent.SetDestination(hit.position);
+                transform.LookAt(controller.jugador);
+                if (!controller.isFiring)
+                {
+                    StartCoroutine(controller.ShootArrow());
+                }
+                Vector3 fleePosition = transform.position - directionToPlayer * 2f;
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(fleePosition, out hit, 2f, NavMesh.AllAreas))
+                {
+                    agent.SetDestination(hit.position);
+                }
+            }
+            else if (distancia <= controller.shootingDistance)
+            {
+                agent.ResetPath();
+                transform.LookAt(controller.jugador);
+                controller.SetEstado(controller.atacarEstado.Value);
+            }
+            else
+            {
+                agent.SetDestination(controller.jugador.position);
             }
         }
-        else if (distancia <= controller.shootingDistance)
-        {
-            agent.ResetPath();
-            transform.LookAt(controller.jugador);
-            controller.SetEstado(controller.atacarEstado.Value);
-        }
-        else
-        {
-            agent.SetDestination(controller.jugador.position);
-        }
     }
-}
 
 }
 

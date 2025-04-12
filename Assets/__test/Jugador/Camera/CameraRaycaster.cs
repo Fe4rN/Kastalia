@@ -4,7 +4,6 @@ public class CameraRaycaster : MonoBehaviour
 {
     [SerializeField] private LayerMask layerMask;
     private Transform player;
-    private bool playerTransformFound = false;
 
     void Start()
     {
@@ -13,11 +12,8 @@ public class CameraRaycaster : MonoBehaviour
 
     void Update()
     {
-        if (!playerTransformFound)
-        {
-            findPlayerTransform();
-            return;
-        }
+        findPlayerTransform();
+        if(!player) return;
 
         RaycastHit[] hits = Physics.RaycastAll(
             transform.position,
@@ -30,7 +26,6 @@ public class CameraRaycaster : MonoBehaviour
         {
             foreach (var item in hits)
             {
-                Debug.Log(item.transform.name);
                 if (item.transform.TryGetComponent<ObstaculoTransparente>(out ObstaculoTransparente obstaculo))
                 {
                     obstaculo.hitted = true;
@@ -45,7 +40,6 @@ public class CameraRaycaster : MonoBehaviour
         if (foundPlayer != null)
         {
             player = foundPlayer.transform;
-            playerTransformFound = true;
         }
     }
 }
