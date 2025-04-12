@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class EnemyLookAtSystem : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class EnemyLookAtSystem : MonoBehaviour
     public LayerMask enemyMask;
     private Transform currentTarget;
     private Transform player;
+    private bool isLocked = false;
 
     void Start()
     {
@@ -24,36 +26,53 @@ public class EnemyLookAtSystem : MonoBehaviour
     {
         if (GameManager.instance.isPaused || player == null) return;
 
-        Transform newTarget = FindNearestEnemy();
-
-        if (newTarget != null && newTarget != currentTarget)
+        // Desbloquear enemigo con tecla º
+        if (Input.GetKeyDown(KeyCode.BackQuote)) // Tecla º
         {
-            currentTarget = newTarget;
+            isLocked = false;
+            currentTarget = null;
         }
 
-        if (currentTarget != null)
+        // Hacer lock a un enemigo con click izquierdo si lo apuntas
+        if (Input.GetMouseButtonDown(0)) // Click izquierdo
         {
-            Vector3 targetPos = new Vector3(currentTarget.position.x, player.position.y, currentTarget.position.z);
-            player.LookAt(targetPos);
-        }
-    }
-
-    Transform FindNearestEnemy()
-    {
-        Collider[] enemies = Physics.OverlapSphere(player.position, detectionRange, enemyMask);
-        Transform nearest = null;
-        float shortestDistance = Mathf.Infinity;
-
-        foreach (Collider enemy in enemies)
-        {
-            float distance = Vector3.Distance(player.position, enemy.transform.position);
-            if (distance < shortestDistance)
+            Transform aimedEnemy = GetEnemyUnderMouse();
+            if (aimedEnemy != null)
             {
-                shortestDistance = distance;
-                nearest = enemy.transform;
+                currentTarget = aimedEnemy;
+                isLocked = true;
             }
         }
 
-        return nearest;
+        // Girar hacia el objetivo si está fijado
+        if (currentTarget != null && isLocked)
+        {
+            Vector3 targetPos = new Vector3(currentTarget.position.x, player.position.y, currentTarget.position.z);
+            player.LookAt(targetPos);
+
+            // Desbloquear si sale del rango
+            if (Vector3.Distance(player.position, currentTarget.position) > detectionRange)
+            {
+                isLocked = false;
+                currentTarget = null;
+            }
+        }
+    }
+
+    Transform GetEnemyUnderMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 100f, enemyMask))
+        {
+            float distance = Vector3.Distance(player.position, hit.transform.position);
+            if (distance <= detectionRange)
+            {
+                return hit.transform;
+            }
+        }
+
+        return null;
     }
 }
