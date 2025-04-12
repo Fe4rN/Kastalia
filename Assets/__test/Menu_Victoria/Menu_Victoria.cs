@@ -20,7 +20,7 @@ public class Menu_Victoria : MonoBehaviour
     }
     public void JugarDeNuevo()
     {
-        GameManager.instance.RestartGame();
+        GameManager.instance.StartMainGameLoop();
     }
 
     public void SalirDelJuego() {

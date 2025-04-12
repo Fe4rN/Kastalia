@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public bool playerSpawned = false;
     public bool isPaused = false;
     public bool isLevelLoaded = false;
+
 
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
@@ -48,18 +49,18 @@ public class GameManager : MonoBehaviour
 
     public void StartMainGameLoop()
     {
-        if (IsSceneLoaded("Derrota") || IsSceneLoaded("MainMenu"))
-        {
-            characterIndex = -1;
-            personajeSeleccionado = null;
-            playerSpawned = false;
-            isLevelLoaded = false;
+        characterIndex = -1;
+        personajeSeleccionado = null;
+        playerSpawned = false;
+        isLevelLoaded = false;
 
-            if (LevelManager.instance != null)
-                LevelManager.instance.ResetLevelState(true);
+        if (LevelManager.instance != null)
+            LevelManager.instance.ResetLevelState(true);
 
-            // 🔥 Eliminamos reinicio del cronómetro aquí para hacerlo tras selección real
-        }
+        // 🔥 Eliminamos reinicio del cronómetro aquí para hacerlo tras selección real
+        // if (IsSceneLoaded("Derrota") || IsSceneLoaded("MainMenu"))
+        // {
+        // }
 
         StartCoroutine(CargarMazmorraYSeleccion());
     }
@@ -131,5 +132,4 @@ public class GameManager : MonoBehaviour
             SceneManager.SetActiveScene(mainMenuScene);
         }
     }
-
 }
