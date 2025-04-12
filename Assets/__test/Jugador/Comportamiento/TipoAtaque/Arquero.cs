@@ -26,7 +26,7 @@ public class Arquero : MonoBehaviour
     }
     public void DisparoLigero()
     {
-        if (!puedeDisparar) return;
+        if (!puedeDisparar || GameManager.instance.isPaused) return;
         StartCoroutine(Disparar(1, cooldownLigero, delayDisparo));
     }
 

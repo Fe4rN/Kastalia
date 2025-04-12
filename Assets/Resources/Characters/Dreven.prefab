@@ -223,7 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDashing: 0
   gravityValue: -9.81
-  playerSpeed: 30
+  playerSpeed: 2
   sprintValue: 2
   dashSpeed: 20
   dashTime: 0.1
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c45f31fd62efb247befd9415572b728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 1
+  vidaMaxima: 100
   vidaActual: 0
   defensiveAbilityHits: 0
 --- !u!114 &2329343856140047616

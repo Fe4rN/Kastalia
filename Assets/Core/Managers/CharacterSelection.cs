@@ -45,6 +45,7 @@ public class CharacterSelection : MonoBehaviour
             {
                 SceneManager.UnloadSceneAsync("CharacterSelection");
             }
+            GameManager.instance.isPaused = false;
 
             Debug.Log("[CharacterSelection] Confirmado y personaje asignado.");
         }

@@ -103,8 +103,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Saliendo del juego...");
 
-        EditorApplication.isPlaying = false;
-
         Application.Quit();
     }
 

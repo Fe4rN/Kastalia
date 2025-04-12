@@ -22,8 +22,6 @@ public class Victory_Manager : MonoBehaviour
     {
         Debug.Log("Saliendo del juego...");
 
-        EditorApplication.isPlaying = false;
-
         Application.Quit();
 
     }
