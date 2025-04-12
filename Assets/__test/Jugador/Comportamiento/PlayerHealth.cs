@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -49,12 +51,27 @@ public class PlayerHealth : MonoBehaviour
     }
 
     public void Die()
+{
+    if (Cronometro.instance != null)
     {
-        StopAllCoroutines();
-        Destroy(gameObject);
-        LevelManager.instance.isLevelLoaded = false;
-        GameManager.instance.RestartGame();
+        Cronometro.instance.Detener();
     }
+
+    StopAllCoroutines();
+
+    // Mostrar cursor del sistema
+    Cursor.lockState = CursorLockMode.None;
+    Cursor.visible = true;
+
+    // Detener juego y mostrar menú derrota
+    Time.timeScale = 0f;
+
+    // Cargar escena de derrota de forma aditiva (para ver la mazmorra detrás)
+    SceneManager.LoadScene("Derrota", LoadSceneMode.Additive);
+
+    // Eliminar jugador
+    Destroy(gameObject);
+}
 
     IEnumerator ActivarInmunidad()
     {

@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class CharacterSelection : MonoBehaviour
 {
     public Button Lyx;
     public Button Dreven;
     public Button Confirm;
 
-    private Button selectedButton;
     private int selectedCharacter = -1;
 
     void Start()
@@ -15,24 +15,42 @@ public class NewMonoBehaviourScript : MonoBehaviour
         Lyx.onClick.AddListener(() => selectCharacter(1));
         Dreven.onClick.AddListener(() => selectCharacter(2));
         Confirm.onClick.AddListener(confirmSelection);
-
     }
+
     private void selectCharacter(int value)
     {
         selectedCharacter = value;
-        selectedButton = (value == 1) ? Lyx : Dreven;
+        Debug.Log($"Personaje seleccionado: {(value == 1 ? "Lyx" : "Dreven")}");
     }
-
 
     void confirmSelection()
     {
         if (selectedCharacter != -1)
         {
-            Debug.Log("Selected character: " + selectedCharacter);
             GameManager.instance.characterIndex = selectedCharacter;
-            GameManager.instance.isPaused = false;
-        } else {
-            Debug.Log("No character selected");
+
+            GameManager.instance.personajeSeleccionado = selectedCharacter == 1
+                ? GameManager.instance.Lyx
+                : GameManager.instance.Dreven;
+
+            GameManager.instance.playerSpawned = false;
+
+            if (Cronometro.instance != null)
+            {
+                Cronometro.instance.ReiniciarCronometro();
+                Debug.Log("[CharacterSelection] Cronómetro reiniciado tras seleccionar personaje.");
+            }
+
+            if (SceneManager.GetSceneByName("CharacterSelection").isLoaded)
+            {
+                SceneManager.UnloadSceneAsync("CharacterSelection");
+            }
+
+            Debug.Log("[CharacterSelection] Confirmado y personaje asignado.");
+        }
+        else
+        {
+            Debug.LogWarning("[CharacterSelection] No se ha seleccionado ningún personaje.");
         }
     }
 }

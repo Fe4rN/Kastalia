@@ -467,7 +467,7 @@ Transform:
   m_GameObject: {fileID: 249283974}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -20.71}
+  m_LocalPosition: {x: 0, y: 1, z: -9.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1197,11 +1197,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyQuantity: 0
-  isPlayerLoadedIn: 0
-  isLevelLoaded: 0
   enemyPrefab: {fileID: 8115032155769542572, guid: 267ce24bb5897234480b5024a8689c80, type: 3}
+  lyxPrefab: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
+  drevenPrefab: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
   player: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
+  isLevelLoaded: 0
 --- !u!4 &820928491
 Transform:
   m_ObjectHideFlags: 0
@@ -1677,7 +1678,6 @@ GameObject:
   - component: {fileID: 985789729}
   - component: {fileID: 985789728}
   - component: {fileID: 985789727}
-  - component: {fileID: 985789726}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -1685,18 +1685,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &985789726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 985789725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03e4e69e8deec3b4a9de6df314ce73f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &985789727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4025,7 +4013,6 @@ SceneRoots:
   - {fileID: 229967762}
   - {fileID: 985789730}
   - {fileID: 110341462}
-  - {fileID: 524873435}
   - {fileID: 1155709349}
   - {fileID: 820928491}
   - {fileID: 741244797707367444}
