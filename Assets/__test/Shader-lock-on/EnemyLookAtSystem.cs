@@ -1,10 +1,10 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class EnemyLookAtSystem : MonoBehaviour
 {
     public float detectionRange = 15f;
     public LayerMask enemyMask;
+
     private Transform currentTarget;
     private Transform player;
     private bool isLocked = false;
@@ -29,30 +29,36 @@ public class EnemyLookAtSystem : MonoBehaviour
         // Desbloquear enemigo con tecla º
         if (Input.GetKeyDown(KeyCode.BackQuote)) // Tecla º
         {
+            SetHighlightLock(currentTarget, false); // Quitar highlight
             isLocked = false;
             currentTarget = null;
         }
 
-        // Hacer lock a un enemigo con click izquierdo si lo apuntas
-        if (Input.GetMouseButtonDown(0)) // Click izquierdo
+        // Fijar a un enemigo con click izquierdo
+        if (Input.GetMouseButtonDown(0))
         {
             Transform aimedEnemy = GetEnemyUnderMouse();
             if (aimedEnemy != null)
             {
+                SetHighlightLock(currentTarget, false); // Quitar highlight del anterior
+
                 currentTarget = aimedEnemy;
                 isLocked = true;
+
+                SetHighlightLock(currentTarget, true); // Mostrar highlight del nuevo
             }
         }
 
-        // Girar hacia el objetivo si está fijado
+        // Si hay enemigo fijado, mirar hacia él
         if (currentTarget != null && isLocked)
         {
             Vector3 targetPos = new Vector3(currentTarget.position.x, player.position.y, currentTarget.position.z);
             player.LookAt(targetPos);
 
-            // Desbloquear si sale del rango
+            // Desbloquear si se va fuera de rango
             if (Vector3.Distance(player.position, currentTarget.position) > detectionRange)
             {
+                SetHighlightLock(currentTarget, false);
                 isLocked = false;
                 currentTarget = null;
             }
@@ -74,5 +80,16 @@ public class EnemyLookAtSystem : MonoBehaviour
         }
 
         return null;
+    }
+
+    void SetHighlightLock(Transform target, bool value)
+    {
+        if (target == null) return;
+
+        EnemyHighlighter highlighter = target.GetComponentInChildren<EnemyHighlighter>();
+        if (highlighter != null)
+        {
+            highlighter.SetLocked(value);
+        }
     }
 }
