@@ -223,7 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDashing: 0
   gravityValue: -9.81
-  playerSpeed: 20
+  playerSpeed: 2
   sprintValue: 2
   dashSpeed: 20
   dashTime: 0.1
@@ -305,7 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37ec869d62a5064a96eec6c35002f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldPrefab: {fileID: 0}
   defensiveAbilityCooldown: 0
 --- !u!114 &2593802296230818012
 MonoBehaviour:
