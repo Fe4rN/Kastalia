@@ -8,12 +8,18 @@ public class OffensiveAbility : MonoBehaviour
     private PosicionCursor posicionCursor;
     public int offensiveAbilityCooldown = 0;
 
-    void Start(){
+    [SerializeField] GameObject abilityTargetIndicatorPrefab;
+    [SerializeField] private GameObject fireballPrefab;
+    private float fireballSpeed = 25f;
+    private GameObject currentIndicator;
+
+
+    void Start()
+    {
         playerInventory = GetComponent<PlayerInventory>();
         playerController = GetComponent<PlayerController>();
         posicionCursor = GetComponent<PosicionCursor>();
     }
-
     public IEnumerator offensiveAbility()
     {
         if (!playerInventory.equippedAbilities.TryGetValue(AbilityType.Ofensiva, out Ability offensiveAbility))
@@ -22,21 +28,71 @@ public class OffensiveAbility : MonoBehaviour
             yield break;
         }
 
-        Vector3 targetPosition = posicionCursor.lookPoint;
-        Vector3 playerPosition = transform.position;
-        float distanceToTarget = Vector3.Distance(playerPosition, targetPosition);
-        float maxCastRange = offensiveAbility.range;
+        float maxCastRange = playerInventory.equippedAbilities[AbilityType.Ofensiva].range;
+        float area = playerInventory.equippedAbilities[AbilityType.Ofensiva].areaOfEffect;
 
-        if (distanceToTarget > maxCastRange)
+        // Spawn the indicator
+        if (abilityTargetIndicatorPrefab != null)
         {
-            Vector3 direction = (targetPosition - playerPosition).normalized;
-            targetPosition = playerPosition + direction * maxCastRange;
+            currentIndicator = Instantiate(abilityTargetIndicatorPrefab);
+            currentIndicator.transform.localScale = new Vector3(area, 0.1f, area);
         }
 
-        yield return new WaitForSeconds(0.5f);
+        // Aiming loop
+        while (!Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Vector3 targetPosition = GetClampedCursorPosition(maxCastRange);
+            if (currentIndicator != null)
+            {
+                currentIndicator.transform.position = targetPosition;
+            }
 
-        playerController.comprobarEnemigosEnArea(targetPosition, offensiveAbility.areaOfEffect, offensiveAbility.damage);
+            yield return null; // wait for next frame
+        }
+
+        // Confirmed cast
+        Vector3 finalTargetPosition = currentIndicator.transform.position;
+        Destroy(currentIndicator);
+
+        yield return new WaitForSeconds(0.2f); // small casting delay
+
+        FireProjectile(posicionCursor.lookPoint);
+
         offensiveAbilityCooldown = offensiveAbility.killCountCooldown;
+        playerInventory.selectedItemType = ItemType.Arma;
         playerController.ShowWeapon(true);
     }
+    private Vector3 GetClampedCursorPosition(float maxRange)
+    {
+        Vector3 targetPosition = posicionCursor.lookPoint;
+        Vector3 playerPosition = transform.position;
+
+        float distance = Vector3.Distance(playerPosition, targetPosition);
+        if (distance > maxRange)
+        {
+            Vector3 direction = (targetPosition - playerPosition).normalized;
+            targetPosition = playerPosition + direction * maxRange;
+        }
+
+        return targetPosition;
+    }
+    private void FireProjectile(Vector3 targetPosition)
+    {
+        GameObject fireball = Instantiate(fireballPrefab, transform.position + Vector3.up * 5f + Vector3.forward * 5, Quaternion.identity);
+
+        Vector3 direction = (targetPosition - fireball.transform.position).normalized;
+
+        Rigidbody rb = fireball.GetComponent<Rigidbody>();
+        rb.AddForce(direction * fireballSpeed, ForceMode.VelocityChange);
+        rb.useGravity = true;
+
+        Fireball fbScript = fireball.GetComponent<Fireball>();
+        if (fbScript != null)
+        {
+            fbScript.SetDamage(playerInventory.equippedAbilities[AbilityType.Ofensiva].damage);
+            fbScript.SetAreaOfEffect(playerInventory.equippedAbilities[AbilityType.Ofensiva].areaOfEffect);
+        }
+    }
+
 }
+

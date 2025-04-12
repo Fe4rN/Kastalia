@@ -26,6 +26,7 @@ public abstract class PlayerController : MonoBehaviour
     public bool isCastingAbility = false;
 
     [SerializeField] Transform mano;
+    [SerializeField] GameObject shieldPrefab;
 
     protected virtual void Start()
     {
@@ -61,14 +62,16 @@ public abstract class PlayerController : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
             {
-                if(offensiveAbilityController.offensiveAbilityCooldown == 0){
+                if (offensiveAbilityController.offensiveAbilityCooldown == 0)
+                {
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Ofensiva;
                 }
             }
             if (Input.GetKeyDown(KeyCode.E) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
             {
-                if(defensiveAbilityController.defensiveAbilityCooldown == 0){
+                if (defensiveAbilityController.defensiveAbilityCooldown == 0)
+                {
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Defensiva;
                     defensiveAbilityController.enableShield();
@@ -77,16 +80,19 @@ public abstract class PlayerController : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.R) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
             {
-                if(healingAbilityController.healingAbilityCooldown == 0){
+                if (healingAbilityController.healingAbilityCooldown == 0)
+                {
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Curativa;
                     StartCoroutine(healingAbilityController.healingAbility());
                     ShowWeapon(true);
                 }
             }
-            
-            if (playerInventory.selectedItemType == ItemType.Habilidad && playerInventory.selectedAbilityType == AbilityType.Ofensiva){
-                if(Input.GetKeyDown(KeyCode.Mouse0)){
+
+            if (playerInventory.selectedItemType == ItemType.Habilidad && playerInventory.selectedAbilityType == AbilityType.Ofensiva)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
                     StartCoroutine(offensiveAbilityController.offensiveAbility());
                 }
             }
@@ -135,7 +141,13 @@ public abstract class PlayerController : MonoBehaviour
         }
     }
 
-    public void ShowWeapon(bool value){
+    public void ShowWeapon(bool value)
+    {
         mano.GetChild(0).gameObject.SetActive(value);
+    }
+
+    public void ToggleShieldPrefab(bool value)
+    {
+        shieldPrefab.SetActive(value);
     }
 }

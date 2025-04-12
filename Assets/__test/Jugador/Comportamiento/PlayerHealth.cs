@@ -9,17 +9,22 @@ public class PlayerHealth : MonoBehaviour
     private bool inmunidad = false;
     public int defensiveAbilityHits = 0;
 
+    private PlayerController playerController;
+
     void Start()
     {
         vidaActual = vidaMaxima;
+        playerController = GetComponent<PlayerController>();
+
     }
 
     public void takeDamage(float damage)
     {
-        if (inmunidad) return;
+        if (inmunidad || playerController.isDashing) return;
         if (defensiveAbilityHits > 0)
         {
             defensiveAbilityHits--;
+            if(defensiveAbilityHits == 0) playerController.ToggleShieldPrefab(false);
             StartCoroutine(ActivarInmunidad());
             return;
         }
