@@ -4,37 +4,18 @@ using UnityEditor;
 
 public class Victory_Manager : MonoBehaviour
 {
-    public GameObject winMenu;
-
-    private void Start()
-    {
-        if (winMenu != null)
-            winMenu.SetActive(false);
-    }
-
-    public void WinGame()
-    {
-        Debug.Log("1");
-        Time.timeScale = 0;
-
-        Debug.Log("2");
-        if (winMenu != null) { winMenu.SetActive(true); }
-
-
-        Debug.Log("3");
-        SceneManager.LoadScene("Menu_Victoria"); 
-    }
 
     public void VolverAlMenu()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene("MainMenu");
+        LevelManager.instance.isPlayerLoadedIn = false;
+        GameManager.instance.StartMainMenu();
     }
 
     public void JugarDeNuevo()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.UnloadSceneAsync("Menu_Victoria");
+        GameManager.instance.RestartGame();
+        GameManager.instance.isPaused = false;
     }
 
     public void SalirDelJuego()

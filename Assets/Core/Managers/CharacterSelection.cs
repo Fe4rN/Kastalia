@@ -30,6 +30,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
         {
             Debug.Log("Selected character: " + selectedCharacter);
             GameManager.instance.characterIndex = selectedCharacter;
+            GameManager.instance.isPaused = false;
         } else {
             Debug.Log("No character selected");
         }

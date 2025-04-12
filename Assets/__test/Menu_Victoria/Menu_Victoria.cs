@@ -1,16 +1,29 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Menu_Victoria : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] Button volverAlMenuButton;
+    [SerializeField] Button jugarDeNuevoButton;
+    [SerializeField] Button salirDelJuegoButton;
+
     void Start()
     {
-        
+        volverAlMenuButton.onClick.AddListener(VolverAlMenu);
+        jugarDeNuevoButton.onClick.AddListener(JugarDeNuevo);
+        salirDelJuegoButton.onClick.AddListener(SalirDelJuego);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void VolverAlMenu()
     {
-        
+        GameManager.instance.StartMainMenu();
+    }
+    public void JugarDeNuevo()
+    {
+        GameManager.instance.RestartGame();
+    }
+
+    public void SalirDelJuego() {
+        GameManager.instance.SalirDelJuego();
     }
 }

@@ -1,10 +1,11 @@
- using UnityEditor;
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    
+
     public static GameManager instance;
     public int characterIndex = -1;
     public bool playerSpawned = false;
@@ -72,11 +73,14 @@ public class GameManager : MonoBehaviour
         SceneManager.UnloadSceneAsync("Mazmorra1");
         characterIndex = -1;
         playerSpawned = false;
+        LevelManager.instance.isLevelLoaded = false;
         StartMainGameLoop();
     }
 
-    public void StartMainGameLoop(){
-        if(isFromMainMenu){
+    public void StartMainGameLoop()
+    {
+        if (isFromMainMenu)
+        {
             SceneManager.UnloadSceneAsync("MainMenu");
             isFromMainMenu = false;
         }
@@ -98,7 +102,52 @@ public class GameManager : MonoBehaviour
         isPaused = false;
     }
 
-    private void StartMainMenu(){
-        SceneManager.LoadScene("MainMenu");
+    public void StartMainMenu()
+    {
+        playerSpawned = false;
+        characterIndex = -1;
+        LevelManager.instance.isLevelLoaded = false;
+        StartCoroutine(UnloadAllAndLoadMainMenu());
     }
+
+    public void WinGame()
+    {
+        isPaused = true;
+        SceneManager.LoadScene("Menu_Victoria", LoadSceneMode.Additive);
+    }
+
+    public void SalirDelJuego()
+    {
+        Debug.Log("Saliendo del juego...");
+
+        EditorApplication.isPlaying = false;
+
+        Application.Quit();
+    }
+
+    private IEnumerator UnloadAllAndLoadMainMenu()
+    {
+        // First load MainMenu additively to avoid black screen
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync("MainMenu");
+        yield return loadOp;
+
+        // Once loaded, unload all other scenes
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene scene = SceneManager.GetSceneAt(i);
+            if (scene.name != "MainMenu")
+            {
+                AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(scene);
+                yield return unloadOp;
+            }
+        }
+
+        // Finally, set MainMenu as active
+        Scene mainMenuScene = SceneManager.GetSceneByName("MainMenu");
+        if (mainMenuScene.IsValid())
+        {
+            SceneManager.SetActiveScene(mainMenuScene);
+        }
+    }
+
 }
