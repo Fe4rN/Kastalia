@@ -8,7 +8,7 @@ public class AtacarBallestero : Estado
     NavMeshAgent agent;
     BallesteroController controller;
 
-    public float arrowForce = 20f;
+    public int arrowForce = 2;
     private bool isFiring = false;
 
     void Start()

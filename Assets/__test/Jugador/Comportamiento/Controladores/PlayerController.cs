@@ -5,13 +5,11 @@ using UnityEngine.SceneManagement;
 
 public abstract class PlayerController : MonoBehaviour
 {
-    //Variables relacionadas al movimiento
+    // Variables relacionadas al movimiento
     protected CharacterController controller;
     protected PlayerInventory playerInventory;
     protected PlayerHealth playerHealth;
-    protected OffensiveAbility offensiveAbilityController;
-    protected DefensiveAbility defensiveAbilityController;
-    protected HealingAbility healingAbilityController;
+
     private Vector3 playerVelocity;
     private float dashCooldown = 1.5f;
     public bool isDashing = false;
@@ -21,7 +19,7 @@ public abstract class PlayerController : MonoBehaviour
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashTime = 0.1f;
 
-    //Variables relacionadas al ataque
+    // Variables relacionadas al ataque
     public bool isAttacking = false;
     public bool isCastingAbility = false;
 
@@ -30,11 +28,6 @@ public abstract class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         playerInventory = GetComponent<PlayerInventory>();
         playerHealth = GetComponent<PlayerHealth>();
-
-        offensiveAbilityController = GetComponent<OffensiveAbility>();
-        defensiveAbilityController = GetComponent<DefensiveAbility>();
-        healingAbilityController = GetComponent<HealingAbility>();
-
     }
 
     protected virtual void Update()
@@ -52,38 +45,50 @@ public abstract class PlayerController : MonoBehaviour
 
         if (!isDashing && !isAttacking)
         {
+            // Seleccionar arma
             if (Input.GetKeyDown(KeyCode.Alpha1) && playerInventory.weapon != null)
             {
                 playerInventory.selectedItemType = ItemType.Arma;
             }
-            if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
+
+            // Habilidad ofensiva
+            if (Input.GetKeyDown(KeyCode.Q) && playerInventory.offensiveAbility != null)
             {
-                if(offensiveAbilityController.offensiveAbilityCooldown == 0){
+                if (playerInventory.offensiveAbility.offensiveAbilityCooldown == 0)
+                {
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Ofensiva;
                 }
             }
-            if (Input.GetKeyDown(KeyCode.E) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
+
+            // Habilidad defensiva
+            if (Input.GetKeyDown(KeyCode.E) && playerInventory.defensiveAbility != null)
             {
-                if(defensiveAbilityController.defensiveAbilityCooldown == 0){
+                if (playerInventory.defensiveAbility.defensiveAbilityCooldown == 0)
+                {
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Defensiva;
-                    defensiveAbilityController.enableShield();
+                    playerInventory.defensiveAbility.EnableShield();
                 }
             }
-            if (Input.GetKeyDown(KeyCode.R) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
+
+            // Habilidad curativa
+            if (Input.GetKeyDown(KeyCode.R) && playerInventory.healingAbility != null)
             {
-                if(healingAbilityController.healingAbilityCooldown == 0){
+                if (playerInventory.healingAbility.healingAbilityCooldown == 0)
+                {
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Curativa;
-                    StartCoroutine(healingAbilityController.healingAbility());
+                    StartCoroutine(playerInventory.healingAbility.ActivateHealingAbility());
                 }
             }
-            
-            if (playerInventory.selectedItemType == ItemType.Habilidad && playerInventory.selectedAbilityType == AbilityType.Ofensiva){
-                if(Input.GetKeyDown(KeyCode.Mouse0)){
-                    StartCoroutine(offensiveAbilityController.offensiveAbility());
-                }
+
+            // Lanzar habilidad ofensiva si está seleccionada
+            if (playerInventory.selectedItemType == ItemType.Habilidad &&
+                playerInventory.selectedAbilityType == AbilityType.Ofensiva &&
+                Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                StartCoroutine(playerInventory.offensiveAbility.ActivateOffensiveAbility());
             }
         }
 
@@ -96,13 +101,11 @@ public abstract class PlayerController : MonoBehaviour
             playerVelocity.y += gravityValue * Time.deltaTime;
         }
 
-
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
     IEnumerator Dash(Vector3 move)
     {
-
         float startTime = Time.time;
         isDashing = true;
         while (Time.time < startTime + dashTime)

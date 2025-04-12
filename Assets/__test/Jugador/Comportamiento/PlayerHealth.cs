@@ -1,28 +1,38 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] float vidaMaxima = 100f;
-    public float vidaActual;
-    private float tiempoInmunidad = .75f;
+    [Header("Salud")]
+    public int vidaMaxima = 10;
+    public int vidaActual;
+
+    [Header("Inmunidad y defensas")]
+    private float tiempoInmunidad = 0.75f;
     private bool inmunidad = false;
     public int defensiveAbilityHits = 0;
+
+    [Header("Eventos")]
+    public UnityEvent<int> cambioVida;
 
     void Start()
     {
         vidaActual = vidaMaxima;
+        cambioVida?.Invoke(vidaActual);
     }
 
-    public void takeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         if (inmunidad) return;
+
         if (defensiveAbilityHits > 0)
         {
             defensiveAbilityHits--;
             StartCoroutine(ActivarInmunidad());
             return;
         }
+
         if (vidaActual - damage > 0)
         {
             vidaActual -= damage;
@@ -33,14 +43,16 @@ public class PlayerHealth : MonoBehaviour
             vidaActual = 0;
             Die();
         }
+
+        cambioVida?.Invoke(vidaActual);
     }
 
-    public void healPlayer(int ammount)
+    public void HealPlayer(int amount)
     {
         if (vidaActual <= 0) return;
-        if (vidaActual + ammount > vidaMaxima) { vidaActual = vidaMaxima; }
-        else { vidaActual += ammount; }
 
+        vidaActual = Mathf.Min(vidaActual + amount, vidaMaxima);
+        cambioVida?.Invoke(vidaActual);
     }
 
     public void Die()

@@ -126,6 +126,9 @@ GameObject:
   - component: {fileID: 4590723734969508553}
   - component: {fileID: 2593802296230818012}
   - component: {fileID: 7460853828753018524}
+  - component: {fileID: 5658357406687655000}
+  - component: {fileID: 5853997508485562718}
+  - component: {fileID: 413967298408847023}
   m_Layer: 6
   m_Name: Lyx
   m_TagString: Player
@@ -188,6 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDashing: 0
+  gravityValue: -9.81
   playerSpeed: 2
   sprintValue: 2
   dashSpeed: 20
@@ -208,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackrange: 2
   chargeRequiredTime: 2
-  chargeMultiplier: 1.5
+  chargeMultiplier: 1
   chargeTime: 0
   isChargingSword: 0
   isFullyCharged: 0
@@ -227,9 +231,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c45f31fd62efb247befd9415572b728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 100
+  vidaMaxima: 10
   vidaActual: 0
   defensiveAbilityHits: 0
+  cambioVida:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2329343856140047616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,7 +244,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8343663245281204225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67d662c6c11b9e043af53901cb55e734, type: 3}
   m_Name: 
@@ -298,6 +305,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookPoint: {x: 0, y: 0, z: 0}
+--- !u!114 &5658357406687655000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c8d0c9b69731f40bf739d74877f7e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFull: 
+  slots: []
+--- !u!65 &5853997508485562718
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &413967298408847023
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8494093150985759838
 GameObject:
   m_ObjectHideFlags: 0

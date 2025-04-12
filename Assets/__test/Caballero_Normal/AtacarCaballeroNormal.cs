@@ -7,57 +7,83 @@ public class Atacar : Estado
     CaballeroNormalController controller;
     Transform player;
     NavMeshAgent agent;
-    bool puedeAtacar = true;
 
-    public float damage = 20f;
+    public int damage = 1;
     public EnemigoTipo tipoDeEnemigo;
 
     [SerializeField] float distanceToPlayer;
 
+    private Coroutine ataqueCorriendo;
+
     void Start()
     {
-        player = FindFirstObjectByType<PlayerController>().transform;
-        agent = GetComponent<NavMeshAgent>();
         controller = maquina as CaballeroNormalController;
+        player = controller.Player;
+        agent = GetComponent<NavMeshAgent>();
         agent.ResetPath();
     }
 
     private void Update()
     {
-        if (player == null) return;
-        DistanceToPlayer();
-
-        // Check if within visual attack range and can attack
-        if (distanceToPlayer <= controller.distanciaAtaque && puedeAtacar )
+        if (player == null)
         {
-            Debug.Log("Enemigo ataca al jugador");
-            StartCoroutine(LoopAtaque());
+            // Detener ataque si el jugador desaparece
+            if (ataqueCorriendo != null)
+            {
+                StopCoroutine(ataqueCorriendo);
+                ataqueCorriendo = null;
+            }
+            return;
         }
 
-        if (distanceToPlayer > controller.AttackDistance)
+        DistanceToPlayer();
+
+        if (distanceToPlayer <= controller.distanciaAtaque)
         {
-            Debug.Log("Enemigo deja de atacar al jugador");
-            puedeAtacar = true;
-            StopAllCoroutines();
-            maquina.SetEstado(controller.perseguirEstado.Value);
+            if (ataqueCorriendo == null)
+            {
+                Debug.Log("[Atacar] Iniciando ataque al jugador");
+                ataqueCorriendo = StartCoroutine(LoopAtaque());
+            }
+        }
+        else
+        {
+            if (ataqueCorriendo != null)
+            {
+                Debug.Log("[Atacar] Enemigo deja de atacar al jugador");
+                StopCoroutine(ataqueCorriendo);
+                ataqueCorriendo = null;
+                maquina.SetEstado(controller.perseguirEstado.Value);
+            }
         }
     }
 
-
     IEnumerator LoopAtaque()
     {
-        puedeAtacar = false;
-        if (player != null)
+        while (true)
         {
-            PlayerHealth PlayerHealth = player.GetComponent<PlayerHealth>();
-            if (PlayerHealth != null)
+            if (player != null)
             {
-                PlayerHealth.takeDamage(controller.attackDamage);
+                // Rotar hacia el jugador
+                Vector3 direccion = player.position - transform.position;
+                direccion.y = 0;
+                if (direccion != Vector3.zero)
+                    transform.rotation = Quaternion.LookRotation(direccion);
+
+                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    Debug.Log("[Atacar] Daño aplicado: " + controller.attackDamage);
+                    playerHealth.TakeDamage(controller.attackDamage);
+                }
+            }
+            else
+            {
+                yield break; // Salir si el jugador desaparece
             }
 
-            yield return new WaitForSeconds(1f); // Cooldown
+            yield return new WaitForSeconds(1f); // Tiempo entre ataques
         }
-        puedeAtacar = true;
     }
 
     private void DistanceToPlayer()

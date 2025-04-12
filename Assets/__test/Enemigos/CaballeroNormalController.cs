@@ -8,7 +8,7 @@ public class CaballeroNormalController : Maquina
     public float distanciaAtaque = 3f;
     [SerializeField] float distanciaDeteccion = 5f;
 
-    public float attackDamage = 10f;
+    public int attackDamage = 1;
 
     public NombreEstado deambularEstado;
     public NombreEstado perseguirEstado;

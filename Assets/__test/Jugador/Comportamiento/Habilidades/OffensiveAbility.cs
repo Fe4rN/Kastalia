@@ -6,37 +6,55 @@ public class OffensiveAbility : MonoBehaviour
     private PlayerInventory playerInventory;
     private PlayerController playerController;
     private PosicionCursor posicionCursor;
-    public int offensiveAbilityCooldown = 0;
 
-    void Start(){
+    public int offensiveAbilityCooldown = 0;  // Cooldown en segundos
+    public Sprite icon;  // Sprite para el icono de la habilidad
+
+    void Start()
+    {
         playerInventory = GetComponent<PlayerInventory>();
         playerController = GetComponent<PlayerController>();
         posicionCursor = GetComponent<PosicionCursor>();
     }
 
-    public IEnumerator offensiveAbility()
+    public IEnumerator ActivateOffensiveAbility()
     {
-        if (!playerInventory.equippedAbilities.TryGetValue(AbilityType.Ofensiva, out Ability offensiveAbility))
+        if (offensiveAbilityCooldown > 0)
         {
-            Debug.LogWarning("No offensive ability equipped!");
-            yield break;
+            Debug.Log("Habilidad en cooldown");
+            yield break;  // No ejecutar si está en cooldown
         }
 
         Vector3 targetPosition = posicionCursor.lookPoint;
         Vector3 playerPosition = transform.position;
         float distanceToTarget = Vector3.Distance(playerPosition, targetPosition);
-        float maxCastRange = offensiveAbility.range;
+        float maxCastRange = 10f;  // Rango máximo de la habilidad ofensiva
 
+        // Si la distancia al objetivo es mayor que el rango máximo, ajustamos la posición
         if (distanceToTarget > maxCastRange)
         {
             Vector3 direction = (targetPosition - playerPosition).normalized;
             targetPosition = playerPosition + direction * maxCastRange;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f);  // Tiempo de lanzamiento de la habilidad
 
-        playerController.comprobarEnemigosEnArea(targetPosition, offensiveAbility.areaOfEffect, offensiveAbility.damage);
-        offensiveAbilityCooldown = offensiveAbility.killCountCooldown;
-        // if (playerInventory.equippedWeapon) currentlySelected = equippedWeapon.weaponType.ToString();
+        // Aquí llamarías a tu lógica de área de efecto o daño
+        playerController.comprobarEnemigosEnArea(targetPosition, 5f, 10);  // Área de efecto y daño de ejemplo
+
+        // Iniciar cooldown
+        offensiveAbilityCooldown = 5;  // Cooldown de 5 segundos, por ejemplo
+
+        // Comienza el contador de cooldown
+        StartCoroutine(Cooldown());
+    }
+
+    private IEnumerator Cooldown()
+    {
+        while (offensiveAbilityCooldown > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            offensiveAbilityCooldown--;
+        }
     }
 }

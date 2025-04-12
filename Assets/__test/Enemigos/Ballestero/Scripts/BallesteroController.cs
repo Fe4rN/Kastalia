@@ -4,7 +4,7 @@ public class BallesteroController : Maquina
 {
     public EnemyType tipoEnemigo = EnemyType.Ballestero;
     //Atributos relacionados al enemigo
-    public float attackDamage = 20f;
+    public int attackDamage = 2;
     public float shootingDistance = 15f;
     public float safeDistance = 10f;
     public float fireCooldown = 1f;

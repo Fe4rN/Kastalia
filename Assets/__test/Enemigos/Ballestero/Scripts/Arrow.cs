@@ -7,7 +7,7 @@ public class Arrow : MonoBehaviour
     [SerializeField] private float TTL = 3f;
     private Rigidbody rb;
     private bool hasHit = false;
-    private float damage;
+    private int damage;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -24,7 +24,7 @@ public class Arrow : MonoBehaviour
         if (PlayerHealth)
         {
             Debug.Log("PlayerHealth component found, applying damage.");
-            PlayerHealth.takeDamage(damage);
+            PlayerHealth.TakeDamage(damage);
         }
         else if (EnemyHealth)
         {
@@ -38,7 +38,7 @@ public class Arrow : MonoBehaviour
         StickToTarget(other.transform);
     }
 
-    public void setDamage(float damage){
+    public void setDamage(int damage){
         this.damage = damage;
     }
 

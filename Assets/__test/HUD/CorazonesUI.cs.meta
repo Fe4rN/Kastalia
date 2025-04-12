@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 577fd455f1a0c3f48b0222854e69e859
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - corazonPrefab: {instanceID: 0}
+  - vidaJugador: {instanceID: 0}
+  - vida: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
