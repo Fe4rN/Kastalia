@@ -26,6 +26,7 @@ public class DeambularCaballeroNormal : Estado
             {
                 StopAllCoroutines();
                 estaDeambulando = false;
+                controller.DisplayAgroPopup();
                 maquina.SetEstado(controller.perseguirEstado.Value);
             } else if(!estaDeambulando){
                 estaDeambulando = true;

@@ -183,6 +183,7 @@ MonoBehaviour:
   OnStateChanged:
     m_PersistentCalls:
       m_Calls: []
+  agroPopupPrefab: {fileID: 800571591104117930, guid: 0c5884c97bf2e0b4ba4b1cd51956da87, type: 3}
   tipoEnemigo: 0
   distanciaAtaque: 3
   distanciaDeteccion: 20

@@ -26,6 +26,7 @@ public class DeambularBombardero : Estado
                 StopCoroutine(DeambularCoorutina());
                 estaDeambulando = false;
                 transform.LookAt(controller.jugador);
+                controller.DisplayAgroPopup();
                 controller.SetEstado(controller.atacarEstado.Value);
             }
             else if (controller.distanciaAJugador <= controller.safeDistance)
@@ -33,6 +34,7 @@ public class DeambularBombardero : Estado
                 StopCoroutine(DeambularCoorutina());
                 estaDeambulando = false;
                 transform.LookAt(controller.jugador);
+                controller.DisplayAgroPopup();
                 controller.SetEstado(controller.mantenerDistanciaEstado.Value);
             }
             else

@@ -9,6 +9,8 @@ public abstract class Maquina : MonoBehaviour
     Estado[] estados;
     Estado _estado;
 
+    [SerializeField] private GameObject agroPopupPrefab;
+
     public Estado Estado
     {
         get => _estado;
@@ -73,6 +75,10 @@ public abstract class Maquina : MonoBehaviour
         }
 
         Debug.LogError($"No hay un estado {nombre}");
+    }
+
+    public void DisplayAgroPopup(){
+        if(agroPopupPrefab) Instantiate(agroPopupPrefab, transform.position, Quaternion.identity, transform);
     }
 }
 

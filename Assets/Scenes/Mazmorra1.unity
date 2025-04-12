@@ -943,10 +943,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterIndex: 0
   playerSpawned: 0
-  currentCharacter: 
+  isPaused: 0
+  isLevelLoaded: 0
   Lyx: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
   Dreven: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-  isPaused: 0
+  personajeSeleccionado: {fileID: 0}
 --- !u!4 &524873435
 Transform:
   m_ObjectHideFlags: 0
@@ -1196,10 +1197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614684218fad19e49b4055f48a4afe0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyQuantity: 0
   enemyPrefab: {fileID: 8115032155769542572, guid: 267ce24bb5897234480b5024a8689c80, type: 3}
-  lyxPrefab: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-  drevenPrefab: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
+  enemyQuantity: 0
   player: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
   isLevelLoaded: 0
@@ -4029,3 +4028,4 @@ SceneRoots:
   - {fileID: 1501535984}
   - {fileID: 589095687}
   - {fileID: 752501601}
+  - {fileID: 524873435}
