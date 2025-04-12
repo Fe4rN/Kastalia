@@ -47,6 +47,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
 {
+    if (Cronometro.instance != null)
+    {
+        Cronometro.instance.Detener();
+    }
+
     StopAllCoroutines();
 
     // Mostrar cursor del sistema

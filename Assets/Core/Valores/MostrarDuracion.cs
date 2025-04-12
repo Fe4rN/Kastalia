@@ -3,15 +3,30 @@ using TMPro;
 
 public class MostrarDuracion : MonoBehaviour
 {
-    void Start()
-    {
-        TextMeshProUGUI texto = GetComponent<TextMeshProUGUI>();
+    private TextMeshProUGUI texto;
 
-        // Recupera el tiempo guardado al final del juego
+    void Awake()
+    {
+        texto = GetComponent<TextMeshProUGUI>();
+    }
+
+    void OnEnable()
+    {
+        ActualizarTexto();
+    }
+
+    public void ActualizarTexto()
+    {
         if (PlayerPrefs.HasKey("DuracionPartida"))
         {
-            texto.text = "Duración: " + PlayerPrefs.GetString("DuracionPartida");
+            string valor = PlayerPrefs.GetString("DuracionPartida");
+            texto.text = "Duración: " + valor;
+            Debug.Log("[MostrarDuracion] Texto actualizado: " + valor);
         }
-        
+        else
+        {
+            texto.text = "Duración: --:--";
+            Debug.Log("[MostrarDuracion] No se encontró DuracionPartida en PlayerPrefs.");
+        }
     }
 }

@@ -5,25 +5,23 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     public int characterIndex = -1;
-    public int lastCharacterIndex = -1;
     public bool playerSpawned = false;
-    public string currentCharacter;
+    public bool isPaused = false;
+    public bool isLevelLoaded = false;
 
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
 
     public GameObject personajeSeleccionado;
 
-    public bool isPaused = false;
-    public bool isLevelLoaded = false;
-
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -45,15 +43,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RestartGame()
-    {
-        SceneManager.UnloadSceneAsync("Mazmorra1");
-        playerSpawned = false;
-        StartMainGameLoop();
-    }
-
     public void StartMainGameLoop()
     {
+        if (IsSceneLoaded("Derrota") || IsSceneLoaded("MainMenu"))
+        {
+            characterIndex = -1;
+            personajeSeleccionado = null;
+            playerSpawned = false;
+            isLevelLoaded = false;
+
+            if (LevelManager.instance != null)
+                LevelManager.instance.ResetLevelState(true);
+
+            // 🔥 Eliminamos reinicio del cronómetro aquí para hacerlo tras selección real
+        }
+
         StartCoroutine(CargarMazmorraYSeleccion());
     }
 
@@ -82,17 +86,6 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void Reintentar()
-    {
-        Time.timeScale = 1f;
-
-        characterIndex = lastCharacterIndex;
-        playerSpawned = false;
-        isLevelLoaded = false;
-
-        SceneManager.LoadScene("Mazmorra1"); // el prefab sigue guardado en personajeSeleccionado
-    }
-
     public void VolverAlMenuPrincipal()
     {
         characterIndex = -1;
@@ -104,6 +97,11 @@ public class GameManager : MonoBehaviour
         if (LevelManager.instance != null)
         {
             LevelManager.instance.ResetLevelState(true);
+        }
+
+        if (Cronometro.instance != null)
+        {
+            Cronometro.instance.ReiniciarCronometro();
         }
 
         SceneManager.LoadScene("MainMenu");

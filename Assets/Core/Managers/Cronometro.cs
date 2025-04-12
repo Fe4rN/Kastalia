@@ -12,7 +12,8 @@ public class Cronometro : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject); // Persiste entre escenas
+            DontDestroyOnLoad(gameObject);
+            
         }
         else
         {
@@ -25,27 +26,41 @@ public class Cronometro : MonoBehaviour
         if (contando)
         {
             tiempo += Time.deltaTime;
+            
         }
     }
 
     public void Detener()
     {
         contando = false;
-        // Guardamos el tiempo cuando se detiene
-        PlayerPrefs.SetString("DuracionPartida", ObtenerTiempoFormateado());
-        PlayerPrefs.Save();  // Aseguramos que el tiempo se guarda en PlayerPrefs
+
+        string tiempoFinal = ObtenerTiempoFormateado();
+        
+
+        PlayerPrefs.SetString("DuracionPartida", tiempoFinal);
+        PlayerPrefs.Save();
+        
+
+        MostrarDuracion textoDuracion = FindAnyObjectByType<MostrarDuracion>();
+        if (textoDuracion != null)
+        {
+            textoDuracion.ActualizarTexto();
+            
+        }
     }
 
     public void ReiniciarCronometro()
     {
-        tiempo = 0f;  // Reinicia el contador de tiempo
-        contando = true;  // Reinicia el conteo
+        tiempo = 0f;
+        contando = true;
+        
     }
 
     public string ObtenerTiempoFormateado()
     {
-        int minutos = Mathf.FloorToInt(tiempo / 60f);
-        int segundos = Mathf.FloorToInt(tiempo % 60f);
+        int segundosTotales = Mathf.RoundToInt(tiempo);
+        int minutos = segundosTotales / 60;
+        int segundos = segundosTotales % 60;
         return string.Format("{0:00}:{1:00}", minutos, segundos);
     }
 

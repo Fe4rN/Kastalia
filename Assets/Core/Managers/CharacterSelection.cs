@@ -8,7 +8,6 @@ public class CharacterSelection : MonoBehaviour
     public Button Dreven;
     public Button Confirm;
 
-    private Button selectedButton;
     private int selectedCharacter = -1;
 
     void Start()
@@ -21,7 +20,7 @@ public class CharacterSelection : MonoBehaviour
     private void selectCharacter(int value)
     {
         selectedCharacter = value;
-        selectedButton = (value == 1) ? Lyx : Dreven;
+        Debug.Log($"Personaje seleccionado: {(value == 1 ? "Lyx" : "Dreven")}");
     }
 
     void confirmSelection()
@@ -29,21 +28,29 @@ public class CharacterSelection : MonoBehaviour
         if (selectedCharacter != -1)
         {
             GameManager.instance.characterIndex = selectedCharacter;
-            GameManager.instance.lastCharacterIndex = selectedCharacter;
 
-            if (selectedCharacter == 1)
-                GameManager.instance.personajeSeleccionado = GameManager.instance.Lyx;
-            else if (selectedCharacter == 2)
-                GameManager.instance.personajeSeleccionado = GameManager.instance.Dreven;
+            GameManager.instance.personajeSeleccionado = selectedCharacter == 1
+                ? GameManager.instance.Lyx
+                : GameManager.instance.Dreven;
+
+            GameManager.instance.playerSpawned = false;
+
+            if (Cronometro.instance != null)
+            {
+                Cronometro.instance.ReiniciarCronometro();
+                Debug.Log("[CharacterSelection] Cronómetro reiniciado tras seleccionar personaje.");
+            }
 
             if (SceneManager.GetSceneByName("CharacterSelection").isLoaded)
             {
                 SceneManager.UnloadSceneAsync("CharacterSelection");
             }
+
+            Debug.Log("[CharacterSelection] Confirmado y personaje asignado.");
         }
         else
         {
-            Debug.Log("No character selected");
+            Debug.LogWarning("[CharacterSelection] No se ha seleccionado ningún personaje.");
         }
     }
 }

@@ -4,9 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public int enemyQuantity;
-    [SerializeField] private GameObject enemyPrefab;
     public static LevelManager instance;
+
+    [SerializeField] private GameObject enemyPrefab;
+    public int enemyQuantity;
 
     public GameObject player;
     public Vector3 spawnPoint;
@@ -26,7 +27,6 @@ public class LevelManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
 
@@ -42,6 +42,12 @@ public class LevelManager : MonoBehaviour
 
         isLevelLoaded = false;
         GameManager.instance.playerSpawned = false;
+
+        if (Cronometro.instance != null)
+        {
+            Cronometro.instance.ReiniciarCronometro();
+            Debug.Log("Cronómetro reiniciado desde LevelManager");
+        }
     }
 
     void Update()
@@ -52,7 +58,7 @@ public class LevelManager : MonoBehaviour
         if (!isLevelLoaded && GameManager.instance.personajeSeleccionado != null && !GameManager.instance.playerSpawned)
         {
             LoadLevel();
-            LoadPlayer(); // instanciamos siempre desde el prefab guardado
+            LoadPlayer();
             GameManager.instance.playerSpawned = true;
             isLevelLoaded = true;
         }
@@ -78,7 +84,7 @@ public class LevelManager : MonoBehaviour
         player = Instantiate(prefab, spawnPoint - new Vector3(0, 1, 0), Quaternion.identity);
 
         cinemachineCamera = FindAnyObjectByType<CinemachineCamera>();
-        if (cinemachineCamera != null && player != null)
+        if (cinemachineCamera != null)
         {
             cinemachineCamera.Follow = player.transform;
             Debug.Log("Cámara siguiendo al jugador");
@@ -97,8 +103,11 @@ public class LevelManager : MonoBehaviour
     {
         isLevelLoaded = false;
 
-        if (reiniciarJugador)
+        if (reiniciarJugador && player != null)
+        {
+            Destroy(player);
             player = null;
+        }
     }
 
     public void ReloadMazmorraLevel()
