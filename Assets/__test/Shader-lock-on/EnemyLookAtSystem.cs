@@ -5,9 +5,9 @@ public class EnemyLookAtSystem : MonoBehaviour
     public float detectionRange = 15f;
     public LayerMask enemyMask;
 
-    private Transform currentTarget;
+    public Transform currentTarget;
     private Transform player;
-    private bool isLocked = false;
+    public bool isLocked = false;
 
     void Start()
     {
