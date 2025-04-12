@@ -8,11 +8,14 @@ public class AbilityPickup : MonoBehaviour
     {
         PlayerInventory inventario = other.GetComponent<PlayerInventory>();
 
-        if(inventario){
+        if (inventario && !inventario.HasAbility(abilityData))
+        {
             inventario.EquipAbility(abilityData);
-            if (inventario.equippedAbilities.ContainsKey(abilityData.abilityType)){
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("Ya tienes esta habilidad equipada.");
         }
     }
 }

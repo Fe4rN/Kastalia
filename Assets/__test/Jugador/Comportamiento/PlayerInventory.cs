@@ -9,7 +9,6 @@ public class PlayerInventory : MonoBehaviour
     public AbilityType selectedAbilityType;
     public Dictionary<AbilityType, Ability> equippedAbilities = new Dictionary<AbilityType, Ability>();
 
-
     public void EquipWeapon(Weapon weapon)
     {
         if (weapon.weaponType == allowedWeaponType)
@@ -18,8 +17,21 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public bool HasWeapon(Weapon other)
+    {
+        return weapon != null && weapon.name == other.name;
+    }
+
     public void EquipAbility(Ability ability)
     {
-        equippedAbilities.Add(ability.abilityType, ability);
+        if (!equippedAbilities.ContainsKey(ability.abilityType))
+        {
+            equippedAbilities.Add(ability.abilityType, ability);
+        }
+    }
+
+    public bool HasAbility(Ability ability)
+    {
+        return equippedAbilities.ContainsKey(ability.abilityType);
     }
 }
