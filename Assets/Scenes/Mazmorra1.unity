@@ -2099,7 +2099,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 8.5, y: 48.80005}
+  m_AnchoredPosition: {x: 8.5, y: 48.800293}
   m_SizeDelta: {x: 168.7, y: 41.3}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &1107913011
@@ -3934,7 +3934,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2527048815882417504, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.157
       objectReference: {fileID: 0}
     - target: {fileID: 2527048815882417504, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3971,10 +3971,6 @@ PrefabInstance:
     - target: {fileID: 6006741857242452782, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
       propertyPath: m_Name
       value: HojaAfilada
-      objectReference: {fileID: 0}
-    - target: {fileID: 6006741857242452782, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
