@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
 
+    // 🆕 NUEVO: Referencias a los prefabs de armas
+    [SerializeField] private GameObject prefabHojaAfilada;
+    [SerializeField] private GameObject prefabArco;
+
     public GameObject personajeSeleccionado;
 
     void Awake()
@@ -121,5 +125,31 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+       // 🆕 NUEVO: Método para instanciar el arma cerca del personaje seleccionado
+    public void InstanciarArmaParaPersonaje()
+    {
+        if (personajeSeleccionado == null) return;
+
+        Vector3 posicionFrente = personajeSeleccionado.transform.position + personajeSeleccionado.transform.forward * 1f;
+
+        if (personajeSeleccionado == Lyx && prefabHojaAfilada != null)
+        {
+            Instantiate(prefabHojaAfilada, posicionFrente, Quaternion.identity);
+        }
+        else if (personajeSeleccionado == Dreven && prefabArco != null)
+        {
+            Instantiate(prefabArco, posicionFrente, Quaternion.identity);
+        }
+    }
+
+    // 🆕 NUEVO: Método sugerido para ser llamado después de seleccionar personaje
+    public void SeleccionarPersonaje(GameObject personaje)
+    {
+        personajeSeleccionado = personaje;
+        playerSpawned = true;
+
+        InstanciarArmaParaPersonaje(); // 🆕 Instancia el arma correspondiente
     }
 }
