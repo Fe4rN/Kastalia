@@ -12,12 +12,13 @@ public class PlayerHealth : MonoBehaviour
     public int defensiveAbilityHits = 0;
 
     private PlayerController playerController;
+    private MainInterface mainInterface;
 
     void Start()
     {
         vidaActual = vidaMaxima;
         playerController = GetComponent<PlayerController>();
-
+        mainInterface = FindFirstObjectByType<MainInterface>();
     }
 
     public void takeDamage(float damage)
@@ -26,13 +27,14 @@ public class PlayerHealth : MonoBehaviour
         if (defensiveAbilityHits > 0)
         {
             defensiveAbilityHits--;
-            if(defensiveAbilityHits == 0) playerController.ToggleShieldPrefab(false);
+            if (defensiveAbilityHits == 0) playerController.ToggleShieldPrefab(false);
             StartCoroutine(ActivarInmunidad());
             return;
         }
         if (vidaActual - damage > 0)
         {
             vidaActual -= damage;
+            mainInterface.updateVidaText(vidaActual);
             StartCoroutine(ActivarInmunidad());
         }
         else
@@ -45,33 +47,36 @@ public class PlayerHealth : MonoBehaviour
     public void healPlayer(int ammount)
     {
         if (vidaActual <= 0) return;
-        if (vidaActual + ammount > vidaMaxima) { vidaActual = vidaMaxima; }
+        if (vidaActual + ammount > vidaMaxima) { vidaActual = vidaMaxima;}
         else { vidaActual += ammount; }
 
+        mainInterface.updateVidaText(vidaActual);
     }
 
     public void Die()
-{
-    if (Cronometro.instance != null)
     {
-        Cronometro.instance.Detener();
+        if (Cronometro.instance != null)
+        {
+            Cronometro.instance.Detener();
+        }
+
+        mainInterface.updateVidaText(0f);
+
+        StopAllCoroutines();
+
+        // Mostrar cursor del sistema
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Detener juego y mostrar menú derrota
+        Time.timeScale = 0f;
+
+        // Cargar escena de derrota de forma aditiva (para ver la mazmorra detrás)
+        SceneManager.LoadScene("Derrota", LoadSceneMode.Additive);
+
+        // Eliminar jugador
+        Destroy(gameObject);
     }
-
-    StopAllCoroutines();
-
-    // Mostrar cursor del sistema
-    Cursor.lockState = CursorLockMode.None;
-    Cursor.visible = true;
-
-    // Detener juego y mostrar menú derrota
-    Time.timeScale = 0f;
-
-    // Cargar escena de derrota de forma aditiva (para ver la mazmorra detrás)
-    SceneManager.LoadScene("Derrota", LoadSceneMode.Additive);
-
-    // Eliminar jugador
-    Destroy(gameObject);
-}
 
     IEnumerator ActivarInmunidad()
     {

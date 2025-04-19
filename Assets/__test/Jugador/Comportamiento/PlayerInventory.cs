@@ -10,10 +10,12 @@ public class PlayerInventory : MonoBehaviour
     public Dictionary<AbilityType, Ability> equippedAbilities = new Dictionary<AbilityType, Ability>();
 
     PlayerController controller;
+    MainInterface hud;
 
     void Start()
     {
         controller = GetComponent<PlayerController>();
+        hud = FindFirstObjectByType<MainInterface>();
     }
 
 
@@ -23,7 +25,7 @@ public class PlayerInventory : MonoBehaviour
         {
             this.weapon = weapon;
             controller.ShowWeapon(true);
-            
+            hud.updateWeaponSlot(weapon);
         }
     }
 
@@ -37,6 +39,7 @@ public class PlayerInventory : MonoBehaviour
         if (!equippedAbilities.ContainsKey(ability.abilityType))
         {
             equippedAbilities.Add(ability.abilityType, ability);
+            hud.updateHabilitySlots(ability.abilityType, ability);
         }
     }
 
