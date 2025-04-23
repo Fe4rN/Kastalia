@@ -224,8 +224,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDashing: 0
   gravityValue: -9.81
-  playerSpeed: 2
-  sprintValue: 2
+  playerSpeed: 30
+  sprintValue: 3
   dashSpeed: 20
   dashTime: 0.1
   isAttacking: 0
@@ -244,9 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ad8db08504ced4e91fb01190706079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackrange: 2
+  attackrange: 6
   chargeRequiredTime: 2
-  chargeMultiplier: 1
+  chargeMultiplier: 3
   chargeTime: 0
   isChargingSword: 0
   isFullyCharged: 0
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c45f31fd62efb247befd9415572b728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vidaMaxima: 100
+  vidaMaxima: 3000
   vidaActual: 0
   defensiveAbilityHits: 0
 --- !u!114 &2329343856140047616
@@ -354,6 +354,8 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 128
+  currentTarget: {fileID: 0}
+  isLocked: 0
 --- !u!1 &8494093150985759838
 GameObject:
   m_ObjectHideFlags: 0
