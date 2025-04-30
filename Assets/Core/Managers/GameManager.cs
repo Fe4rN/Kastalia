@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+
+
+            // Ensure weapons are inactive at start
+            if (hojaAfilada != null) hojaAfilada.SetActive(false);
+            if (arco != null) arco.SetActive(false);
         }
         else
         {
