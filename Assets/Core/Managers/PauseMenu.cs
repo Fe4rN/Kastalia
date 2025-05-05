@@ -1,17 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
-    Button resume;
-    Button quit;
+    [SerializeField] Button resume;
+    [SerializeField] Button quit;
+    [SerializeField] Button backToMenu;
+   
 
     void Start()
     {
-        resume = GameObject.Find("Play").GetComponent<Button>();
-        quit = GameObject.Find("Exit").GetComponent<Button>();
+       
         resume.onClick.AddListener(() => GameManager.instance.ResumeGame());
         quit.onClick.AddListener(() => CloseGame());
+        backToMenu.onClick.AddListener(() => BackToMenu());
+    }
+
+    private void BackToMenu()
+    {
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     private void CloseGame(){
@@ -21,5 +29,6 @@ public class PauseMenu : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
         #endif
     }
+    
 }
 
