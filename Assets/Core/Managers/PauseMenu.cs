@@ -19,7 +19,9 @@ public class PauseMenu : MonoBehaviour
     private void BackToMenu()
     {
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+
+        Time.timeScale = 1f;
+        GameManager.instance.StartMainMenu();
     }
 
     private void CloseGame(){
