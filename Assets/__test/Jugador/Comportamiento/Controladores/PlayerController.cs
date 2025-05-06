@@ -12,6 +12,8 @@ public abstract class PlayerController : MonoBehaviour
     protected OffensiveAbility offensiveAbilityController;
     protected DefensiveAbility defensiveAbilityController;
     protected HealingAbility healingAbilityController;
+
+    protected MainInterface mainInterface;
     private Vector3 playerVelocity;
     private float dashCooldown = 1.5f;
     public bool isDashing = false;
@@ -38,6 +40,8 @@ public abstract class PlayerController : MonoBehaviour
         defensiveAbilityController = GetComponent<DefensiveAbility>();
         healingAbilityController = GetComponent<HealingAbility>();
 
+        mainInterface = FindFirstObjectByType<MainInterface>();
+
     }
 
     protected virtual void Update()
@@ -59,6 +63,7 @@ public abstract class PlayerController : MonoBehaviour
             {
                 playerInventory.selectedItemType = ItemType.Arma;
                 ShowWeapon(true);
+                mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
             }
             if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
             {
@@ -66,6 +71,7 @@ public abstract class PlayerController : MonoBehaviour
                 {
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Ofensiva;
+                    mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Ofensiva);
                 }
             }
             if (Input.GetKeyDown(KeyCode.E) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))

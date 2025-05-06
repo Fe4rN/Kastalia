@@ -72,6 +72,11 @@ public class EnemyHealth : MonoBehaviour
         if (healingAbilityController.healingAbilityCooldown > 0)
             healingAbilityController.healingAbilityCooldown -= 1;
 
+        MainInterface mainInterface = FindFirstObjectByType<MainInterface>();
+        if (mainInterface)
+        {
+            mainInterface.SubtractCooldown();
+        }
         StopAllCoroutines();
 
         if (EnemyManager.Instance) EnemyManager.Instance.UnregisterEnemy();

@@ -6,6 +6,7 @@ public class OffensiveAbility : MonoBehaviour
     private PlayerInventory playerInventory;
     private PlayerController playerController;
     private PosicionCursor posicionCursor;
+    private MainInterface mainInterface;
     public int offensiveAbilityCooldown = 0;
 
     [SerializeField] GameObject abilityTargetIndicatorPrefab;
@@ -19,6 +20,7 @@ public class OffensiveAbility : MonoBehaviour
         playerInventory = GetComponent<PlayerInventory>();
         playerController = GetComponent<PlayerController>();
         posicionCursor = GetComponent<PosicionCursor>();
+        mainInterface = FindFirstObjectByType<MainInterface>();
     }
     public IEnumerator offensiveAbility()
     {
@@ -59,6 +61,7 @@ public class OffensiveAbility : MonoBehaviour
         FireProjectile(posicionCursor.lookPoint);
 
         offensiveAbilityCooldown = offensiveAbility.killCountCooldown;
+        mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
         playerInventory.selectedItemType = ItemType.Arma;
         playerController.ShowWeapon(true);
     }
@@ -92,6 +95,7 @@ public class OffensiveAbility : MonoBehaviour
             fbScript.SetDamage(playerInventory.equippedAbilities[AbilityType.Ofensiva].damage);
             fbScript.SetAreaOfEffect(playerInventory.equippedAbilities[AbilityType.Ofensiva].areaOfEffect);
         }
+
     }
 
 }

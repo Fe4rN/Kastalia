@@ -15,6 +15,7 @@ public enum AbilityType
     Ofensiva,
     Defensiva,
     Curativa,
+    None
 }
 
 public enum Characters{
