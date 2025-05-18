@@ -1,18 +1,16 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class MainMenu : MonoBehaviour
+
+public class mainMenu : MonoBehaviour
 {
-    public void EscenaJuego()
+    public void jugar()
     {
-        SceneManager.LoadScene("Mazmorra1");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void CargarNivel(string nombreNivel)
+    public void salir()
     {
-        SceneManager.LoadScene(nombreNivel);
-    }
-    public void Salir()
-    {
+        Debug.Log("Salir...");
         Application.Quit();
     }
 }
