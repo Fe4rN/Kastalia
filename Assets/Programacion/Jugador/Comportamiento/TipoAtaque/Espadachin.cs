@@ -12,25 +12,38 @@ public class Espadachin : MonoBehaviour
     public bool isChargingSword = false;
     public bool isFullyCharged = false;
     public bool isRightMouseDown = false;
-    private PlayerController controller;
+    private LyxController controller;
     private PlayerInventory playerInventory;
+    private Animator animator;
     private Vector3 attackDamageOffset;
     [SerializeField] private float empujeFuerza = 5f;
     public float attackCooldown = 0.5f;
 
     void Start()
     {
-        controller = GetComponent<PlayerController>();
+        controller = GetComponent<LyxController>();
         playerInventory = GetComponent<PlayerInventory>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !controller.isAttacking)
+        if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log($"[Click] ThisObject: {gameObject.name}, controller: {controller.name}, isAttacking: {controller.isAttacking}");
+
+            if (controller.isAttacking)
+            {
+                Debug.Log("Attack ignored: already attacking.");
+                return;
+            }
+
+            Debug.Log("Ataque ligero");
             int damage = playerInventory.weapon.damage;
+            animator.SetTrigger("AtaqueLigero");
             StartCoroutine(SwordAttack(damage));
         }
+
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -99,32 +112,38 @@ public class Espadachin : MonoBehaviour
 
     public IEnumerator SwordAttack(int damage)
     {
-        if (controller.isAttacking) yield break;
         controller.isAttacking = true;
 
-        Vector3 attackPosition = controller.transform.position + 
-                                 controller.transform.forward * attackDamageOffset.z +
-                                 controller.transform.up * attackDamageOffset.y +
-                                 controller.transform.right * attackDamageOffset.x;
-
-        Collider[] colliders = Physics.OverlapSphere(attackPosition, attackrange);
-        HashSet<EnemyHealth> uniqueEnemies = new HashSet<EnemyHealth>();
-
-        foreach (Collider c in colliders)
+        try
         {
-            EnemyHealth enemigo = c.GetComponentInParent<EnemyHealth>();
-            if (enemigo != null && !uniqueEnemies.Contains(enemigo))
+            Vector3 attackPosition = controller.transform.position +
+                                     controller.transform.forward * attackDamageOffset.z +
+                                     controller.transform.up * attackDamageOffset.y +
+                                     controller.transform.right * attackDamageOffset.x;
+
+            Collider[] colliders = Physics.OverlapSphere(attackPosition, attackrange);
+            HashSet<EnemyHealth> uniqueEnemies = new HashSet<EnemyHealth>();
+
+            foreach (Collider c in colliders)
             {
-                uniqueEnemies.Add(enemigo);
-                enemigo.TakeDamage(damage);
+                EnemyHealth enemigo = c.GetComponentInParent<EnemyHealth>();
+                if (enemigo != null && !uniqueEnemies.Contains(enemigo))
+                {
+                    uniqueEnemies.Add(enemigo);
+                    enemigo.TakeDamage(damage);
 
-                float fuerzaEmpujeActual = isFullyCharged ? empujeFuerza * 1.5f : empujeFuerza;
-                EmpujarEnemigo(enemigo.gameObject, fuerzaEmpujeActual);
+                    float fuerzaEmpujeActual = isFullyCharged ? empujeFuerza * 1.5f : empujeFuerza;
+                    EmpujarEnemigo(enemigo.gameObject, fuerzaEmpujeActual);
+                }
             }
+            yield return new WaitForSeconds(attackCooldown);
+            controller.isAttacking = false;
+            attackCooldown = isFullyCharged ? 1f : 0.5f;
         }
-
-        yield return new WaitForSeconds(attackCooldown);
-        controller.isAttacking = false;
-        attackCooldown = isFullyCharged ? 1f : 0.5f;
+        finally
+        {
+            controller.isAttacking = false;
+            Debug.Log("Resetting isAttacking to false");
+        }
     }
 }

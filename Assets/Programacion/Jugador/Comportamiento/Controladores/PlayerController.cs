@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,11 +31,15 @@ public abstract class PlayerController : MonoBehaviour
     [SerializeField] Transform mano;
     [SerializeField] GameObject shieldPrefab;
 
+    private Animator animator;
+
     protected virtual void Start()
     {
         controller = GetComponent<CharacterController>();
         playerInventory = GetComponent<PlayerInventory>();
         playerHealth = GetComponent<PlayerHealth>();
+        animator = GetComponentInChildren<Animator>();  
+
 
         offensiveAbilityController = GetComponent<OffensiveAbility>();
         defensiveAbilityController = GetComponent<DefensiveAbility>();
@@ -50,7 +55,10 @@ public abstract class PlayerController : MonoBehaviour
 
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintValue : 1f;
-        controller.Move(move * Time.deltaTime * playerSpeed * speedMultiplier);
+        Vector3 finalMove = move * playerSpeed * speedMultiplier;
+        float inputMagnitude = finalMove.magnitude;
+        animator.SetFloat("InputMagnitude", inputMagnitude, 0.05f, Time.deltaTime);
+        controller.Move(finalMove * Time.deltaTime );
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
