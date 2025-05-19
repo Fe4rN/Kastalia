@@ -54,3 +54,4 @@ MonoBehaviour:
   prefabArco: {fileID: 7231694414113884281, guid: 7ab78fd3b9842394885176a6b6aa9e0a, type: 3}
   UI: {fileID: 2716972620472274776, guid: 76545f1a8cc719d4da08c5f9dcd2b383, type: 3}
   personajeSeleccionado: {fileID: 0}
+  transitionDuration: 2
