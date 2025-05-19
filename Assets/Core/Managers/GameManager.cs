@@ -82,8 +82,20 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator CargarMazmorraYSeleccion()
     {
-        yield return SceneManager.LoadSceneAsync("Mazmorra1");
-        yield return SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
+
+        GameObject fadeObject = CreateFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync("Mazmorra1");
+        yield return loadMazmorra;
+
+        fadeObject = CreateFadeOverlay();
+        fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        fadeGroup.alpha = 1f; // Start from black
+        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
+        yield return loadSelection;
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+
+        Destroy(fadeObject);
     }
 
     public void PauseGame()
