@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
     public int characterIndex = -1;
     public bool playerSpawned = false;
     public bool isPaused = false;
@@ -25,6 +24,9 @@ public class GameManager : MonoBehaviour
     public GameObject UI;
 
     public GameObject personajeSeleccionado;
+
+
+    [SerializeField] private float transitionDuration = 0.5f;
 
     void Awake()
     {
@@ -70,7 +72,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(CargarMazmorraYSeleccion());
     }
 
-    public void WinGame(){
+    public void WinGame()
+    {
         isPaused = true;
         SceneManager.LoadSceneAsync("Menu_Victoria", LoadSceneMode.Additive);
     }
@@ -83,16 +86,31 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
-        SceneManager.LoadSceneAsync("PauseMenu", LoadSceneMode.Additive);
+
+        // Disable the main Audio Listener before loading pause menu
+        AudioListener mainListener = FindObjectOfType<AudioListener>();
+        if (mainListener != null)
+        {
+            mainListener.enabled = false;
+        }
+
+        StartCoroutine(LoadSceneWithTransition("PauseMenu", true));
         Time.timeScale = 0f;
         isPaused = true;
     }
 
     public void ResumeGame()
     {
-        SceneManager.UnloadSceneAsync("PauseMenu");
+        StartCoroutine(UnloadSceneWithTransition("PauseMenu"));
         Time.timeScale = 1f;
         isPaused = false;
+
+        // Re-enable the main Audio Listener after unloading pause menu
+        AudioListener mainListener = FindObjectOfType<AudioListener>();
+        if (mainListener != null)
+        {
+            mainListener.enabled = true;
+        }
     }
 
     public void StartMainMenu()
@@ -129,7 +147,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-       // 🆕 NUEVO: Método para instanciar el arma cerca del personaje seleccionado
+    // 🆕 NUEVO: Método para instanciar el arma cerca del personaje seleccionado
     public void InstanciarArmaParaPersonaje()
     {
         if (personajeSeleccionado == null) return;
@@ -153,5 +171,37 @@ public class GameManager : MonoBehaviour
         playerSpawned = true;
 
         InstanciarArmaParaPersonaje(); // 🆕 Instancia el arma correspondiente
+    }
+
+
+    // New transition methods
+    private IEnumerator LoadSceneWithTransition(string sceneName, bool additive)
+    {
+        yield return SceneManager.LoadSceneAsync("Transition", additive ? LoadSceneMode.Additive : LoadSceneMode.Single);
+        yield return new WaitForSecondsRealtime(transitionDuration);
+
+        // Load the target scene
+        if (additive)
+        {
+            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        }
+        else
+        {
+            yield return SceneManager.LoadSceneAsync(sceneName);
+        }
+
+        if (additive)
+        {
+            yield return SceneManager.UnloadSceneAsync("Transition");
+        }
+    }
+    
+
+    private IEnumerator UnloadSceneWithTransition(string sceneName)
+    {
+        yield return SceneManager.LoadSceneAsync("Transition", LoadSceneMode.Additive);
+        yield return new WaitForSecondsRealtime(transitionDuration);
+        yield return SceneManager.UnloadSceneAsync(sceneName);
+        yield return SceneManager.UnloadSceneAsync("Transition");
     }
 }
