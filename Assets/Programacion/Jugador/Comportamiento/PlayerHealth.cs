@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,7 +48,7 @@ public class PlayerHealth : MonoBehaviour
     public void healPlayer(int ammount)
     {
         if (vidaActual <= 0) return;
-        if (vidaActual + ammount > vidaMaxima) { vidaActual = vidaMaxima;}
+        if (vidaActual + ammount > vidaMaxima) { vidaActual = vidaMaxima; }
         else { vidaActual += ammount; }
 
         mainInterface.updateVidaText(vidaActual);
@@ -63,19 +64,25 @@ public class PlayerHealth : MonoBehaviour
         mainInterface.updateVidaText(0f);
 
         StopAllCoroutines();
+        LevelManager.instance.UI.SetActive(false);
 
         // Mostrar cursor del sistema
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Detener juego y mostrar menú derrota
+        // Freeze game time
+        GameManager.instance.isPaused = true;
         Time.timeScale = 0f;
 
-        // Cargar escena de derrota de forma aditiva (para ver la mazmorra detrás)
-        SceneManager.LoadScene("Derrota", LoadSceneMode.Additive);
 
-        // Eliminar jugador
-        Destroy(gameObject);
+        // Set animator to unscaled time
+        playerController.animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+
+        // Trigger death animation
+        playerController.animator.SetTrigger("Death");
+
+        // Start coroutine to wait for animation and load scene
+        StartCoroutine(WaitForDeathAnimation());
     }
 
     IEnumerator ActivarInmunidad()
@@ -84,4 +91,30 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(tiempoInmunidad);
         inmunidad = false;
     }
+
+    private IEnumerator WaitForDeathAnimation()
+    {
+        Animator animator = playerController.animator;
+
+        // Wait until the animator is in the Death state
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+            yield return null;
+
+        // Wait until animation finishes (using unscaled time)
+        float animationLength = animator.GetCurrentAnimatorStateInfo(0).length;
+        float timer = 0f;
+
+        while (timer < animationLength)
+        {
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        // Load defeat scene additively
+        SceneManager.LoadScene("Derrota", LoadSceneMode.Additive);
+
+        // Optionally destroy the player here or after scene finishes loading
+        // Destroy(gameObject);
+    }
+
 }

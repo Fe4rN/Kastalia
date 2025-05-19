@@ -153,6 +153,7 @@ MonoBehaviour:
   isCastingAbility: 0
   mano: {fileID: 3606099709511096156}
   shieldPrefab: {fileID: 1433901140915960187}
+  animator: {fileID: 0}
 --- !u!114 &3248331834327170092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,7 +636,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: d2cd3b24318f82e4381cfc09193c31c7, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0

@@ -48,4 +48,5 @@ MonoBehaviour:
   enemyQuantity: 0
   player: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
+  UI: {fileID: 0}
   isLevelLoaded: 0

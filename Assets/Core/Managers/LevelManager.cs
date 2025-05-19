@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
 
     public GameObject player;
     public Vector3 spawnPoint;
+    public GameObject UI;
 
     private CinemachineCamera cinemachineCamera;
     private Vector3 EnemySpawnPoint = new Vector3(6.95f, 0, 23.78f);
@@ -46,7 +47,6 @@ public class LevelManager : MonoBehaviour
         if (Cronometro.instance != null)
         {
             Cronometro.instance.ReiniciarCronometro();
-            Debug.Log("Cronómetro reiniciado desde LevelManager");
         }
     }
 
@@ -82,12 +82,14 @@ public class LevelManager : MonoBehaviour
         }
 
         player = Instantiate(prefab, spawnPoint - new Vector3(0, 1, 0), Quaternion.identity);
+        UI = Instantiate(GameManager.instance.UI, Vector3.zero, Quaternion.identity);
+        GameManager.instance.isPaused  = false;
+        Time.timeScale = 1f;
 
         cinemachineCamera = FindAnyObjectByType<CinemachineCamera>();
         if (cinemachineCamera != null)
         {
             cinemachineCamera.Follow = player.transform;
-            Debug.Log("Cámara siguiendo al jugador");
         }
     }
 

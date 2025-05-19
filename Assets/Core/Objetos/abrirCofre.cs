@@ -29,7 +29,6 @@ public class CofreItemDrop : MonoBehaviour
             float tiempoActual = Cronometro.instance.ObtenerTiempoRaw();
             if (tiempoActual >= tiempoSpawn + tiempoDeVida)
             {
-                Debug.Log("⏱️ Cofre desaparece por tiempo: " + gameObject.name);
                 Destroy(gameObject);
             }
         }
@@ -48,7 +47,6 @@ public class CofreItemDrop : MonoBehaviour
 
         Instantiate(seleccionado, puntoSpawn.position, Quaternion.identity);
         haSoltado = true;
-        Debug.Log("Cofre soltó: " + seleccionado.name);
     }
 
     private void OnTriggerEnter(Collider other)

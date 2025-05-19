@@ -28,17 +28,10 @@ public class Espadachin : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && playerInventory.selectedItemType == ItemType.Arma)
         {
-            Debug.Log($"[Click] ThisObject: {gameObject.name}, controller: {controller.name}, isAttacking: {controller.isAttacking}");
+            if (controller.isAttacking) return;
 
-            if (controller.isAttacking)
-            {
-                Debug.Log("Attack ignored: already attacking.");
-                return;
-            }
-
-            Debug.Log("Ataque ligero");
             int damage = playerInventory.weapon.damage;
             animator.SetTrigger("AtaqueLigero");
             StartCoroutine(SwordAttack(damage));
@@ -143,7 +136,6 @@ public class Espadachin : MonoBehaviour
         finally
         {
             controller.isAttacking = false;
-            Debug.Log("Resetting isAttacking to false");
         }
     }
 }

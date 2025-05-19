@@ -24,7 +24,6 @@ public class PlayerInventory : MonoBehaviour
         if (weapon.weaponType == allowedWeaponType)
         {
             this.weapon = weapon;
-            controller.ShowWeapon(true);
             hud.updateWeaponSlot(weapon);
         }
     }

@@ -20,7 +20,6 @@ public class CharacterSelection : MonoBehaviour
     private void selectCharacter(int value)
     {
         selectedCharacter = value;
-        Debug.Log($"Personaje seleccionado: {(value == 1 ? "Lyx" : "Dreven")}");
     }
 
     void confirmSelection()
@@ -41,7 +40,6 @@ public class CharacterSelection : MonoBehaviour
             if (Cronometro.instance != null)
             {
                 Cronometro.instance.ReiniciarCronometro();
-                Debug.Log("[CharacterSelection] Cronómetro reiniciado tras seleccionar personaje.");
             }
 
             if (SceneManager.GetSceneByName("CharacterSelection").isLoaded)
@@ -49,12 +47,6 @@ public class CharacterSelection : MonoBehaviour
                 SceneManager.UnloadSceneAsync("CharacterSelection");
             }
             GameManager.instance.isPaused = false;
-
-            Debug.Log("[CharacterSelection] Confirmado y personaje asignado.");
-        }
-        else
-        {
-            Debug.LogWarning("[CharacterSelection] No se ha seleccionado ningún personaje.");
         }
     }
 }

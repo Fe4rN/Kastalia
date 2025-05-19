@@ -31,7 +31,7 @@ public abstract class PlayerController : MonoBehaviour
     [SerializeField] Transform mano;
     [SerializeField] GameObject shieldPrefab;
 
-    private Animator animator;
+    public Animator animator;
 
     protected virtual void Start()
     {

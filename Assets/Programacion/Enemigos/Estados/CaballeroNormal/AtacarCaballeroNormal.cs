@@ -30,13 +30,11 @@ public class Atacar : Estado
         // Check if within visual attack range and can attack
         if (distanceToPlayer <= controller.distanciaAtaque && puedeAtacar )
         {
-            Debug.Log("Enemigo ataca al jugador");
             StartCoroutine(LoopAtaque());
         }
 
         if (distanceToPlayer > controller.AttackDistance)
         {
-            Debug.Log("Enemigo deja de atacar al jugador");
             puedeAtacar = true;
             StopAllCoroutines();
             maquina.SetEstado(controller.perseguirEstado.Value);

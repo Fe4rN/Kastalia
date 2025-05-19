@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject prefabHojaAfilada;
     [SerializeField] private GameObject prefabArco;
 
+    public GameObject UI;
+
     public GameObject personajeSeleccionado;
 
     void Awake()
