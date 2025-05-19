@@ -82,8 +82,20 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator CargarMazmorraYSeleccion()
     {
-        yield return SceneManager.LoadSceneAsync("Mazmorra1");
-        yield return SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
+
+        GameObject fadeObject = CreateFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync("Mazmorra1");
+        yield return loadMazmorra;
+
+        fadeObject = CreateFadeOverlay();
+        fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        fadeGroup.alpha = 1f; // Start from black
+        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
+        yield return loadSelection;
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+
+        Destroy(fadeObject);
     }
 
     public void PauseGame()
@@ -176,19 +188,22 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // New transition methods
+    // -----------------------------------------------------------------------
+    // -------------------Metodos Para Transiciones entre menus ----------------
+    // -----------------------------------------------------------------------
+
     private IEnumerator LoadSceneWithTransition(string sceneName, bool additive)
     {
         // Create a simple fade overlay
         GameObject fadeObject = CreateFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-        
+
         // Fade in (to black)
         yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-        
+
         // Store reference before potential destruction
         var fadeObjectToDestroy = fadeObject;
-        
+
         // Load the target scene
         AsyncOperation asyncLoad;
         if (additive)
@@ -200,14 +215,15 @@ public class GameManager : MonoBehaviour
             asyncLoad = SceneManager.LoadSceneAsync(sceneName);
             // When loading a new scene non-additively, our fade object will be destroyed
             // so we need to recreate it after scene load
-            asyncLoad.completed += (op) => {
+            asyncLoad.completed += (op) =>
+            {
                 if (fadeObjectToDestroy != null)
                     Destroy(fadeObjectToDestroy);
             };
         }
-        
+
         yield return asyncLoad;
-        
+
         // For non-additive loads, recreate the fade object
         if (!additive)
         {
@@ -215,10 +231,10 @@ public class GameManager : MonoBehaviour
             fadeGroup = fadeObject.GetComponent<CanvasGroup>();
             fadeGroup.alpha = 1f; // Start from black
         }
-        
+
         // Fade out (to clear)
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-        
+
         // Clean up
         if (fadeObject != null)
             Destroy(fadeObject);
