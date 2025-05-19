@@ -32,6 +32,8 @@ public class AtacarBombardero : Estado
             //Si el jugador se encuentra a demasiado cerca
             if (controller.distanciaAJugador < controller.safeDistance)
             {
+
+                
                 agent.ResetPath();
                 transform.LookAt(controller.jugador);
                 controller.SetEstado(controller.mantenerDistanciaEstado.Value);

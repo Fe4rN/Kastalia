@@ -5,8 +5,8 @@ public class BombarderoController : Maquina
 {
     //Atributos relacionados al enemigo
     public float shootingDistance = 15f;
-    public float safeDistance = 10f;
-    public float fireCooldown = 6f;
+    public float safeDistance = 5f;
+    // public float fireCooldown = 0f;
     public bool isFiring = false;
 
     //Atributos relacionados al jugador
@@ -30,9 +30,16 @@ public class BombarderoController : Maquina
         if (!jugador)
         {
             if (FindFirstObjectByType<CharacterController>() == null) return;
-            else{ jugador = FindFirstObjectByType<CharacterController>().transform; }
+            else { jugador = FindFirstObjectByType<CharacterController>().transform; }
         }
         distanciaAJugador = getDistanceToPlayer();
+        
+        //   // NUEVA LÓGICA PARA DISPARO AUTOMÁTICO
+        // if (!isFiring && distanciaAJugador <= shootingDistance)
+        // {
+        //     isFiring = true;
+        //     StartCoroutine(ShootBomba());
+        // }
     }
 
     private float getDistanceToPlayer(){
@@ -47,45 +54,37 @@ public class BombarderoController : Maquina
     public IEnumerator ShootBomba()
     {
         Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 1.75f;
-        Vector3 targetPos = jugador.position;
-        Vector3 direction = (targetPos - spawnPos).normalized;
-        
-        // Physics calculations for arc
-        float gravity = Physics.gravity.magnitude;
-        float angle = 45f * Mathf.Deg2Rad; // Launch angle in radians
-        float horizontalDistance = Vector3.Distance(
-            new Vector3(spawnPos.x, 0, spawnPos.z),
-            new Vector3(targetPos.x, 0, targetPos.z)
-        );
-        
-        // Calculate initial velocity for parabolic arc
-        float initialVelocity = Mathf.Sqrt(horizontalDistance * gravity / Mathf.Sin(2 * angle));
-        
-        // Create bomba with proper rotation
-        Bomba bomba = Instantiate(bombaPrefab, spawnPos, Quaternion.LookRotation(direction));
+        Vector3 targetPos = jugador.position + Vector3.up * 0.5f;
+
+        Bomba bomba = Instantiate(bombaPrefab, spawnPos, Quaternion.identity);
         Rigidbody rb = bomba.GetComponent<Rigidbody>();
-        
-        // Calculate firing direction (combining horizontal and vertical components)
-        Vector3 firingDirection = new Vector3(
-            direction.x * Mathf.Cos(angle),
-            Mathf.Sin(angle),
-            direction.z * Mathf.Cos(angle)
-        ).normalized;
 
-        // Apply force
-        rb.AddForce(firingDirection * initialVelocity, ForceMode.VelocityChange);
-        
-        // Add realistic bomba rotation (fixed version)
-        if (Random.value > 0.5f) // 50% chance to add rotation
-        {
-            rb.AddTorque(new Vector3(
-                Random.Range(-2f, 2f),
-                Random.Range(-1f, 1f),
-                Random.Range(-0.5f, 0.5f)
-            ));
-        }
+        // Tiempo deseado en el aire — más alto = más lento y parabólico
+        float flightTime = 1.4f; // Aumentado para hacerlo más visible y lento
 
-        yield return new WaitForSeconds(fireCooldown);
+        Vector3 toTarget = targetPos - spawnPos;
+        Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
+        float yOffset = toTarget.y;
+        float gravity = Mathf.Abs(Physics.gravity.y);
+
+        // Calcular velocidades
+        float verticalVelocity = (yOffset + 0.5f * gravity * flightTime * flightTime) / flightTime;
+
+        // Acentuar el arco parabólico ligeramente (opcional: +20%)
+        verticalVelocity *= 1.2f;
+
+        Vector3 horizontalVelocity = toTargetXZ / flightTime;
+        Vector3 launchVelocity = horizontalVelocity + Vector3.up * verticalVelocity;
+
+        // Aplicar velocidad
+        rb.linearVelocity = launchVelocity;
+
+        // Iniciar cuenta regresiva para explosión
+        bomba.IniciarCuentaRegresiva();
+
+        yield return new WaitForSeconds(4);
         isFiring = false;
     }
+
+
 }
