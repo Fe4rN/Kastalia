@@ -4,38 +4,46 @@ using System.Collections;
 public class Bomba : MonoBehaviour
 {
     [Header("Damage Settings")]
-    [SerializeField] private float directHitDamage = 5f; // Reduced from 10f
-    [SerializeField] private float explosionDamage = 30f; // Increased from 20f
+    [SerializeField] private float directHitDamage = 5f;
+    [SerializeField] private float explosionDamage = 30f;
 
     [Header("Proximity Explosion")]
     [SerializeField] private float proximityRadius = 3f;
-    [SerializeField] private float explosionDelay = 5f;
+    [SerializeField] private float explosionDelay = 3f;
 
     [SerializeField] private GameObject explosionRadiusIndicatorPrefab;
     [SerializeField] private GameObject dangerRadiusIndicatorPrefab;
 
     private Rigidbody rb;
-    private bool hasHit = false;
+    private bool hasBounced = false;
+    private bool hasExploded = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-
-    void Update()
+    /// <summary>
+    /// Llamado desde BombarderoController para iniciar el conteo regresivo a la explosión.
+    /// </summary>
+    public void IniciarCuentaRegresiva()
     {
+        StartCoroutine(ExplodeAfterDelay(2f));
+    }
+
+    private IEnumerator ExplodeAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Explode();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (hasHit) return;
-        hasHit = true;
-        rb.linearVelocity = Vector3.zero;
-        StartCoroutine(startTicking(explosionDelay));
+        if (hasExploded) return;
 
-        PlayerHealth playerHealth = other.gameObject.GetComponentInParent<PlayerHealth>();
-        EnemyHealth enemyHealth = other.gameObject.GetComponentInParent<EnemyHealth>();
+        PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
+        EnemyHealth enemyHealth = other.GetComponentInParent<EnemyHealth>();
+
         if (playerHealth)
         {
             playerHealth.takeDamage(directHitDamage);
@@ -46,44 +54,23 @@ public class Bomba : MonoBehaviour
         }
     }
 
-    private IEnumerator startTicking(float time)
+    private void OnCollisionEnter(Collision collision)
     {
-        //ShowDangerArea(time);
-        yield return new WaitForSeconds(time);
-        DealExplosionDamage(transform.position);
-        ShowExplosionRadius();
+        if (!hasBounced)
+        {
+            hasBounced = true;
+            // Rebote controlado al primer impacto
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 3f, rb.linearVelocity.z);
+        }
     }
 
-    // Código que muestra el área de peligro, no funciona como se esperaba
-
-    // private void ShowDangerArea(float time){
-    //     if (dangerRadiusIndicatorPrefab)
-    //     {
-    //         GameObject effect = Instantiate(
-    //             dangerRadiusIndicatorPrefab,
-    //             transform.position,
-    //             Quaternion.identity
-    //         );
-    //         effect.transform.localScale = new Vector3(proximityRadius, .01f, proximityRadius);
-    //         Destroy(effect, time);
-    //     }
-    // }
-
-    private void ShowExplosionRadius()
+    private void Explode()
     {
-        if (explosionRadiusIndicatorPrefab)
-        {
-            GameObject indicator = Instantiate(
-                explosionRadiusIndicatorPrefab,
-                transform.position,
-                Quaternion.identity
-            );
-            float scale = proximityRadius * 2f;
-            indicator.transform.localScale = new Vector3(scale, scale, scale);
-            DestroyImmediate(gameObject);
+        if (hasExploded) return;
+        hasExploded = true;
 
-            Destroy(indicator, .5f);
-        }
+        DealExplosionDamage(transform.position);
+        ShowExplosionRadius();
     }
 
     private void DealExplosionDamage(Vector3 bombPosition)
@@ -101,5 +88,24 @@ public class Bomba : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void ShowExplosionRadius()
+    {
+        if (explosionRadiusIndicatorPrefab)
+        {
+            GameObject indicator = Instantiate(
+                explosionRadiusIndicatorPrefab,
+                transform.position,
+                Quaternion.identity
+            );
+
+            float scale = proximityRadius * 2f;
+            indicator.transform.localScale = new Vector3(scale, scale, scale);
+
+            Destroy(indicator, 0.5f);
+        }
+
+        Destroy(gameObject); // Destruir la bomba después de mostrar explosión
     }
 }
