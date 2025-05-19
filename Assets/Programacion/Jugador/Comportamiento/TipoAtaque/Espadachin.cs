@@ -28,7 +28,7 @@ public class Espadachin : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && playerInventory.selectedItemType == ItemType.Arma)
+        if (Input.GetMouseButton(0) && playerInventory.selectedItemType == ItemType.Arma)
         {
             if (controller.isAttacking) return;
 
@@ -65,12 +65,14 @@ public class Espadachin : MonoBehaviour
             yield break;
 
         isChargingSword = true;
+        animator.SetBool("Cargando", true);
         isFullyCharged = false;
         chargeTime = 0f;
 
         while (isRightMouseDown && chargeTime < chargeRequiredTime)
         {
             chargeTime += Time.deltaTime;
+            animator.SetFloat("Fuerza", chargeTime / chargeRequiredTime);
             yield return null;
         }
 
@@ -78,7 +80,8 @@ public class Espadachin : MonoBehaviour
         {
             isFullyCharged = true;
         }
-
+        animator.SetFloat("Fuerza", 0);
+        animator.SetBool("Cargando", false);
         isChargingSword = false;
     }
 
