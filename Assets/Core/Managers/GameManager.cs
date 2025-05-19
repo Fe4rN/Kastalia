@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     public void WinGame()
     {
         isPaused = true;
-        SceneManager.LoadSceneAsync("Menu_Victoria", LoadSceneMode.Additive);
+        StartCoroutine(LoadSceneWithTransition("Menu_Victoria", true));
     }
 
     private IEnumerator CargarMazmorraYSeleccion()
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     public void StartMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        StartCoroutine(LoadSceneWithTransition("MainMenu", false));
     }
 
     public void VolverAlMenuPrincipal()
@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
         // 🔁 Limpiar ítems de cofres al volver al menú principal
         ItemDropTracker.Reiniciar();
 
-        SceneManager.LoadScene("MainMenu");
+        StartCoroutine(LoadSceneWithTransition("MainMenu", false));
     }
 
     public void QuitGame()
@@ -186,21 +186,42 @@ public class GameManager : MonoBehaviour
         // Fade in (to black)
         yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
         
+        // Store reference before potential destruction
+        var fadeObjectToDestroy = fadeObject;
+        
         // Load the target scene
+        AsyncOperation asyncLoad;
         if (additive)
         {
-            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         }
         else
         {
-            yield return SceneManager.LoadSceneAsync(sceneName);
+            asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+            // When loading a new scene non-additively, our fade object will be destroyed
+            // so we need to recreate it after scene load
+            asyncLoad.completed += (op) => {
+                if (fadeObjectToDestroy != null)
+                    Destroy(fadeObjectToDestroy);
+            };
+        }
+        
+        yield return asyncLoad;
+        
+        // For non-additive loads, recreate the fade object
+        if (!additive)
+        {
+            fadeObject = CreateFadeOverlay();
+            fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+            fadeGroup.alpha = 1f; // Start from black
         }
         
         // Fade out (to clear)
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
         
         // Clean up
-        Destroy(fadeObject);
+        if (fadeObject != null)
+            Destroy(fadeObject);
     }
 
     private IEnumerator UnloadSceneWithTransition(string sceneName)
