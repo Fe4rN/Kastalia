@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private float transitionDuration = 0.5f;
 
+    [SerializeField] private float fadeDuration = 0.5f;
+
     void Awake()
     {
         if (instance == null)
@@ -177,9 +179,13 @@ public class GameManager : MonoBehaviour
     // New transition methods
     private IEnumerator LoadSceneWithTransition(string sceneName, bool additive)
     {
-        yield return SceneManager.LoadSceneAsync("Transition", additive ? LoadSceneMode.Additive : LoadSceneMode.Single);
-        yield return new WaitForSecondsRealtime(transitionDuration);
-
+        // Create a simple fade overlay
+        GameObject fadeObject = CreateFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        
+        // Fade in (to black)
+        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+        
         // Load the target scene
         if (additive)
         {
@@ -189,19 +195,74 @@ public class GameManager : MonoBehaviour
         {
             yield return SceneManager.LoadSceneAsync(sceneName);
         }
-
-        if (additive)
-        {
-            yield return SceneManager.UnloadSceneAsync("Transition");
-        }
+        
+        // Fade out (to clear)
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+        
+        // Clean up
+        Destroy(fadeObject);
     }
-    
 
     private IEnumerator UnloadSceneWithTransition(string sceneName)
     {
-        yield return SceneManager.LoadSceneAsync("Transition", LoadSceneMode.Additive);
-        yield return new WaitForSecondsRealtime(transitionDuration);
+        // Create a simple fade overlay
+        GameObject fadeObject = CreateFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        
+        // Fade in (to black)
+        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+        
+        // Unload the scene
         yield return SceneManager.UnloadSceneAsync(sceneName);
-        yield return SceneManager.UnloadSceneAsync("Transition");
+        
+        // Fade out (to clear)
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+        
+        // Clean up
+        Destroy(fadeObject);
+    }
+
+    // Helper method to create a simple fade overlay
+    private GameObject CreateFadeOverlay()
+    {
+        GameObject fadeObject = new GameObject("FadeOverlay");
+        
+        // Setup Canvas
+        Canvas canvas = fadeObject.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 9999; // Make sure it's on top
+        
+        // Setup CanvasGroup for fading
+        CanvasGroup group = fadeObject.AddComponent<CanvasGroup>();
+        
+        // Create full-screen image
+        GameObject imageObject = new GameObject("FadeImage");
+        imageObject.transform.SetParent(fadeObject.transform);
+        UnityEngine.UI.Image image = imageObject.AddComponent<UnityEngine.UI.Image>();
+        image.color = Color.black;
+        
+        // Stretch to full screen
+        RectTransform rect = imageObject.GetComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        
+        return fadeObject;
+    }
+
+    // Helper method to handle fading
+    private IEnumerator Fade(CanvasGroup group, float startAlpha, float endAlpha, float duration)
+    {
+        float elapsed = 0f;
+        
+        while (elapsed < duration)
+        {
+            group.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        
+        group.alpha = endAlpha;
     }
 }
