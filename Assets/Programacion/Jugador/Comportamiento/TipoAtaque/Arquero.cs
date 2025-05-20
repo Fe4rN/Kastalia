@@ -20,8 +20,10 @@ public class Arquero : MonoBehaviour
     private PosicionCursor posicionCursor;
     private PlayerInventory playerInventory;
     private EnemyLookAtSystem enemyLock;
+    private PlayerController playerController;
     private void Start()
     {
+        playerController = GetComponent<PlayerController>();
         posicionCursor = GetComponent<PosicionCursor>();
         playerInventory = GetComponent<PlayerInventory>();
         enemyLock = GetComponent<EnemyLookAtSystem>();
@@ -29,6 +31,7 @@ public class Arquero : MonoBehaviour
     public void DisparoLigero()
     {
         if (!puedeDisparar || GameManager.instance.isPaused) return;
+        playerController.animator.SetTrigger("PrimaryShot");
         StartCoroutine(Disparar(1, cooldownLigero, delayDisparo));
     }
 
@@ -38,6 +41,7 @@ public class Arquero : MonoBehaviour
         if (acumuladoCarga >= tiempoCarga && !cargando)
         {
             cargando = true;
+            playerController.animator.SetTrigger("SecondaryShot");
             StartCoroutine(Disparar(5, cooldownCargado, delayRafaga));
         }
     }

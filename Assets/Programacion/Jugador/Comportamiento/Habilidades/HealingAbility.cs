@@ -24,6 +24,7 @@ public class HealingAbility : MonoBehaviour
             yield break;
         }
         playerController.isCastingAbility = true;
+        playerController.animator.SetTrigger("Healing");
         healingAbilityCooldown = healingAbility.killCountCooldown;
         playerHealth.healPlayer(60);
         playerController.isCastingAbility = false;

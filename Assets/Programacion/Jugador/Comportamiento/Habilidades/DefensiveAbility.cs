@@ -24,6 +24,7 @@ public class DefensiveAbility : MonoBehaviour
             return;
         }
         playerController.isCastingAbility = true;
+        playerController.animator.SetTrigger("Shield");
         playerHealth.defensiveAbilityHits = 2;
         playerController.ToggleShieldPrefab(true);
         Debug.Log("Shield enabled");

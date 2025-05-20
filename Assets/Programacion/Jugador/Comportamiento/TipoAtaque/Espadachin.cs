@@ -68,6 +68,7 @@ public class Espadachin : MonoBehaviour
         animator.SetBool("Cargando", true);
         isFullyCharged = false;
         chargeTime = 0f;
+        animator.SetFloat("Fuerza", 0);
 
         while (isRightMouseDown && chargeTime < chargeRequiredTime)
         {
@@ -79,8 +80,9 @@ public class Espadachin : MonoBehaviour
         if (chargeTime >= chargeRequiredTime)
         {
             isFullyCharged = true;
+            animator.SetFloat("Fuerza", 1);
+            animator.SetTrigger("ReleaseClick");
         }
-        animator.SetFloat("Fuerza", 0);
         animator.SetBool("Cargando", false);
         isChargingSword = false;
     }
@@ -94,11 +96,13 @@ public class Espadachin : MonoBehaviour
 
     private IEnumerator EmpujeSuave(Transform objetivo, Vector3 direccion, float fuerza)
     {
+        if (!objetivo) yield break;
         float duracionEmpuje = 0.5f;
         float tiempoTranscurrido = 0f;
 
         while (tiempoTranscurrido < duracionEmpuje)
         {
+            if (!objetivo) yield break;
             float progreso = 1 - (tiempoTranscurrido / duracionEmpuje);
             objetivo.position += direccion * fuerza * progreso * Time.deltaTime;
             tiempoTranscurrido += Time.deltaTime;

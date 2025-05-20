@@ -101,12 +101,12 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
 
-        // Disable the main Audio Listener before loading pause menu
-        AudioListener mainListener = FindObjectOfType<AudioListener>();
-        if (mainListener != null)
-        {
-            mainListener.enabled = false;
-        }
+        // Que coño hace nada de esto
+        // AudioListener mainListener = FindObjectOfType<AudioListener>();
+        // if (mainListener != null)
+        // {
+        //     mainListener.enabled = false;
+        // }
 
         StartCoroutine(LoadSceneWithTransition("PauseMenu", true));
         Time.timeScale = 0f;
@@ -119,12 +119,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
 
-        // Re-enable the main Audio Listener after unloading pause menu
-        AudioListener mainListener = FindObjectOfType<AudioListener>();
-        if (mainListener != null)
-        {
-            mainListener.enabled = true;
-        }
+        // ??????????????????
+        // AudioListener mainListener = FindObjectOfType<AudioListener>();
+        // if (mainListener != null)
+        // {
+        //     mainListener.enabled = true;
+        // }
     }
 
     public void StartMainMenu()

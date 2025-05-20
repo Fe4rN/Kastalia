@@ -7,6 +7,7 @@ public class OffensiveAbility : MonoBehaviour
     private PlayerController playerController;
     private PosicionCursor posicionCursor;
     private MainInterface mainInterface;
+    private Animator animator;
     public int offensiveAbilityCooldown = 0;
 
     [SerializeField] GameObject abilityTargetIndicatorPrefab;
@@ -21,6 +22,8 @@ public class OffensiveAbility : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         posicionCursor = GetComponent<PosicionCursor>();
         mainInterface = FindFirstObjectByType<MainInterface>();
+
+        animator = playerController.animator;
     }
     public IEnumerator offensiveAbility()
     {
@@ -82,6 +85,7 @@ public class OffensiveAbility : MonoBehaviour
     private void FireProjectile(Vector3 targetPosition)
     {
         GameObject fireball = Instantiate(fireballPrefab, transform.position + Vector3.up * 5f + Vector3.forward * 5, Quaternion.identity);
+        animator.SetTrigger("Fireball");
 
         Vector3 direction = (targetPosition - fireball.transform.position).normalized;
 

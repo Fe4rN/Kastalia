@@ -125,6 +125,7 @@ public class PlayerHealth : MonoBehaviour
     // --------------------------------------------------------------------------
     // ------------------- Metodos Para Transiciones entre menus ----------------
     // --------------------------------------------------------------------------
+    // Hecho por JOSUE BELLOTA ICHASO (todo es culpa de el)
     
 
         private IEnumerator LoadSceneWithTransition(string sceneName, bool additive)
