@@ -21,12 +21,10 @@ public class MostrarDuracion : MonoBehaviour
         {
             string valor = PlayerPrefs.GetString("DuracionPartida");
             texto.text = "Duración: " + valor;
-            Debug.Log("[MostrarDuracion] Texto actualizado: " + valor);
         }
         else
         {
             texto.text = "Duración: --:--";
-            Debug.Log("[MostrarDuracion] No se encontró DuracionPartida en PlayerPrefs.");
         }
     }
 }
