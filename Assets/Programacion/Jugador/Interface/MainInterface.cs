@@ -1,11 +1,10 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainInterface : MonoBehaviour
 {
-    [SerializeField] private TMP_Text VidaText;
+    [SerializeField] private GameObject HealthBar;
     [SerializeField] private Button WeaponButton;
     [SerializeField] private Button OffensiveButton;
     [SerializeField] private Button ShieldButton;
@@ -19,9 +18,9 @@ public class MainInterface : MonoBehaviour
     private HealingAbility healingAbilityController;
 
 
-    public void updateVidaText(float vida)
+    public void updateVida(float vida)
     {
-        VidaText.text = vida.ToString() + " / 100";
+        HealthBar.GetComponent<Image>().fillAmount = vida / 100;
     }
 
     public void updateWeaponSlot(Weapon weapon)

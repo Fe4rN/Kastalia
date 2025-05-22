@@ -39,7 +39,7 @@ public class PlayerHealth : MonoBehaviour
         if (vidaActual - damage > 0)
         {
             vidaActual -= damage;
-            mainInterface.updateVidaText(vidaActual);
+            mainInterface.updateVida(vidaActual);
             StartCoroutine(ActivarInmunidad());
         }
         else
@@ -55,7 +55,7 @@ public class PlayerHealth : MonoBehaviour
         if (vidaActual + ammount > vidaMaxima) { vidaActual = vidaMaxima; }
         else { vidaActual += ammount; }
 
-        mainInterface.updateVidaText(vidaActual);
+        mainInterface.updateVida(vidaActual);
     }
 
     public void Die()
@@ -65,7 +65,7 @@ public class PlayerHealth : MonoBehaviour
             Cronometro.instance.Detener();
         }
 
-        mainInterface.updateVidaText(0f);
+        mainInterface.updateVida(0f);
 
         StopAllCoroutines();
         LevelManager.instance.UI.SetActive(false);

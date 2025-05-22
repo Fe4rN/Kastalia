@@ -13,6 +13,6 @@ public class MiniBossSpawner : MonoBehaviour
         miniBoss.transform.localScale = new Vector3(1, 1, 1) *2;
         this.gameObject.SetActive(false);
         miniBoss.GetComponent<NavMeshAgent>().speed /= 2;
-        miniBoss.GetComponent<EnemyHealth>().SetHealth(2*miniBoss.GetComponent<EnemyHealth>().maxHealth);
+        miniBoss.GetComponent<EnemyHealth>().SetHealth((int)(2*miniBoss.GetComponent<EnemyHealth>().maxHealth));
     }
 }

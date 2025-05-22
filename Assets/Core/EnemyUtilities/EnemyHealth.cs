@@ -1,37 +1,39 @@
-using System;
 using System.Collections;
+using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
     public GameObject DamagePopupPrefab;
-    public int maxHealth = 100;
-    private int currentHealth;
-    public GameObject jugador;
+    [SerializeField] private EnemyHealthbar healthbar;
+
+    public float maxHealth = 100;
+    private float currentHealth;
 
     private void Start()
     {
         currentHealth = maxHealth;
-        jugador = GameObject.FindGameObjectWithTag("Player");
+        if (EnemyManager.Instance) EnemyManager.Instance.RegisterEnemy();
 
-        if(EnemyManager.Instance){
-            EnemyManager.Instance.RegisterEnemy();
+        if (healthbar)
+        {
+            healthbar.UpdateHealthbar(maxHealth, currentHealth);
         }
-    }
-
-    private void Update()
-    {
-        if (jugador) return;
-        jugador = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void TakeDamage(int damage)
     {
-        if(DamagePopupPrefab && currentHealth > 0) ShowDamagePopup(damage);
-        if(currentHealth - damage > 0){
+        if (DamagePopupPrefab && currentHealth > 0) ShowDamagePopup(damage);
+        if (currentHealth - damage > 0)
+        {
             currentHealth -= damage;
-            StartCoroutine(FlashOnHit());
+            healthbar.gameObject.SetActive(true);
+            if (healthbar)
+            {
+                healthbar.UpdateHealthbar(maxHealth, currentHealth);
+            }
+            //StartCoroutine(FlashOnHit());
         }
         else
         {
@@ -46,8 +48,9 @@ public class EnemyHealth : MonoBehaviour
         popup.GetComponent<TextMeshPro>().text = damage.ToString();
     }
 
-    public void SetHealth(int value){
-        if(value <= 0) return;
+    public void SetHealth(int value)
+    {
+        if (value <= 0) return;
         maxHealth = value; currentHealth = value;
     }
 
@@ -61,6 +64,8 @@ public class EnemyHealth : MonoBehaviour
     }
     private void Die()
     {
+        GameObject jugador = GameObject.FindGameObjectWithTag("Player");
+        if(!jugador) return; 
         OffensiveAbility offensiveAbilityController = jugador.GetComponent<OffensiveAbility>();
         DefensiveAbility defensiveAbilityController = jugador.GetComponent<DefensiveAbility>();
         HealingAbility healingAbilityController = jugador.GetComponent<HealingAbility>();
@@ -83,5 +88,4 @@ public class EnemyHealth : MonoBehaviour
 
         Destroy(gameObject);
     }
-
 }
