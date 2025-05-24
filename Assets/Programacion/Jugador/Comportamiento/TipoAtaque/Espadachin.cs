@@ -30,7 +30,7 @@ public class Espadachin : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && playerInventory.selectedItemType == ItemType.Arma)
         {
-            if (controller.isAttacking) return;
+            if (controller.isAttacking || isChargingSword || isRightMouseDown) return;
 
             int damage = playerInventory.weapon.damage;
             animator.SetTrigger("AtaqueLigero");
@@ -47,8 +47,9 @@ public class Espadachin : MonoBehaviour
         if (Input.GetMouseButtonUp(1))
         {
             isRightMouseDown = false;
+            isChargingSword = false;
 
-            if (isFullyCharged && !controller.isAttacking)
+            if (isFullyCharged)
             {
                 int baseDamage = playerInventory.weapon.damage;
                 int damage = Mathf.CeilToInt(baseDamage * chargeMultiplier);
@@ -56,6 +57,10 @@ public class Espadachin : MonoBehaviour
                 attackCooldown = 1f;
                 isFullyCharged = false;
             }
+            chargeTime = 0f;
+            animator.SetBool("Cargando", false);
+            animator.SetFloat("Fuerza", 0);
+            animator.SetTrigger("ReleaseClick");
         }
     }
 
@@ -81,7 +86,6 @@ public class Espadachin : MonoBehaviour
         {
             isFullyCharged = true;
             animator.SetFloat("Fuerza", 1);
-            animator.SetTrigger("ReleaseClick");
         }
         animator.SetBool("Cargando", false);
         isChargingSword = false;
