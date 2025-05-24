@@ -1,16 +1,12 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MainInterface : MonoBehaviour
 {
-    [SerializeField] private GameObject HealthBar;
-    [SerializeField] private Button WeaponButton;
-    [SerializeField] private Button OffensiveButton;
-    [SerializeField] private Button ShieldButton;
-    [SerializeField] private Button PotionButton;
+    [SerializeField] Slot WeaponSlot;
+    [SerializeField] Slot OffensiveAbilitySlot;
+    [SerializeField] Slot ShieldAbilitySlot;
+    [SerializeField] Slot PotionAbilitySlot;
 
-    private bool isPlayerFound = false;
     private GameObject player;
     private PlayerInventory playerInventory;
     private OffensiveAbility offensiveAbilityController;
@@ -18,148 +14,80 @@ public class MainInterface : MonoBehaviour
     private HealingAbility healingAbilityController;
 
 
-    public void updateVida(float vida)
-    {
-        HealthBar.GetComponent<Image>().fillAmount = vida / 100;
-    }
 
-    public void updateWeaponSlot(Weapon weapon)
+    void Start()
     {
-        if (weapon.icon)
-        {
-            WeaponButton.GetComponent<Image>().sprite = weapon.icon;
-            return;
-        }
-        WeaponButton.GetComponentInChildren<TMP_Text>().text = weapon.name;
-    }
-
-    public void updateHabilitySlots(AbilityType abilityType, Ability ability)
-    {
-        switch (abilityType)
-        {
-            case AbilityType.Ofensiva:
-                Debug.Log(ability.abilityName);
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
-                break;
-            case AbilityType.Defensiva:
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
-                break;
-            case AbilityType.Curativa:
-                PotionButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
-                break;
-        }
-    }
-
-    void Update()
-    {
-        if (!isPlayerFound)
-        {
-            if (!player)
-            {
-                player = GameObject.FindGameObjectWithTag("Player");
-                return;
-            }
-            if (FindPlayerAtributes())
-            {
-                isPlayerFound = true;
-            }
-        }
-    }
-
-
-    private bool FindPlayerAtributes()
-    {
+        player = GameObject.FindGameObjectWithTag("Player");
         if (player)
         {
-            if (player.GetComponent<OffensiveAbility>() &&
-            player.GetComponent<DefensiveAbility>() &&
-            player.GetComponent<HealingAbility>() &&
-            player.GetComponent<PlayerInventory>())
-            {
-                offensiveAbilityController = player.GetComponent<OffensiveAbility>();
-                defensiveAbilityController = player.GetComponent<DefensiveAbility>();
-                healingAbilityController = player.GetComponent<HealingAbility>();
-                playerInventory = player.GetComponent<PlayerInventory>();
-
-                return true;
-            }
+            playerInventory = player.GetComponent<PlayerInventory>();
+            offensiveAbilityController = player.GetComponent<OffensiveAbility>();
+            defensiveAbilityController = player.GetComponent<DefensiveAbility>();
+            healingAbilityController = player.GetComponent<HealingAbility>();
         }
-        return false;
+
+        // WeaponSlot.Disable();
+        // OffensiveAbilitySlot.Disable();
+        // ShieldAbilitySlot.Disable();
+        // PotionAbilitySlot.Disable();
     }
 
-    public void LightUpItem(ItemType itemType, AbilityType abilityType)
+    public void SelectSlot(ItemType itemType, AbilityType abilityType)
     {
         if (itemType == ItemType.Arma)
         {
-            WeaponButton.GetComponent<Image>().color = Color.yellow;
-            DarkenItems(ItemType.Arma, AbilityType.None);
-            return;
+            WeaponSlot.HighlightSlot(true);
+            OffensiveAbilitySlot.HighlightSlot(false);
+            ShieldAbilitySlot.HighlightSlot(false);
+            PotionAbilitySlot.HighlightSlot(false);
         }
-
-        if (abilityType == AbilityType.Ofensiva)
+        else if (abilityType == AbilityType.Ofensiva)
         {
-            OffensiveButton.GetComponent<Image>().color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Ofensiva);
-            return;
+            WeaponSlot.HighlightSlot(false);
+            OffensiveAbilitySlot.HighlightSlot(true);
+            ShieldAbilitySlot.HighlightSlot(false);
+            PotionAbilitySlot.HighlightSlot(false);
         }
-        if (abilityType == AbilityType.Defensiva)
+        else if (abilityType == AbilityType.Defensiva)
         {
-            ShieldButton.GetComponent<Image>().color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Defensiva);
-            return;
+            WeaponSlot.HighlightSlot(false);
+            OffensiveAbilitySlot.HighlightSlot(false);
+            ShieldAbilitySlot.HighlightSlot(true);
+            PotionAbilitySlot.HighlightSlot(false);
         }
-        if (abilityType == AbilityType.Curativa)
+        else if (abilityType == AbilityType.Curativa)
         {
-            PotionButton.GetComponent<Image>().color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Curativa);
-            return;
+            WeaponSlot.HighlightSlot(false);
+            OffensiveAbilitySlot.HighlightSlot(false);
+            ShieldAbilitySlot.HighlightSlot(false);
+            PotionAbilitySlot.HighlightSlot(true);
         }
     }
 
-    public void SubtractCooldown()
+    public void EnablePickUpSlot(ItemType itemType, AbilityType abilityType)
     {
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
+        if (itemType == ItemType.Arma)
         {
-            if (offensiveAbilityController.offensiveAbilityCooldown == 0)
-            {
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Ofensiva].abilityName;
-            }
-            else
-            {
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = offensiveAbilityController.offensiveAbilityCooldown.ToString("F1");
-            }
+            WeaponSlot.Enable();
         }
-
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
+        else if (abilityType == AbilityType.Ofensiva)
         {
-            if (defensiveAbilityController.defensiveAbilityCooldown == 0)
-            {
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Defensiva].abilityName;
-            }
-            else
-            {
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = defensiveAbilityController.defensiveAbilityCooldown.ToString("F1");
-            }
+            OffensiveAbilitySlot.Enable();
         }
-
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
+        else if (abilityType == AbilityType.Defensiva)
         {
-            if (healingAbilityController.healingAbilityCooldown == 0)
-            {
-                PotionButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Curativa].abilityName;
-            }
-            else
-            {
-                PotionButton.GetComponentInChildren<TMP_Text>().text = healingAbilityController.healingAbilityCooldown.ToString("F1");
-            }
+            ShieldAbilitySlot.Enable();
+        }
+        else if (abilityType == AbilityType.Curativa)
+        {
+            PotionAbilitySlot.Enable();
         }
     }
 
-    private void DarkenItems(ItemType itemType, AbilityType abilityType)
+    public void SetCooldowns()
     {
-        if (itemType != ItemType.Arma) WeaponButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Ofensiva) OffensiveButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Defensiva) ShieldButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Curativa) PotionButton.GetComponent<Image>().color = Color.white;
+        if(playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva)) OffensiveAbilitySlot.setCooldown(offensiveAbilityController.offensiveAbilityCooldown);
+        if(playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva)) ShieldAbilitySlot.setCooldown(defensiveAbilityController.defensiveAbilityCooldown);
+        if(playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa)) PotionAbilitySlot.setCooldown(healingAbilityController.healingAbilityCooldown);
     }
 }

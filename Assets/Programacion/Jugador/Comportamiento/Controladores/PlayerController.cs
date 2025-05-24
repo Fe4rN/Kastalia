@@ -71,7 +71,7 @@ public abstract class PlayerController : MonoBehaviour
             {
                 playerInventory.selectedItemType = ItemType.Arma;
                 ShowWeapon(true);
-                mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
+                mainInterface.SelectSlot(ItemType.Arma, AbilityType.None);
             }
             if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
             {
@@ -79,7 +79,7 @@ public abstract class PlayerController : MonoBehaviour
                 {
                     playerInventory.selectedItemType = ItemType.Habilidad;
                     playerInventory.selectedAbilityType = AbilityType.Ofensiva;
-                    mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Ofensiva);
+                    mainInterface.SelectSlot(ItemType.Habilidad, AbilityType.Ofensiva);
                 }
             }
             if (Input.GetKeyDown(KeyCode.E) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
@@ -90,6 +90,7 @@ public abstract class PlayerController : MonoBehaviour
                     playerInventory.selectedAbilityType = AbilityType.Defensiva;
                     defensiveAbilityController.enableShield();
                     ShowWeapon(true);
+                    mainInterface.SetCooldowns();
                 }
             }
             if (Input.GetKeyDown(KeyCode.R) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
@@ -100,6 +101,7 @@ public abstract class PlayerController : MonoBehaviour
                     playerInventory.selectedAbilityType = AbilityType.Curativa;
                     StartCoroutine(healingAbilityController.healingAbility());
                     ShowWeapon(true);
+                    mainInterface.SetCooldowns();
                 }
             }
 

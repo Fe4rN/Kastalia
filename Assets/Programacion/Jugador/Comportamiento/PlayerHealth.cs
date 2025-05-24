@@ -14,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerController playerController;
     private MainInterface mainInterface;
+    private Healthbar healthbar;
 
     [SerializeField] private float transitionDuration = 0.25f;
 
@@ -24,6 +25,7 @@ public class PlayerHealth : MonoBehaviour
         vidaActual = vidaMaxima;
         playerController = GetComponent<PlayerController>();
         mainInterface = FindFirstObjectByType<MainInterface>();
+        healthbar = FindFirstObjectByType<Healthbar>();
     }
 
     public void takeDamage(float damage)
@@ -39,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
         if (vidaActual - damage > 0)
         {
             vidaActual -= damage;
-            mainInterface.updateVida(vidaActual);
+            healthbar.UpdateHealthbar(vidaMaxima, vidaActual, false);
             StartCoroutine(ActivarInmunidad());
         }
         else
@@ -55,7 +57,7 @@ public class PlayerHealth : MonoBehaviour
         if (vidaActual + ammount > vidaMaxima) { vidaActual = vidaMaxima; }
         else { vidaActual += ammount; }
 
-        mainInterface.updateVida(vidaActual);
+        healthbar.UpdateHealthbar(vidaMaxima, vidaActual, true);
     }
 
     public void Die()
@@ -65,7 +67,7 @@ public class PlayerHealth : MonoBehaviour
             Cronometro.instance.Detener();
         }
 
-        mainInterface.updateVida(0f);
+        // mainInterface.updateVida(0f);
 
         StopAllCoroutines();
         LevelManager.instance.UI.SetActive(false);

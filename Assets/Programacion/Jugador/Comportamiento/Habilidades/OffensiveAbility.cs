@@ -64,7 +64,8 @@ public class OffensiveAbility : MonoBehaviour
         FireProjectile(posicionCursor.lookPoint);
 
         offensiveAbilityCooldown = offensiveAbility.killCountCooldown;
-        mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
+        mainInterface.SelectSlot(ItemType.Arma, AbilityType.None);
+        mainInterface.SetCooldowns();
         playerInventory.selectedItemType = ItemType.Arma;
         playerController.ShowWeapon(true);
     }

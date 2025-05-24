@@ -1,7 +1,8 @@
-public enum ItemType 
-{ 
+public enum ItemType
+{
     Arma,
-    Habilidad
+    Habilidad,
+    None
 }
 
 public enum WeaponType 

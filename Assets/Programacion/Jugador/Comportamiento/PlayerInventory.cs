@@ -16,6 +16,8 @@ public class PlayerInventory : MonoBehaviour
     {
         controller = GetComponent<PlayerController>();
         hud = FindFirstObjectByType<MainInterface>();
+
+        
     }
 
 
@@ -24,7 +26,7 @@ public class PlayerInventory : MonoBehaviour
         if (weapon.weaponType == allowedWeaponType)
         {
             this.weapon = weapon;
-            hud.updateWeaponSlot(weapon);
+            hud.EnablePickUpSlot(ItemType.Arma, AbilityType.None);
         }
     }
 
@@ -38,7 +40,7 @@ public class PlayerInventory : MonoBehaviour
         if (!equippedAbilities.ContainsKey(ability.abilityType))
         {
             equippedAbilities.Add(ability.abilityType, ability);
-            hud.updateHabilitySlots(ability.abilityType, ability);
+            hud.EnablePickUpSlot(ItemType.Habilidad, ability.abilityType);
         }
     }
 

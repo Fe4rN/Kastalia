@@ -1,6 +1,6 @@
 using System.Collections;
-using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -33,7 +33,6 @@ public class EnemyHealth : MonoBehaviour
             {
                 healthbar.UpdateHealthbar(maxHealth, currentHealth);
             }
-            //StartCoroutine(FlashOnHit());
         }
         else
         {
@@ -54,33 +53,26 @@ public class EnemyHealth : MonoBehaviour
         maxHealth = value; currentHealth = value;
     }
 
-    IEnumerator FlashOnHit()
-    {
-        Renderer enemyRenderer = GetComponentInChildren<Renderer>();
-        Color originalColor = enemyRenderer.material.color;
-        enemyRenderer.material.color = Color.blue;
-        yield return new WaitForSeconds(0.2f);
-        enemyRenderer.material.color = originalColor;
-    }
     private void Die()
     {
         GameObject jugador = GameObject.FindGameObjectWithTag("Player");
         if(!jugador) return; 
+        PlayerInventory playerInventory = jugador.GetComponent<PlayerInventory>();
         OffensiveAbility offensiveAbilityController = jugador.GetComponent<OffensiveAbility>();
         DefensiveAbility defensiveAbilityController = jugador.GetComponent<DefensiveAbility>();
         HealingAbility healingAbilityController = jugador.GetComponent<HealingAbility>();
 
-        if (offensiveAbilityController.offensiveAbilityCooldown > 0)
+        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva) && offensiveAbilityController.offensiveAbilityCooldown > 0)
             offensiveAbilityController.offensiveAbilityCooldown -= 1;
-        if (defensiveAbilityController.defensiveAbilityCooldown > 0)
+        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva) && defensiveAbilityController.defensiveAbilityCooldown > 0)
             defensiveAbilityController.defensiveAbilityCooldown -= 1;
-        if (healingAbilityController.healingAbilityCooldown > 0)
+        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa) && healingAbilityController.healingAbilityCooldown > 0)
             healingAbilityController.healingAbilityCooldown -= 1;
 
         MainInterface mainInterface = FindFirstObjectByType<MainInterface>();
         if (mainInterface)
         {
-            mainInterface.SubtractCooldown();
+            mainInterface.SetCooldowns();
         }
         StopAllCoroutines();
 
