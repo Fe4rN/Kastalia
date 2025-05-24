@@ -16,8 +16,6 @@ public class PlayerInventory : MonoBehaviour
     {
         controller = GetComponent<PlayerController>();
         hud = FindFirstObjectByType<MainInterface>();
-
-        
     }
 
 

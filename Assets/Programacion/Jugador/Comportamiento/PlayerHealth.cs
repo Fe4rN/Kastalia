@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,6 +20,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float transitionDuration = 0.25f;
 
     [SerializeField] private float fadeDuration = 0.25f;
+
+    [SerializeField] private GameObject deathCameraPrefab;
 
     void Start()
     {
@@ -83,6 +86,11 @@ public class PlayerHealth : MonoBehaviour
 
         // Set animator to unscaled time
         playerController.animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+
+        GameObject activeCamera = GameObject.Find("CinemachineCamera");
+        Camera.main.gameObject.SetActive(false);
+        GameObject deathCamera = Instantiate(deathCameraPrefab, activeCamera.transform.position, quaternion.identity);
+        deathCamera.transform.LookAt(playerController.transform.position);
 
         // Trigger death animation
         playerController.animator.SetTrigger("Death");
