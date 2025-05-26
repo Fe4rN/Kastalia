@@ -549,7 +549,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 372.7, y: 14.299988}
+  m_AnchoredPosition: {x: 372.69995, y: 14.300049}
   m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &4673723455374498983
@@ -733,9 +733,9 @@ MonoBehaviour:
   healthbarFront: {fileID: 3167930077979344417}
   healthBarBack: {fileID: 2005036528882800044}
   healthBarChange: {fileID: 4267887166153277039}
-  reduceSpeed: 2
+  reduceSpeed: 0.1
   AddColor: {r: 0, g: 0.9607843, b: 0.9607843, a: 1}
-  SubtractColor: {r: 1, g: 0.29354316, b: 0, a: 1}
+  SubtractColor: {r: 1, g: 1, b: 0, a: 1}
 --- !u!1 &3167930077979344417
 GameObject:
   m_ObjectHideFlags: 0

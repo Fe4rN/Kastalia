@@ -169,6 +169,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
       objectReference: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
+    - target: {fileID: -7029948723529949830, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -1806680513116206669, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -181,6 +185,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
       objectReference: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
+    - target: {fileID: -1599826595754709761, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 882129737928793925, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -188,6 +196,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
       propertyPath: m_Name
       value: WallDecoration
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -202,6 +214,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4977434927264950913}
+    - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7075899840064949662}
     - targetCorrespondingSourceObject: {fileID: 5148817236446094103, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4483965090458281111}
@@ -232,6 +247,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.001080377, y: 0.009999999, z: 0.009999999}
   m_Center: {x: -0.00470002, y: -3.5527136e-17, z: 0.0049999994}
+--- !u!114 &7075899840064949662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458394314658325586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 968cbdecd09fb3e4ca9596b5ce0d571d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transparencia: {fileID: 2100000, guid: c795812d8191d5649bafabd3d5e6d5f0, type: 2}
+  hitted: 0
 --- !u!4 &2280695734945750723 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}

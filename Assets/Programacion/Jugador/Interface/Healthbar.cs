@@ -30,27 +30,27 @@ public class Healthbar : MonoBehaviour
     public void UpdateHealthbar(float maxHealth, float currentHealth, bool isIncreasing)
     {
         targetFill = currentHealth / maxHealth;
-        HealthbarFrontImage.fillAmount = targetFill;
+
 
         if (isIncreasing)
         {
             HealthbarChangeImage.color = AddColor;
+            Debug.Log("Healthbar increasing: " + targetFill);
         }
         else
         {
+            HealthbarFrontImage.fillAmount = targetFill;
             HealthbarChangeImage.color = SubtractColor;
+            Debug.Log("Healthbar decreasing: " + targetFill);
         }
     }
 
     void Update()
     {
-        if (HealthbarChangeImage.fillAmount != targetFill)
-        {
-            HealthbarChangeImage.fillAmount = Mathf.MoveTowards(
-                HealthbarChangeImage.fillAmount,
-                targetFill,
-                reduceSpeed * Time.deltaTime
-            );
-        }
+        HealthbarChangeImage.fillAmount = Mathf.MoveTowards(
+            HealthbarChangeImage.fillAmount,
+            targetFill,
+            reduceSpeed * Time.deltaTime
+        );
     }
 }

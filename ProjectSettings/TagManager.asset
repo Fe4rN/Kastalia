@@ -9,6 +9,7 @@ TagManager:
   - Floor
   - Pet
   - DeathCamera
+  - Wall
   layers:
   - Default
   - TransparentFX

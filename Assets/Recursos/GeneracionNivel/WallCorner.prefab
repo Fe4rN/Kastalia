@@ -121,7 +121,8 @@ GameObject:
   - component: {fileID: 9165134077806700930}
   - component: {fileID: 9193938259872640278}
   - component: {fileID: 3861005098579838567}
-  m_Layer: 0
+  - component: {fileID: 6591970209589743482}
+  m_Layer: 3
   m_Name: Plane (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,6 +220,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.001080377, y: 0.009999999, z: 0.009999999}
   m_Center: {x: -0.00470002, y: -3.5527136e-17, z: 0.0049999994}
+--- !u!114 &6591970209589743482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3659045166885641418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 968cbdecd09fb3e4ca9596b5ce0d571d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transparencia: {fileID: 2100000, guid: c795812d8191d5649bafabd3d5e6d5f0, type: 2}
+  hitted: 0
 --- !u!1001 &1615095859665184345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -271,7 +286,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8788877032031185416, guid: da29cb6eec8836b43bbf18fb68fed9ea, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6544132295939100852, guid: da29cb6eec8836b43bbf18fb68fed9ea, type: 3}
