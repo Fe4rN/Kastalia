@@ -3,7 +3,7 @@ using UnityEngine;
 public class ObstaculoTransparente : MonoBehaviour
 {
     [SerializeField] UnityEngine.Material transparencia;
-    UnityEngine.Material opaco;
+    private Material[] opacoMaterials;
 
     Renderer rend;
 
@@ -11,17 +11,40 @@ public class ObstaculoTransparente : MonoBehaviour
     void Start()
     {
         rend = GetComponent<Renderer>();
-        opaco = rend.material;
+        opacoMaterials = rend.materials;
     }
 
     void Update()
     {
-        if(hitted){
-            if(rend.material != transparencia) rend.material = transparencia;
+        if (hitted)
+        {
+            if (!AllMaterialsAre(rend.materials, transparencia))
+            {
+                Material[] newMats = new Material[rend.materials.Length];
+                for (int i = 0; i < newMats.Length; i++)
+                {
+                    newMats[i] = transparencia;
+                }
+                rend.materials = newMats;
+            }
             hitted = false;
-        }else{
-            if(rend.material != opaco) rend.material = opaco;
         }
+        else
+        {
+            if (!AllMaterialsAre(rend.materials, opacoMaterials[0]))
+            {
+                rend.materials = opacoMaterials;
+            }
+        }
+    }
+
+    private bool AllMaterialsAre(Material[] mats, Material mat)
+    {
+        foreach (var m in mats)
+        {
+            if (m != mat) return false;
+        }
+        return true;
     }
 
 }
