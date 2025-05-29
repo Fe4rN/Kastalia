@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerController playerController;
     private MainInterface mainInterface;
+    private Animator animator;
     private Healthbar healthbar;
 
     [SerializeField] private float transitionDuration = 0.25f;
@@ -29,6 +29,7 @@ public class PlayerHealth : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         mainInterface = FindFirstObjectByType<MainInterface>();
         healthbar = FindFirstObjectByType<Healthbar>();
+        animator = GameObject.Find("Main Camera").GetComponent<Animator>();
     }
 
     public void takeDamage(float damage)
@@ -44,6 +45,7 @@ public class PlayerHealth : MonoBehaviour
         if (vidaActual - damage > 0)
         {
             vidaActual -= damage;
+            animator.SetTrigger("Hurt");
             healthbar.UpdateHealthbar(vidaMaxima, vidaActual, false);
             StartCoroutine(ActivarInmunidad());
         }
