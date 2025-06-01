@@ -38,13 +38,13 @@ public class Espadachin : MonoBehaviour
         }
 
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && playerInventory.selectedItemType == ItemType.Arma)
         {
             isRightMouseDown = true;
             StartCoroutine(ChargeSword());
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1) && playerInventory.selectedItemType == ItemType.Arma)
         {
             isRightMouseDown = false;
             isChargingSword = false;
