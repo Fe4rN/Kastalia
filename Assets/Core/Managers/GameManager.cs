@@ -25,9 +25,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject personajeSeleccionado;
 
-
-    [SerializeField] private float transitionDuration = 0.5f;
-
     [SerializeField] private float fadeDuration = 0.5f;
 
     void Awake()

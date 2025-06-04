@@ -2,15 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
-{
-    [Header("Blood Effect Settings")]
-    [SerializeField] private int bloodParticles = 15; // Increased from 8
-    [SerializeField] private float bloodForce = 1.2f; // Increased from 0.5f
-    [SerializeField] private float bloodSize = 0.15f; // Increased from 0.1f
-    [SerializeField] private Color bloodColor = new Color(0.8f, 0f, 0f, 1f); // Darker red
-    [SerializeField] private float bloodDuration = 2f; // Longer duration
-    [SerializeField] private float bloodSplatterSize = 0.75f; // Added for main splatter
-    
+{    
     [Header("Arrow Settings")]
     [SerializeField] private float TTL = 3f;
     

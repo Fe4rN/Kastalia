@@ -17,8 +17,6 @@ public class PlayerHealth : MonoBehaviour
     private Animator animator;
     private Healthbar healthbar;
 
-    [SerializeField] private float transitionDuration = 0.25f;
-
     [SerializeField] private float fadeDuration = 0.25f;
 
     [SerializeField] private GameObject deathCameraPrefab;
