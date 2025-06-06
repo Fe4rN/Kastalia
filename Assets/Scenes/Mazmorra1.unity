@@ -13648,11 +13648,11 @@ PrefabInstance:
     - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
       propertyPath: prefabArco
       value: 
-      objectReference: {fileID: 7231694414113884281, guid: 7ab78fd3b9842394885176a6b6aa9e0a, type: 3}
+      objectReference: {fileID: 2487932819071573490, guid: 2352650bd3abe9e42bf94d2b5a257911, type: 3}
     - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
       propertyPath: prefabHojaAfilada
       value: 
-      objectReference: {fileID: 3663753113288379874, guid: 76540e4b750f3524888efb5c068e004c, type: 3}
+      objectReference: {fileID: 6006741857242452782, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
     - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
       propertyPath: transitionDuration
       value: 0.5

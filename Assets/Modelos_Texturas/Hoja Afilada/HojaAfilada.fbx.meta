@@ -8,17 +8,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Gold
-    second: {fileID: 2100000, guid: 4380c07ec37de464a9fda12d96282ebb, type: 2}
+    second: {fileID: 2100000, guid: 9b308e1c0f597c54aa8eeb15ed019ffd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Handle
-    second: {fileID: 2100000, guid: 38bb9a7efe7141a4ba45177de50d9ad6, type: 2}
+    second: {fileID: 2100000, guid: 9b308e1c0f597c54aa8eeb15ed019ffd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Metal
-    second: {fileID: 2100000, guid: b8fa1c5bff6536d45940e162c6831a10, type: 2}
+    second: {fileID: 2100000, guid: 9b308e1c0f597c54aa8eeb15ed019ffd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
