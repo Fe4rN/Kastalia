@@ -25,6 +25,7 @@ public class PlayerInventory : MonoBehaviour
         {
             this.weapon = weapon;
             hud.EnablePickUpSlot(ItemType.Arma, AbilityType.None);
+            hud.DispararNotificacion(weapon.name);
         }
     }
 

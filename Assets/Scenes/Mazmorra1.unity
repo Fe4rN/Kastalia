@@ -5209,6 +5209,10 @@ PrefabInstance:
       propertyPath: m_CullingMask.m_Bits
       value: 1023
       objectReference: {fileID: 0}
+    - target: {fileID: 3487578072121625090, guid: 0832863d24a9bea4db9d8604714b8a75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6355615905253355424, guid: 0832863d24a9bea4db9d8604714b8a75, type: 3}
       propertyPath: priority
       value: 1
@@ -13636,26 +13640,6 @@ PrefabInstance:
     - target: {fileID: 7195948001984693631, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
       propertyPath: m_Name
       value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
-      propertyPath: Lyx
-      value: 
-      objectReference: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
-      propertyPath: Dreven
-      value: 
-      objectReference: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
-      propertyPath: prefabArco
-      value: 
-      objectReference: {fileID: 2487932819071573490, guid: 2352650bd3abe9e42bf94d2b5a257911, type: 3}
-    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
-      propertyPath: prefabHojaAfilada
-      value: 
-      objectReference: {fileID: 6006741857242452782, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
-    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
-      propertyPath: transitionDuration
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

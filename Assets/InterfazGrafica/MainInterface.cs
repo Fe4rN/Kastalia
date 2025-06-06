@@ -7,6 +7,8 @@ public class MainInterface : MonoBehaviour
     [SerializeField] Slot ShieldAbilitySlot;
     [SerializeField] Slot PotionAbilitySlot;
 
+    [SerializeField] Notificacion notificacion;
+
     private GameObject player;
     private PlayerInventory playerInventory;
     private OffensiveAbility offensiveAbilityController;
@@ -86,8 +88,17 @@ public class MainInterface : MonoBehaviour
 
     public void SetCooldowns()
     {
-        if(playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva)) OffensiveAbilitySlot.setCooldown(offensiveAbilityController.offensiveAbilityCooldown);
-        if(playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva)) ShieldAbilitySlot.setCooldown(defensiveAbilityController.defensiveAbilityCooldown);
-        if(playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa)) PotionAbilitySlot.setCooldown(healingAbilityController.healingAbilityCooldown);
+        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva)) OffensiveAbilitySlot.setCooldown(offensiveAbilityController.offensiveAbilityCooldown);
+        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva)) ShieldAbilitySlot.setCooldown(defensiveAbilityController.defensiveAbilityCooldown);
+        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa)) PotionAbilitySlot.setCooldown(healingAbilityController.healingAbilityCooldown);
+    }
+
+    public void DispararNotificacion(string nombreObjeto)
+    {
+        if (notificacion)
+        {
+            notificacion.EstablecerNombreObjeto(nombreObjeto);
+            notificacion.gameObject.SetActive(true);
+        }
     }
 }

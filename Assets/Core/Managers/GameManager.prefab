@@ -50,9 +50,8 @@ MonoBehaviour:
   isLevelLoaded: 0
   Lyx: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
   Dreven: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-  prefabHojaAfilada: {fileID: 4735415135406704157, guid: e3ac8b5c200836e4e8b385f18a18a1ef, type: 3}
-  prefabArco: {fileID: 7231694414113884281, guid: 7ab78fd3b9842394885176a6b6aa9e0a, type: 3}
+  prefabHojaAfilada: {fileID: 6006741857242452782, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
+  prefabArco: {fileID: 2487932819071573490, guid: 2352650bd3abe9e42bf94d2b5a257911, type: 3}
   UI: {fileID: 2716972620472274776, guid: 76545f1a8cc719d4da08c5f9dcd2b383, type: 3}
   personajeSeleccionado: {fileID: 0}
-  transitionDuration: 2
   fadeDuration: 0.5
