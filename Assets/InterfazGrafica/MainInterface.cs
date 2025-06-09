@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainInterface : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class MainInterface : MonoBehaviour
     [SerializeField] Slot PotionAbilitySlot;
 
     [SerializeField] Notificacion notificacion;
+    [SerializeField] Interactable interaccionBoton;
 
     private GameObject player;
     private PlayerInventory playerInventory;
@@ -99,6 +101,20 @@ public class MainInterface : MonoBehaviour
         {
             notificacion.EstablecerNombreObjeto(nombreObjeto);
             notificacion.gameObject.SetActive(true);
+        }
+    }
+
+    public void cambiarBotonInteraccion(bool valor)
+    {
+        if (!interaccionBoton) return;
+        switch (valor)
+        {
+            case true:
+                interaccionBoton.gameObject.SetActive(true);
+                break;
+            case false:
+                interaccionBoton.gameObject.SetActive(false);
+                break;
         }
     }
 }

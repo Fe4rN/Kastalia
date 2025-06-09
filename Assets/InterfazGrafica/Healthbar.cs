@@ -35,13 +35,11 @@ public class Healthbar : MonoBehaviour
         if (isIncreasing)
         {
             HealthbarChangeImage.color = AddColor;
-            Debug.Log("Healthbar increasing: " + targetFill);
         }
         else
         {
             HealthbarFrontImage.fillAmount = targetFill;
             HealthbarChangeImage.color = SubtractColor;
-            Debug.Log("Healthbar decreasing: " + targetFill);
         }
     }
 

@@ -14,7 +14,7 @@ public class Notificacion : MonoBehaviour
 
     public void EstablecerNombreObjeto(string nombre)
     {
-        textoNotificacion.text = "¡HAS RECOGIDO: " + nombre + "!";
+        textoNotificacion.text = "¡HAS OBTENIDO: " + nombre + "!";
     }
     
     public void DesactivarNotificacion()
