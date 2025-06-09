@@ -231,6 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: {fileID: 11400000, guid: 7bf034c6c692631449da9cc046d398fe, type: 2}
   inicial: 0
+  launchBombClip: {fileID: 8300000, guid: 291c12327f97c6348b1b38f7ef78e730, type: 3}
   bombaForce: 8
 --- !u!65 &7429913557499489046
 BoxCollider:

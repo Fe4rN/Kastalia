@@ -54,6 +54,9 @@ MonoBehaviour:
   prefabHojaAfilada: {fileID: 6006741857242452782, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
   prefabArco: {fileID: 2487932819071573490, guid: 2352650bd3abe9e42bf94d2b5a257911, type: 3}
   victoriaClip: {fileID: 8300000, guid: 8f97906814a25f24ebf4af5d1d1532ad, type: 3}
+  derrotaMenuClip: {fileID: 8300000, guid: c01459e9b552590409b23ebde12ae79e, type: 3}
+  pauseMenuClip: {fileID: 8300000, guid: 5aad9329635101f4c98096998e0dcff0, type: 3}
+  backgroundMusicClip: {fileID: 8300000, guid: 9cf633361de57f9489a4bb408909396f, type: 3}
   UI: {fileID: 2716972620472274776, guid: 76545f1a8cc719d4da08c5f9dcd2b383, type: 3}
   personajeSeleccionado: {fileID: 0}
   fadeDuration: 0.5

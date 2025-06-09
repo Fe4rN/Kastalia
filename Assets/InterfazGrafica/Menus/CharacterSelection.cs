@@ -34,7 +34,7 @@ public class CharacterSelection : MonoBehaviour
 
             GameManager.instance.playerSpawned = false;
 
-             // 🆕 NUEVO: Instanciar arma para el personaje seleccionado
+             // NUEVO: Instanciar arma para el personaje seleccionado
             GameManager.instance.InstanciarArmaParaPersonaje();
 
             if (Cronometro.instance != null)

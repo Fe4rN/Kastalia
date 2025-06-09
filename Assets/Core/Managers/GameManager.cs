@@ -20,12 +20,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
 
-    // 🆕 NUEVO: Referencias a los prefabs de armas
+    //NUEVO: Referencias a los prefabs de armas
     [SerializeField] private GameObject prefabHojaAfilada;
     [SerializeField] private GameObject prefabArco;
 
     //NUevo: Audio
     [SerializeField] private AudioClip victoriaClip;
+    [SerializeField] private AudioClip derrotaMenuClip;
+    [SerializeField] private AudioClip pauseMenuClip;
+    [SerializeField] private AudioClip backgroundMusicClip;
+
     private AudioSource audioSource;
 
     // Referencia a la UI del juego
@@ -48,6 +52,8 @@ public class GameManager : MonoBehaviour
         }
        
         audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
     }
 
     void Start()
@@ -66,6 +72,14 @@ public class GameManager : MonoBehaviour
 
     public void StartMainGameLoop()
     {
+
+        if (backgroundMusicClip != null && audioSource != null)
+        {
+            audioSource.clip = backgroundMusicClip;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
         characterIndex = -1;
         personajeSeleccionado = null;
         playerSpawned = false;
@@ -93,6 +107,21 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(LoadSceneWithTransition("Menu_Victoria", true));
     }
+    public void LoseGame()
+    {
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
+
+        if (derrotaMenuClip != null && audioSource != null)
+            audioSource.PlayOneShot(derrotaMenuClip);
+
+        isPaused = true;
+        Time.timeScale = 0f;
+        
+        StartCoroutine(LoadSceneWithTransition("Derrota", true));
+    }
+
+
 
     private IEnumerator CargarMazmorraYSeleccion()
     {
@@ -115,30 +144,32 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
 
-        // Que coño hace nada de esto
-        // AudioListener mainListener = FindObjectOfType<AudioListener>();
-        // if (mainListener != null)
-        // {
-        //     mainListener.enabled = false;
-        // }
-
         StartCoroutine(LoadSceneWithTransition("PauseMenu", true));
         Time.timeScale = 0f;
         isPaused = true;
+
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Pause();
+
+
+        // Reproducir el clip de pausa:
+        if (pauseMenuClip != null && audioSource != null)
+            audioSource.PlayOneShot(pauseMenuClip);
     }
 
     public void ResumeGame()
     {
         StartCoroutine(UnloadSceneWithTransition("PauseMenu"));
         Time.timeScale = 1f;
-        isPaused = false;
 
-        // ??????????????????
-        // AudioListener mainListener = FindObjectOfType<AudioListener>();
-        // if (mainListener != null)
-        // {
-        //     mainListener.enabled = true;
-        // }
+        if (audioSource != null && !audioSource.isPlaying)
+            audioSource.UnPause();
+
+        //Detener música de pausa
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
+
+        isPaused = false;
     }
 
     private IEnumerator DescargarTodasLasEscenas()

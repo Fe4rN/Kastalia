@@ -95,13 +95,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3fa8bdf30bb4f4c930e48ae72d8d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 2
-  gravityScale: 2
-  bounceFactor: 0.5
+  explosionClip: {fileID: 8300000, guid: 46992c4dbe25f384684ec0e0c8b7ff32, type: 3}
   directHitDamage: 5
   explosionDamage: 30
   proximityRadius: 3
-  explosionDelay: 5
   explosionRadiusIndicatorPrefab: {fileID: 6958298041589657097, guid: fb603c72c8ea55b4d8f6f5bb38e43f9c, type: 3}
   dangerRadiusIndicatorPrefab: {fileID: 1575281365175201325, guid: 11f824de55e7efe4489c1aa3b888cc1d, type: 3}
 --- !u!1001 &2621798022521920237

@@ -13706,6 +13706,14 @@ PrefabInstance:
       propertyPath: victoriaClip
       value: 
       objectReference: {fileID: 8300000, guid: 8f97906814a25f24ebf4af5d1d1532ad, type: 3}
+    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
+      propertyPath: pauseMenuClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5aad9329635101f4c98096998e0dcff0, type: 3}
+    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
+      propertyPath: derrotaMenuClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c01459e9b552590409b23ebde12ae79e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

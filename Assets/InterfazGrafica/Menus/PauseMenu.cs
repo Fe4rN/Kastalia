@@ -10,10 +10,22 @@ public class PauseMenu : MonoBehaviour
 
     void Start()
     {
-       
-        resume.onClick.AddListener(() => GameManager.instance.ResumeGame());
+
+        resume.onClick.AddListener(() => {
+            StopPauseMusic();
+            GameManager.instance.ResumeGame();
+        });
         quit.onClick.AddListener(() => CloseGame());
-        backToMenu.onClick.AddListener(() => BackToMenu());
+        backToMenu.onClick.AddListener(() => {
+            StopPauseMusic();
+            BackToMenu();
+        });
+    }
+    private void StopPauseMusic()
+    {
+        var src = GameManager.instance.GetComponent<AudioSource>();
+        if (src != null && src.isPlaying)
+            src.Stop();
     }
 
     private void BackToMenu()

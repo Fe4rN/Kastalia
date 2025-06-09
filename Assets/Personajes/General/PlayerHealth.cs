@@ -21,6 +21,9 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private GameObject deathCameraPrefab;
 
+  
+    [SerializeField] private AudioClip deathScreamClip;
+
     void Start()
     {
         vidaActual = vidaMaxima;
@@ -64,12 +67,17 @@ public class PlayerHealth : MonoBehaviour
     }
 
     public void Die()
-    {
+    { 
+        //Gritos muerte:
+
+        if (deathScreamClip != null)
+            AudioSource.PlayClipAtPoint(deathScreamClip, transform.position);
+
         if (Cronometro.instance != null)
         {
             Cronometro.instance.Detener();
         }
-
+        
         // mainInterface.updateVida(0f);
 
         StopAllCoroutines();
@@ -126,6 +134,7 @@ public class PlayerHealth : MonoBehaviour
 
         // Load defeat scene additively
         StartCoroutine(LoadSceneWithTransition("Derrota", true));
+         GameManager.instance.LoseGame();
 
         // Optionally destroy the player here or after scene finishes loading
         // Destroy(gameObject);

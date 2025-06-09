@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Bomba : MonoBehaviour
 {
+    [SerializeField] private AudioClip explosionClip;
     [Header("Damage Settings")]
     [SerializeField] private float directHitDamage = 5f;
     [SerializeField] private float explosionDamage = 30f;
@@ -12,6 +13,8 @@ public class Bomba : MonoBehaviour
 
     [SerializeField] private GameObject explosionRadiusIndicatorPrefab;
     [SerializeField] private GameObject dangerRadiusIndicatorPrefab;
+
+   
 
     private Rigidbody rb;
     private bool hasBounced = false;
@@ -65,8 +68,12 @@ public class Bomba : MonoBehaviour
 
     private void Explode()
     {
+
         if (hasExploded) return;
         hasExploded = true;
+
+        if (explosionClip != null)
+            AudioSource.PlayClipAtPoint(explosionClip, transform.position);
 
         DealExplosionDamage(transform.position);
         ShowExplosionRadius();

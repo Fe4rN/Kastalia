@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AtacarBombardero : Estado
 {
+    [SerializeField] private AudioClip launchBombClip;
+
     NavMeshAgent agent;
     BombarderoController controller;
 
@@ -26,9 +28,15 @@ public class AtacarBombardero : Estado
                 if (!controller.isFiring)
                 {
                     controller.isFiring = true;
+
+                    // Reproducir sonido de lanzamiento
+                    if (launchBombClip != null)
+                        AudioSource.PlayClipAtPoint(launchBombClip, transform.position);
+
                     StartCoroutine(controller.ShootBomba());
                 }
             }
+
             //Si el jugador se encuentra a demasiado cerca
             if (controller.distanciaAJugador < controller.safeDistance)
             {

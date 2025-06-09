@@ -53,6 +53,7 @@ MonoBehaviour:
   - {fileID: 2926724318453580989, guid: faa07202a1f7d3e458f510881e735a60, type: 3}
   puntoDeAparicion: {fileID: 6158968938902889842}
   animator: {fileID: 0}
+  abrirCofreClip: {fileID: 8300000, guid: 3805c3f9c0ba5f44dbbc88e97e4cda55, type: 3}
 --- !u!65 &2684906251641045527
 BoxCollider:
   m_ObjectHideFlags: 0
