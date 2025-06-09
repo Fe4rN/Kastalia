@@ -56,7 +56,7 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         GameObject jugador = GameObject.FindGameObjectWithTag("Player");
-        if(!jugador) return; 
+        if (!jugador) return;
         PlayerInventory playerInventory = jugador.GetComponent<PlayerInventory>();
         OffensiveAbility offensiveAbilityController = jugador.GetComponent<OffensiveAbility>();
         DefensiveAbility defensiveAbilityController = jugador.GetComponent<DefensiveAbility>();

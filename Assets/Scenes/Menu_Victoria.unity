@@ -1009,9 +1009,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed306dfd15717d46991fc724e63e666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volverAlMenuButton: {fileID: 0}
-  jugarDeNuevoButton: {fileID: 0}
-  salirDelJuegoButton: {fileID: 0}
+  volverAlMenuButton: {fileID: 8997793696060310607}
+  jugarDeNuevoButton: {fileID: 8481023193960625815}
+  salirDelJuegoButton: {fileID: 7064854170544888051}
 --- !u!114 &8481023193960625815
 MonoBehaviour:
   m_ObjectHideFlags: 0

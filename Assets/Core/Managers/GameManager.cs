@@ -1,8 +1,11 @@
+
 using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +24,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject prefabHojaAfilada;
     [SerializeField] private GameObject prefabArco;
 
+    //NUevo: Audio
+    [SerializeField] private AudioClip victoriaClip;
+    private AudioSource audioSource;
+
+    // Referencia a la UI del juego
     public GameObject UI;
 
     public GameObject personajeSeleccionado;
@@ -38,6 +46,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+       
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -73,7 +83,14 @@ public class GameManager : MonoBehaviour
 
     public void WinGame()
     {
+        //Reproducir el clip de victoria
+        if (victoriaClip != null && audioSource != null)
+            audioSource.PlayOneShot(victoriaClip);
+
+        // Detener el cronómetro
         isPaused = true;
+        Time.timeScale = 0f;// Pausar el tiempo para evitar problemas de sincronización
+
         StartCoroutine(LoadSceneWithTransition("Menu_Victoria", true));
     }
 
