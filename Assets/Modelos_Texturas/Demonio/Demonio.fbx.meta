@@ -8,12 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Main Body
-    second: {fileID: 2100000, guid: 412f79932ce91f242b086029398f7157, type: 2}
+    second: {fileID: 2100000, guid: 2675475420fe93e4983e88e87eef2087, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Visor
-    second: {fileID: 2100000, guid: c4baccc520146a7438b4ef183c181172, type: 2}
+    second: {fileID: 2100000, guid: 2675475420fe93e4983e88e87eef2087, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
