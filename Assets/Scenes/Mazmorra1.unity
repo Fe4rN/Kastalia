@@ -13694,9 +13694,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6256419261825292504, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
+      propertyPath: m_Volume
+      value: 0.445
+      objectReference: {fileID: 0}
     - target: {fileID: 7195948001984693631, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
+      propertyPath: sfxSource
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
+      propertyPath: musicSource
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
       propertyPath: victoryClip
@@ -13714,6 +13726,10 @@ PrefabInstance:
       propertyPath: derrotaMenuClip
       value: 
       objectReference: {fileID: 8300000, guid: c01459e9b552590409b23ebde12ae79e, type: 3}
+    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
+      propertyPath: backgroundMusicClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 88b13ac30be8a444aa30057f056b926d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13740,7 +13756,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.838
   m_Pitch: 1
   Loop: 0
   Mute: 0

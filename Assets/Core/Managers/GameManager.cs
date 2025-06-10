@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections;
 using UnityEditor;
@@ -23,6 +22,9 @@ public class GameManager : MonoBehaviour
     //NUEVO: Referencias a los prefabs de armas
     [SerializeField] private GameObject prefabHojaAfilada;
     [SerializeField] private GameObject prefabArco;
+
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
 
     //NUevo: Audio
     [SerializeField] private AudioClip victoriaClip;
@@ -50,7 +52,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-       
+
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.loop = false;
@@ -117,7 +119,7 @@ public class GameManager : MonoBehaviour
 
         isPaused = true;
         Time.timeScale = 0f;
-        
+
         StartCoroutine(LoadSceneWithTransition("Derrota", true));
     }
 

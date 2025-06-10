@@ -13,7 +13,7 @@ public class Menu_Victoria : MonoBehaviour
         jugarDeNuevoButton.onClick.AddListener(JugarDeNuevo);
         salirDelJuegoButton.onClick.AddListener(SalirDelJuego);
     }
-   
+
 
     public void VolverAlMenu()
     {
@@ -30,7 +30,8 @@ public class Menu_Victoria : MonoBehaviour
         GameManager.instance.StartMainGameLoop();
     }
 
-    public void SalirDelJuego() {
+    public void SalirDelJuego()
+    {
         var source = GameManager.instance.GetComponent<AudioSource>();
         if (source != null && source.isPlaying)
             source.Stop();

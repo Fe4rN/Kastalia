@@ -11,7 +11,8 @@ public class MainMenu : MonoBehaviour
         BotonSalir.onClick.AddListener(() => Salir());
     }
 
-    private void Jugar(){
+    private void Jugar()
+    {
         GameManager.instance.StartMainGameLoop();
     }
 

@@ -6,7 +6,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] Button resume;
     [SerializeField] Button quit;
     [SerializeField] Button backToMenu;
-   
+
 
     void Start()
     {
@@ -36,13 +36,13 @@ public class PauseMenu : MonoBehaviour
         GameManager.instance.StartMainGameLoop();
     }
 
-    private void CloseGame(){
+    private void CloseGame()
+    {
         Application.Quit();
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #endif
+#endif
     }
-    
-}
 
+}
