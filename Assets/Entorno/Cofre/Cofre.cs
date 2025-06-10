@@ -4,8 +4,9 @@ public class Cofre : MonoBehaviour
 {
     [SerializeField] private GameObject[] Loot;
     [SerializeField] private Transform puntoDeAparicion;
-    [SerializeField] private Animator animator;
-    [SerializeField] private AudioClip abrirCofreClip;
+    
+    private Animator animator;
+    private AudioSource audioSource;
 
 
     private bool jugadorCerca = false;
@@ -14,6 +15,7 @@ public class Cofre : MonoBehaviour
     private void Start()
     {
         animator = this.GetComponentInChildren<Animator>();
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -28,10 +30,8 @@ public class Cofre : MonoBehaviour
     {
         estaAbierto = true;
 
-        if (abrirCofreClip != null)
-            AudioSource.PlayClipAtPoint(abrirCofreClip, transform.position);
-
         animator.SetTrigger("abrir");
+        if(audioSource) audioSource.Play();
         MainInterface hud = FindFirstObjectByType<MainInterface>();
         if (hud) hud.cambiarBotonInteraccion(false);
 

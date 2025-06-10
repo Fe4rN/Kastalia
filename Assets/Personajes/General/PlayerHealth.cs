@@ -16,13 +16,11 @@ public class PlayerHealth : MonoBehaviour
     private MainInterface mainInterface;
     private Animator animator;
     private Healthbar healthbar;
+    private ManejadorAudio manejadorAudio;
 
     [SerializeField] private float fadeDuration = 0.25f;
 
     [SerializeField] private GameObject deathCameraPrefab;
-
-  
-    [SerializeField] private AudioClip deathScreamClip;
 
     void Start()
     {
@@ -31,6 +29,7 @@ public class PlayerHealth : MonoBehaviour
         mainInterface = FindFirstObjectByType<MainInterface>();
         healthbar = FindFirstObjectByType<Healthbar>();
         animator = GameObject.Find("Main Camera").GetComponent<Animator>();
+        manejadorAudio = GetComponent<ManejadorAudio>();
     }
 
     public void takeDamage(float damage)
@@ -47,6 +46,7 @@ public class PlayerHealth : MonoBehaviour
         {
             vidaActual -= damage;
             animator.SetTrigger("Hurt");
+            manejadorAudio.ReproducirSonidoDaño();
             healthbar.UpdateHealthbar(vidaMaxima, vidaActual, false);
             StartCoroutine(ActivarInmunidad());
         }
@@ -68,10 +68,6 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     { 
-        //Gritos muerte:
-
-        if (deathScreamClip != null)
-            AudioSource.PlayClipAtPoint(deathScreamClip, transform.position);
 
         if (Cronometro.instance != null)
         {
@@ -82,6 +78,7 @@ public class PlayerHealth : MonoBehaviour
 
         StopAllCoroutines();
         LevelManager.instance.UI.SetActive(false);
+        manejadorAudio.ReproducirSonidoMuerte();
 
         // Mostrar cursor del sistema
         Cursor.lockState = CursorLockMode.None;

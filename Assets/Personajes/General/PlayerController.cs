@@ -15,6 +15,7 @@ public abstract class PlayerController : MonoBehaviour
     protected HealingAbility healingAbilityController;
 
     protected MainInterface mainInterface;
+    protected ManejadorAudio manejadorAudio;
     private Vector3 playerVelocity;
     private float dashCooldown = 1.5f;
     public bool isDashing = false;
@@ -46,7 +47,7 @@ public abstract class PlayerController : MonoBehaviour
         healingAbilityController = GetComponent<HealingAbility>();
 
         mainInterface = FindFirstObjectByType<MainInterface>();
-
+        manejadorAudio = GetComponent<ManejadorAudio>();
     }
 
     protected virtual void Update()
@@ -71,6 +72,7 @@ public abstract class PlayerController : MonoBehaviour
             {
                 playerInventory.selectedItemType = ItemType.Arma;
                 ShowWeapon(true);
+                manejadorAudio.ReproducirSonidoEquipar();
                 mainInterface.SelectSlot(ItemType.Arma, AbilityType.None);
             }
             if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
@@ -90,6 +92,7 @@ public abstract class PlayerController : MonoBehaviour
                     playerInventory.selectedAbilityType = AbilityType.Defensiva;
                     defensiveAbilityController.enableShield();
                     ShowWeapon(true);
+                    manejadorAudio.ReproducirSonidoEquipar();
                     mainInterface.SetCooldowns();
                 }
             }
@@ -101,6 +104,7 @@ public abstract class PlayerController : MonoBehaviour
                     playerInventory.selectedAbilityType = AbilityType.Curativa;
                     StartCoroutine(healingAbilityController.healingAbility());
                     ShowWeapon(true);
+                    manejadorAudio.ReproducirSonidoEquipar();
                     mainInterface.SetCooldowns();
                 }
             }
@@ -129,9 +133,9 @@ public abstract class PlayerController : MonoBehaviour
 
     IEnumerator Dash(Vector3 move)
     {
-
         float startTime = Time.time;
         isDashing = true;
+        animator.SetTrigger("Dash");
         while (Time.time < startTime + dashTime)
         {
             controller.Move(move * dashSpeed * Time.deltaTime);

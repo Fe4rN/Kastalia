@@ -15,6 +15,7 @@ public class Espadachin : MonoBehaviour
     private LyxController controller;
     private PlayerInventory playerInventory;
     private Animator animator;
+    private ManejadorAudio manejadorAudio;
     private Vector3 attackDamageOffset;
     [SerializeField] private float empujeFuerza = 5f;
     public float attackCooldown = 0.5f;
@@ -24,6 +25,7 @@ public class Espadachin : MonoBehaviour
         controller = GetComponent<LyxController>();
         playerInventory = GetComponent<PlayerInventory>();
         animator = GetComponentInChildren<Animator>();
+        manejadorAudio = GetComponent<ManejadorAudio>();
     }
 
     void Update()
@@ -135,6 +137,7 @@ public class Espadachin : MonoBehaviour
                 {
                     uniqueEnemies.Add(enemigo);
                     enemigo.TakeDamage(damage);
+                    manejadorAudio.ReproducirSonidoGolpe();
 
                     float fuerzaEmpujeActual = isFullyCharged ? empujeFuerza * 1.5f : empujeFuerza;
                     EmpujarEnemigo(enemigo.gameObject, fuerzaEmpujeActual);

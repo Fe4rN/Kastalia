@@ -8,37 +8,37 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Bricks
-    second: {fileID: 2100000, guid: 96b705388fa3da048ba851d90a213b72, type: 2}
+    second: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Chains
-    second: {fileID: 2100000, guid: 8b8f6f22a655c704d96076246902e0f3, type: 2}
+    second: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Corners
-    second: {fileID: 2100000, guid: 820c8632f0db2d649b3f615d11cdf5f2, type: 2}
+    second: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Cuffs
-    second: {fileID: 2100000, guid: 5d0314c1d1768e544857c1d2a2361dd3, type: 2}
+    second: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Floor
-    second: {fileID: 2100000, guid: 3a73c67b8f50b194f86b48ba35ad6a8e, type: 2}
+    second: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Skeleton
-    second: {fileID: 2100000, guid: d931cf4012738a146b10e658cda3ec8f, type: 2}
+    second: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Walls
-    second: {fileID: 2100000, guid: 4a2b03076944f0e4d9c9611c146e7f50, type: 2}
+    second: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -72,8 +72,7 @@ public class Bomba : MonoBehaviour
         if (hasExploded) return;
         hasExploded = true;
 
-        if (explosionClip != null)
-            AudioSource.PlayClipAtPoint(explosionClip, transform.position);
+        if (explosionClip != null) AudioSource.PlayClipAtPoint(explosionClip, transform.position);
 
         DealExplosionDamage(transform.position);
         ShowExplosionRadius();
@@ -89,7 +88,8 @@ public class Bomba : MonoBehaviour
             {
                 if (hit.collider == collider)
                 {
-                    collider.GetComponentInParent<PlayerHealth>()?.takeDamage(explosionDamage);
+                    Debug.Log("Damage dealt to: " + collider.name);
+                    collider.GetComponent<PlayerHealth>()?.takeDamage(explosionDamage);
                     collider.GetComponentInParent<EnemyHealth>()?.TakeDamage(Mathf.CeilToInt(explosionDamage));
                 }
             }
