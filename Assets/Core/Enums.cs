@@ -19,8 +19,10 @@ public enum AbilityType
     None
 }
 
-public enum Characters{
+public enum Characters
+{
     Lyx,
-    Dreven
+    Dreven,
+    None
 }
 

@@ -46,9 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterIndex: 0
+  personaje: 2
   playerSpawned: 0
   isPaused: 0
   isLevelLoaded: 0
+  menuPrincipal: {fileID: 0}
+  menuSeleccionPersonaje: {fileID: 0}
+  menuOpciones: {fileID: 0}
   Lyx: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
   Dreven: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
   prefabHojaAfilada: {fileID: 6006741857242452782, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
@@ -58,7 +62,6 @@ MonoBehaviour:
   pauseMenuClip: {fileID: 8300000, guid: 5aad9329635101f4c98096998e0dcff0, type: 3}
   backgroundMusicClip: {fileID: 8300000, guid: 9cf633361de57f9489a4bb408909396f, type: 3}
   UI: {fileID: 2716972620472274776, guid: 76545f1a8cc719d4da08c5f9dcd2b383, type: 3}
-  personajeSeleccionado: {fileID: 0}
   fadeDuration: 0.5
 --- !u!82 &6256419261825292504
 AudioSource:

@@ -1,23 +1,24 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] Button BotonJugar;
-    [SerializeField] Button BotonSalir;
-    void Start()
+    [SerializeField] private Button jugar_boton;
+    [SerializeField] private Button opciones_boton;
+    [SerializeField] private Button salir_boton;
+
+    public void boton_jugar_presionado()
     {
-        BotonJugar.onClick.AddListener(() => Jugar());
-        BotonSalir.onClick.AddListener(() => Salir());
+        GameManager.instance.CargarMenuSeleccionPersonaje();
     }
 
-    private void Jugar()
+    public void boton_opciones_presionado()
     {
-        GameManager.instance.StartMainGameLoop();
+        GameManager.instance.CargarMenuOpciones();
     }
-
-    private void Salir()
+    
+    public void boton_salir_presionado()
     {
-        Application.Quit();
+        GameManager.instance.QuitGame();
     }
+    
 }

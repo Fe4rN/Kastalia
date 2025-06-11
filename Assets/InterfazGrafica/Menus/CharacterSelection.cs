@@ -4,49 +4,39 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelection : MonoBehaviour
 {
-    public Button Lyx;
-    public Button Dreven;
-    public Button Confirm;
+    [SerializeField] private Button Dreven_boton;
+    [SerializeField] private Button Lyx_boton;
+    [SerializeField] private Button Confirmar_boton;
 
-    private int selectedCharacter = -1;
+    private Characters personajeSeleccionado;
 
-    void Start()
+    void OnEnable()
     {
-        Lyx.onClick.AddListener(() => selectCharacter(1));
-        Dreven.onClick.AddListener(() => selectCharacter(2));
-        Confirm.onClick.AddListener(confirmSelection);
+        Dreven_boton.onClick.AddListener(() => SeleccionarPersonaje(Characters.Dreven));
+        Lyx_boton.onClick.AddListener(() => SeleccionarPersonaje(Characters.Lyx));
+        personajeSeleccionado = Characters.None;
+        GameManager.instance.personaje = Characters.None;
+        if (Confirmar_boton.interactable) Confirmar_boton.interactable = false;
     }
 
-    private void selectCharacter(int value)
+    private void SeleccionarPersonaje(Characters personaje)
     {
-        selectedCharacter = value;
+        personajeSeleccionado = personaje;
+        ActivarBotonConfirmar();
     }
 
-    void confirmSelection()
+    private void ActivarBotonConfirmar()
     {
-        if (selectedCharacter != -1)
+        Confirmar_boton.interactable = true;
+        Confirmar_boton.onClick.AddListener(() => ConfirmarSeleccion());
+    }
+    
+    private void ConfirmarSeleccion()
+    {
+        if (personajeSeleccionado == Characters.Dreven || personajeSeleccionado == Characters.Lyx)
         {
-            GameManager.instance.characterIndex = selectedCharacter;
-
-            GameManager.instance.personajeSeleccionado = selectedCharacter == 1
-                ? GameManager.instance.Lyx
-                : GameManager.instance.Dreven;
-
-            GameManager.instance.playerSpawned = false;
-
-             // NUEVO: Instanciar arma para el personaje seleccionado
-            GameManager.instance.InstanciarArmaParaPersonaje();
-
-            if (Cronometro.instance != null)
-            {
-                Cronometro.instance.ReiniciarCronometro();
-            }
-
-            if (SceneManager.GetSceneByName("CharacterSelection").isLoaded)
-            {
-                SceneManager.UnloadSceneAsync("CharacterSelection");
-            }
-            GameManager.instance.isPaused = false;
+            GameManager.instance.personaje = personajeSeleccionado;
+            GameManager.instance.IniciarPrimerNivel();
         }
     }
 }

@@ -7,7 +7,7 @@ public class Victory_Manager : MonoBehaviour
 
     public void VolverAlMenu()
     {
-        GameManager.instance.playerSpawned = false;
+        GameManager.instance.CargarMenuPrincipal();
         GameManager.instance.StartMainGameLoop();
     }
 
