@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -44,21 +41,19 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        else DestroyImmediate(gameObject);
 
-        audioSource = GetComponent<AudioSource>();
-        audioSource.playOnAwake = false;
-        audioSource.loop = false;
+        // audioSource = GetComponent<AudioSource>();
+        // audioSource.playOnAwake = false;
+        // audioSource.loop = false;
     }
 
-    void Start()
-    {
-        CargarMenuPrincipal();
-    }
+    // void Start()
+    // {
+    //     menuPrincipal = FindFirstObjectByType<MainMenu>(FindObjectsInactive.Include).gameObject;
+    //     menuSeleccionPersonaje = FindFirstObjectByType<CharacterSelection>(FindObjectsInactive.Include).gameObject;
+    //     CargarMenuPrincipal();
+    // }
 
     void Update()
     {
@@ -83,15 +78,10 @@ public class GameManager : MonoBehaviour
     public void IniciarPrimerNivel()
     {
         SceneManager.LoadScene("Mazmorra1");
+
     }
 
     public void CargarMenuOpciones()
-    {
-
-    }
-
-
-    public void StartMainGameLoop()
     {
 
     }

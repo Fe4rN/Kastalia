@@ -20,14 +20,12 @@ public class Menu_Victoria : MonoBehaviour
         var source = GameManager.instance.GetComponent<AudioSource>();
         if (source != null && source.isPlaying)
             source.Stop();
-        GameManager.instance.StartMainGameLoop();
     }
     public void JugarDeNuevo()
     {
         var source = GameManager.instance.GetComponent<AudioSource>();
         if (source != null && source.isPlaying)
             source.Stop();
-        GameManager.instance.StartMainGameLoop();
     }
 
     public void SalirDelJuego()

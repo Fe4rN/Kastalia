@@ -8,7 +8,6 @@ public class MenuDerrota : MonoBehaviour
         var gmSource = GameManager.instance.GetComponent<AudioSource>();
         if (gmSource != null && gmSource.isPlaying)
             gmSource.Stop();
-        GameManager.instance.StartMainGameLoop();
     }
 
     public void IrAlMenuPrincipal()
@@ -17,7 +16,6 @@ public class MenuDerrota : MonoBehaviour
         var gmSource = GameManager.instance.GetComponent<AudioSource>();
         if (gmSource != null && gmSource.isPlaying)
             gmSource.Stop();
-        GameManager.instance.StartMainGameLoop();
     }
 
     public void SalirDelJuego()

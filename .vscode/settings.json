@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Kastalia.sln"
+    "dotnet.defaultSolution": "Kastalia-Proyecto-Videojuegos-UPV-2025-.sln"
 }

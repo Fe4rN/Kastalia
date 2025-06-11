@@ -8,13 +8,11 @@ public class Victory_Manager : MonoBehaviour
     public void VolverAlMenu()
     {
         GameManager.instance.CargarMenuPrincipal();
-        GameManager.instance.StartMainGameLoop();
     }
 
     public void JugarDeNuevo()
     {
         SceneManager.UnloadSceneAsync("Menu_Victoria");
-        GameManager.instance.StartMainGameLoop();
         GameManager.instance.isPaused = false;
     }
 

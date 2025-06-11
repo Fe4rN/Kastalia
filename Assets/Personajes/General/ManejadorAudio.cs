@@ -14,7 +14,6 @@ public class ManejadorAudio : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-
     public void ReproducirSonidoDaño()
     {
         if (sonidosDaño.Length > 0)

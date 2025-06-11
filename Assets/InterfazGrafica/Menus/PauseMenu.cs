@@ -33,7 +33,6 @@ public class PauseMenu : MonoBehaviour
 
 
         Time.timeScale = 1f;
-        GameManager.instance.StartMainGameLoop();
     }
 
     private void CloseGame()

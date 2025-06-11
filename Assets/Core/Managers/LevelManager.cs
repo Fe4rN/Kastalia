@@ -41,8 +41,12 @@ public class LevelManager : MonoBehaviour
                 player = Instantiate(lyxPrefab, spawnPoint, Quaternion.identity);
                 break;
             default:
-                Debug.LogError("No se ha seleccionado un personaje válido.");
+                GameManager.instance.CargarMenuPrincipal();
                 return;
         }
+
+        CinemachineCamera camera = FindFirstObjectByType<CinemachineCamera>();
+        camera.Follow = player.transform;
+        Instantiate(UI, Vector3.zero, Quaternion.identity);
     }
 }
