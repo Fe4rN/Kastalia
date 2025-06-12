@@ -19,6 +19,7 @@ public class EnemyHealthbar : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.instance.isPaused) return;
         transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
         healthbar.fillAmount = Mathf.MoveTowards(healthbar.fillAmount, target, reduceSpeed * Time.deltaTime);
     }

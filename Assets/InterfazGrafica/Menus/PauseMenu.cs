@@ -3,45 +3,22 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeField] Button resume;
-    [SerializeField] Button quit;
-    [SerializeField] Button backToMenu;
+    [SerializeField] Button reanudarBoton;
+    [SerializeField] Button menuBoton;
+    [SerializeField] Button salirBoton;
 
-
-    void Start()
+    public void Reanudar()
     {
-
-        resume.onClick.AddListener(() => {
-            StopPauseMusic();
-            GameManager.instance.ResumeGame();
-        });
-        quit.onClick.AddListener(() => CloseGame());
-        backToMenu.onClick.AddListener(() => {
-            StopPauseMusic();
-            BackToMenu();
-        });
-    }
-    private void StopPauseMusic()
-    {
-        var src = GameManager.instance.GetComponent<AudioSource>();
-        if (src != null && src.isPlaying)
-            src.Stop();
+        GameManager.instance.ResumeGame();
     }
 
-    private void BackToMenu()
+    public void Menu()
     {
-
-
-        Time.timeScale = 1f;
+        GameManager.instance.CargarMenuPrincipal();
     }
 
-    private void CloseGame()
+    public void Salir()
     {
-        Application.Quit();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        GameManager.instance.QuitGame();
     }
-
 }

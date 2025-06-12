@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 
@@ -7,14 +9,18 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
+    public GameState gameState;
     public Characters personaje;
     public bool isPaused = false;
 
     public MainMenu menuPrincipal;
     public CharacterSelection menuSeleccionPersonaje;
     public GameObject menuOpciones;
+    public MenuDerrota menuDerrota;
+    public Menu_Victoria menuVictoria;
+    public PauseMenu menuPausa;
 
-
+    private GameObject menuPausaActivo;
 
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
@@ -24,12 +30,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject prefabArco;
 
     //Audio
-    [SerializeField] private AudioClip victoriaClip;
-    [SerializeField] private AudioClip derrotaMenuClip;
+    [SerializeField] private AudioClip musicaVictoria;
+    public AudioClip musicaDerrota;
     [SerializeField] private AudioClip pauseMenuClip;
-    [SerializeField] private AudioClip backgroundMusicClip;
+    [SerializeField] private AudioClip musicaCombate;
+    [SerializeField] private AudioClip musicaMenuPrincipal;
 
-    private AudioSource audioSource;
+    [SerializeField] private AudioMixer audioMixer;
+
+    public AudioSource audioSource;
 
     // Referencia a la UI del juego
     public GameObject UI;
@@ -43,98 +52,116 @@ public class GameManager : MonoBehaviour
         }
         else DestroyImmediate(gameObject);
 
-        // audioSource = GetComponent<AudioSource>();
-        // audioSource.playOnAwake = false;
-        // audioSource.loop = false;
     }
 
-    // void Start()
-    // {
-    //     menuPrincipal = FindFirstObjectByType<MainMenu>(FindObjectsInactive.Include).gameObject;
-    //     menuSeleccionPersonaje = FindFirstObjectByType<CharacterSelection>(FindObjectsInactive.Include).gameObject;
-    //     CargarMenuPrincipal();
-    // }
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (!audioSource) Debug.LogWarning("AudioSource no detectado");
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused) ResumeGame();
-            else PauseGame();
+            if (gameState == GameState.Playing || gameState == GameState.Paused)
+            {
+                if (isPaused) ResumeGame();
+                else PauseGame();
+            }
+            else return;
         }
     }
 
     public void CargarMenuPrincipal()
     {
         SceneManager.LoadScene("MainMenu");
+        gameState = GameState.MainMenu;
+        audioSource.clip = musicaMenuPrincipal;
+        audioSource.Play();
     }
 
     public void CargarMenuSeleccionPersonaje()
     {
-        menuPrincipal.gameObject.SetActive(false);
-        menuSeleccionPersonaje.gameObject.SetActive(true);
+        Time.timeScale = 1f;
+        isPaused = false;
+        personaje = Characters.None;
+        if (SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            SceneLoader.instance.CargarEscena("MainMenu", () =>
+            {
+                audioSource.clip = musicaMenuPrincipal;
+                audioSource.Play();
+                menuPrincipal.gameObject.SetActive(false);
+                menuOpciones.SetActive(false);
+                menuSeleccionPersonaje.gameObject.SetActive(true);
+                gameState = GameState.CharacterSelection;
+            });
+        }
+        else
+        {
+            menuPrincipal.gameObject.SetActive(false);
+            menuOpciones.SetActive(false);
+            menuSeleccionPersonaje.gameObject.SetActive(true);
+            gameState = GameState.CharacterSelection;
+        }
     }
 
     public void IniciarPrimerNivel()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.LoadScene("Mazmorra1");
+        gameState = GameState.Playing;
+        audioSource.clip = musicaCombate;
+        audioSource.Play();
 
     }
 
     public void CargarMenuOpciones()
     {
-
+        menuPrincipal.gameObject.SetActive(false);
+        menuSeleccionPersonaje.gameObject.SetActive(false);
+        menuOpciones.SetActive(true);
     }
 
     public void WinGame()
     {
-        //Reproducir el clip de victoria
-        if (victoriaClip != null && audioSource != null)
-            audioSource.PlayOneShot(victoriaClip);
+        gameState = GameState.Victory;
+
+        audioSource.clip = musicaVictoria;
+        audioSource.Play();
 
         // Detener el cronómetro
         isPaused = true;
         Time.timeScale = 0f;// Pausar el tiempo para evitar problemas de sincronización
-    }
-    public void LoseGame()
-    {
-        if (audioSource != null && audioSource.isPlaying)
-            audioSource.Stop();
 
-        if (derrotaMenuClip != null && audioSource != null)
-            audioSource.PlayOneShot(derrotaMenuClip);
-
-        isPaused = true;
-        Time.timeScale = 0f;
+        LevelManager.instance.UI.SetActive(false);
+        GameObject.FindAnyObjectByType<PlayerController>().animator.SetFloat("InputMagnitude", 0f);
+        Instantiate(menuVictoria.gameObject, Vector3.zero, Quaternion.identity);
+        gameState = GameState.Victory;
     }
 
     public void PauseGame()
     {
         Time.timeScale = 0f;
         isPaused = true;
+        gameState = GameState.Paused;
+        audioMixer.SetFloat("MusicFocus", 500f);
+        LevelManager.instance.UI.SetActive(false);
 
-        if (audioSource != null && audioSource.isPlaying)
-            audioSource.Pause();
-
-
-        // Reproducir el clip de pausa:
-        if (pauseMenuClip != null && audioSource != null)
-            audioSource.PlayOneShot(pauseMenuClip);
+        menuPausaActivo = Instantiate(menuPausa).gameObject;
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1f;
-
-        if (audioSource != null && !audioSource.isPlaying)
-            audioSource.UnPause();
-
-        //Detener música de pausa
-        if (audioSource != null && audioSource.isPlaying)
-            audioSource.Stop();
-
         isPaused = false;
+        gameState = GameState.Playing;
+        audioMixer.SetFloat("MusicFocus", 22000f);
+        LevelManager.instance.UI.SetActive(true);
+
+
+        Destroy(menuPausaActivo);
     }
 
 
@@ -143,6 +170,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    //Ya sé que esto mismo se encuentra en SceneLoader, pero es que estoy muy cansado (noche antes del Sprint final)
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Mazmorra1")
@@ -151,4 +179,16 @@ public class GameManager : MonoBehaviour
         }
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+}
+
+
+
+public enum GameState
+{
+    MainMenu,
+    CharacterSelection,
+    Playing,
+    Paused,
+    Victory,
+    Defeat
 }

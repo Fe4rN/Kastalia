@@ -44,9 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614684218fad19e49b4055f48a4afe0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 8115032155769542572, guid: 267ce24bb5897234480b5024a8689c80, type: 3}
-  enemyQuantity: 0
+  drevenPrefab: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
+  lyxPrefab: {fileID: 8343663245281204225, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
+  arcoPrefab: {fileID: 2487932819071573490, guid: 2352650bd3abe9e42bf94d2b5a257911, type: 3}
+  hojaAfiladaPrefab: {fileID: 6006741857242452782, guid: de775c3bf5beaa0409d50cbd8b191098, type: 3}
   player: {fileID: 0}
-  spawnPoint: {x: 0, y: 0, z: 0}
+  spawnPoint: {x: 0, y: 1, z: -12}
+  UIprefab: {fileID: 2716972620472274776, guid: 76545f1a8cc719d4da08c5f9dcd2b383, type: 3}
   UI: {fileID: 0}
-  isLevelLoaded: 0

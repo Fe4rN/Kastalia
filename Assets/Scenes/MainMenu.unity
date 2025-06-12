@@ -20502,6 +20502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenu: {fileID: 5655995690669347127, guid: 1fcba97006b3e1048a7432927d36449a, type: 3}
   characterSelection: {fileID: 4527447290526486980, guid: 172f32ccae655434bbe0709db8fed224, type: 3}
+  opcionesMenu: {fileID: 5724069287836456308, guid: d1859c16097db2a4daf786909940d1e2, type: 3}
 --- !u!4 &1708325829
 Transform:
   m_ObjectHideFlags: 0
@@ -24546,14 +24547,6 @@ PrefabInstance:
     - target: {fileID: 7195948001984693631, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
       propertyPath: m_Name
       value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
-      propertyPath: menuPrincipal
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7711563411771071282, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
-      propertyPath: menuSeleccionPersonaje
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

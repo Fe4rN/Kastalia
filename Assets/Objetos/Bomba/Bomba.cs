@@ -88,7 +88,6 @@ public class Bomba : MonoBehaviour
             {
                 if (hit.collider == collider)
                 {
-                    Debug.Log("Damage dealt to: " + collider.name);
                     collider.GetComponent<PlayerHealth>()?.takeDamage(explosionDamage);
                     collider.GetComponentInParent<EnemyHealth>()?.TakeDamage(Mathf.CeilToInt(explosionDamage));
                 }

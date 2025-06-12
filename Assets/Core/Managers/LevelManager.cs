@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
 
     public GameObject player;
     public Vector3 spawnPoint;
+    public GameObject UIprefab;
     public GameObject UI;
 
     private CinemachineCamera cinemachineCamera;
@@ -40,27 +41,22 @@ public class LevelManager : MonoBehaviour
 
     public void InitLevel()
     {
-        Debug.Log("Personaje seleccionado: " + GameManager.instance.personaje);
         switch (GameManager.instance.personaje)
         {
             case Characters.Dreven:
                 player = Instantiate(drevenPrefab, spawnPoint, Quaternion.identity);
                 Instantiate(arcoPrefab, puntoAparicionArma, Quaternion.identity);
-                Debug.Log("Dreven seleccionado");
                 break;
             case Characters.Lyx:
                 player = Instantiate(lyxPrefab, spawnPoint, Quaternion.identity);
                 Instantiate(hojaAfiladaPrefab, puntoAparicionArma, Quaternion.identity);
-                Debug.Log("Lyx seleccionado");
                 break;
             default:
                 GameManager.instance.CargarMenuPrincipal();
                 return;
         }
-
-        Debug.Log("Player instantiated: " + player.name);
         CinemachineCamera camera = FindFirstObjectByType<CinemachineCamera>();
         camera.Follow = player.transform;
-        Instantiate(UI, Vector3.zero, Quaternion.identity);
+        UI = Instantiate(UIprefab, Vector3.zero, Quaternion.identity);
     }
 }

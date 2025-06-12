@@ -34,7 +34,15 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: 04ba966b4f075b34993d318defba5cb4
+    name: MasterVolume
+  - guid: 956667cd9de8f8248bed16d2e121da4f
+    name: MusicVolume
+  - guid: 6c063ea8c567d8d45a97f92979222eb2
+    name: MusicFocus
+  - guid: 2c0dbd421444868468febf2570e33323
+    name: EffectsVolume
   m_AudioMixerGroupViews:
   - guids:
     - 2bf03cb530764634c8d052362200244a
@@ -88,7 +96,9 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 9286e39f04601fd4d935ac0964060f74
   m_FloatValues:
-    956667cd9de8f8248bed16d2e121da4f: -4.9356413
+    d244be018f855ed45b6f8f43c874dd33: 579
+    6c063ea8c567d8d45a97f92979222eb2: 22000
+    956667cd9de8f8248bed16d2e121da4f: 0
   m_TransitionOverrides: {}
 --- !u!244 &244652494341497657
 AudioMixerEffectController:
@@ -132,8 +142,27 @@ AudioMixerGroupController:
   m_Pitch: bdece133952c4d744863979c169af2e6
   m_Send: 00000000000000000000000000000000
   m_Effects:
+  - {fileID: 7462589223260782005}
   - {fileID: 3706479308993817486}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &7462589223260782005
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: cce3a72953fb32145bb04716d4a49392
+  m_EffectName: Lowpass
+  m_MixLevel: 670ee4e683f9ac54d8bbca7d25bc7e82
+  m_Parameters:
+  - m_ParameterName: Cutoff freq
+    m_GUID: 6c063ea8c567d8d45a97f92979222eb2
+  - m_ParameterName: Resonance
+    m_GUID: d6061e50f81dc354495efc99398e5fac
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
