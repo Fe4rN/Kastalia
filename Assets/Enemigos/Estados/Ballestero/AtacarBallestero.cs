@@ -17,6 +17,7 @@ public class AtacarBallestero : Estado
 
     void Update()
     {
+        animator.SetBool("IsWandering", false);
         transform.LookAt(controller.jugador);
         if (controller.jugador)
         {

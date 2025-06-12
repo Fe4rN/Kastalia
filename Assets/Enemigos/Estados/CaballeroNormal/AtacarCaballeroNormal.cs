@@ -47,6 +47,7 @@ public class Atacar : Estado
         puedeAtacar = false;
         if (player != null)
         {
+            animator.SetTrigger("SwordHit");
             PlayerHealth PlayerHealth = player.GetComponent<PlayerHealth>();
             if (PlayerHealth != null)
             {

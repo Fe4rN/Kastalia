@@ -25,6 +25,7 @@ public class DeambularBombardero : Estado
             {
                 StopCoroutine(DeambularCoorutina());
                 estaDeambulando = false;
+                animator.SetBool("IsWandering", false);
                 transform.LookAt(controller.jugador);
                 controller.DisplayAgroPopup();
                 controller.SetEstado(controller.atacarEstado.Value);
@@ -33,6 +34,7 @@ public class DeambularBombardero : Estado
             {
                 StopCoroutine(DeambularCoorutina());
                 estaDeambulando = false;
+                animator.SetBool("IsWandering", false);
                 transform.LookAt(controller.jugador);
                 controller.DisplayAgroPopup();
                 controller.SetEstado(controller.mantenerDistanciaEstado.Value);
@@ -81,8 +83,10 @@ public class DeambularBombardero : Estado
 
                 while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
                 {
+                    animator.SetBool("IsWandering", true);
                     yield return null;
                 }
+                animator.SetBool("IsWandering", false);
 
                 float tiempoEspera = Random.Range(1f, 4f);
                 yield return new WaitForSeconds(tiempoEspera);

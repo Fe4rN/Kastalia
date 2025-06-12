@@ -15,6 +15,8 @@ public class BallesteroController : Maquina
     //Atributos relacionados al jugador
     public Transform jugador;
     public float distanciaAJugador;
+
+    Animator animator;
     
     //Estados
     public NombreEstado deambularEstado;
@@ -26,6 +28,8 @@ public class BallesteroController : Maquina
     {
         if (FindFirstObjectByType<CharacterController>() == null) { return; }
         else { jugador = FindFirstObjectByType<CharacterController>().transform; }
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -49,6 +53,7 @@ public class BallesteroController : Maquina
 
     public IEnumerator ShootArrow()
     {
+        animator.SetTrigger("Attack");
         isFiring = true;
         Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 1.75f;
         Vector3 direction = (jugador.position - transform.position).normalized;

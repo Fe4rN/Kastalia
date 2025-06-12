@@ -11,10 +11,13 @@ public class EnemyHealth : MonoBehaviour
     public float maxHealth = 100;
     private float currentHealth;
 
+    private Animator animator;
+
     private void Start()
     {
         currentHealth = maxHealth;
         if (EnemyManager.Instance) EnemyManager.Instance.RegisterEnemy();
+        animator = GetComponentInChildren<Animator>();
 
         if (healthbar)
         {
@@ -55,6 +58,8 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        if(animator) animator.SetTrigger("Death");
+
         GameObject jugador = GameObject.FindGameObjectWithTag("Player");
         if (!jugador) return;
         PlayerInventory playerInventory = jugador.GetComponent<PlayerInventory>();
@@ -78,6 +83,6 @@ public class EnemyHealth : MonoBehaviour
 
         if (EnemyManager.Instance) EnemyManager.Instance.UnregisterEnemy();
 
-        Destroy(gameObject);
+        Destroy(gameObject, .5f);
     }
 }

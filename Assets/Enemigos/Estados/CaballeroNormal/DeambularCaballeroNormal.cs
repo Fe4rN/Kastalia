@@ -62,8 +62,11 @@ public class DeambularCaballeroNormal : Estado
 
             while (agent.pathPending || agent.remainingDistance > 0.5f)
             {
+                animator.SetBool("IsWandering", true);
                 yield return null;
             }
+            animator.SetBool("IsWandering", false);
+
 
           
             yield return new WaitForSeconds(Random.Range(2f, 5f));

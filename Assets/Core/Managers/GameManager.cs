@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour
     public Characters personaje;
     public bool isPaused = false;
 
-    [SerializeField] private GameObject menuPrincipal;
-    [SerializeField] private GameObject menuSeleccionPersonaje;
-    [SerializeField] private GameObject menuOpciones;
+    public MainMenu menuPrincipal;
+    public CharacterSelection menuSeleccionPersonaje;
+    public GameObject menuOpciones;
 
 
 
@@ -71,12 +71,13 @@ public class GameManager : MonoBehaviour
 
     public void CargarMenuSeleccionPersonaje()
     {
-        menuPrincipal.SetActive(false);
-        menuSeleccionPersonaje.SetActive(true);
+        menuPrincipal.gameObject.SetActive(false);
+        menuSeleccionPersonaje.gameObject.SetActive(true);
     }
 
     public void IniciarPrimerNivel()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.LoadScene("Mazmorra1");
 
     }
@@ -140,5 +141,14 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Mazmorra1")
+        {
+            LevelManager.instance.InitLevel();
+        }
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

@@ -29,6 +29,7 @@ public class MantenerDistanciaBallestero : Estado
                 {
                     StartCoroutine(controller.ShootArrow());
                 }
+                animator.SetBool("IsWandering", true);
                 Vector3 fleePosition = transform.position - directionToPlayer * 2f;
                 NavMeshHit hit;
                 if (NavMesh.SamplePosition(fleePosition, out hit, 2f, NavMesh.AllAreas))

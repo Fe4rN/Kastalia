@@ -1,24 +1,9 @@
 fileFormatVersion: 2
-guid: ccb1ced5db6998141bdc390c176844a4
+guid: b35c60f440e2b5940b3b8773dbbcf83e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Details
-    second: {fileID: 2100000, guid: 610f3c56d1a39bd4fab5d8b78bb45166, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Main Body
-    second: {fileID: 2100000, guid: 610f3c56d1a39bd4fab5d8b78bb45166, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Visor
-    second: {fileID: 2100000, guid: 610f3c56d1a39bd4fab5d8b78bb45166, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

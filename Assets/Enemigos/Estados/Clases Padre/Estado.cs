@@ -7,6 +7,8 @@ public abstract class Estado : MonoBehaviour
     [SerializeField]
     bool inicial = false;
 
+    public Animator animator;
+
     protected Maquina maquina;
 
     public string Nombre
@@ -23,6 +25,7 @@ public abstract class Estado : MonoBehaviour
     void Awake()
     {
         maquina = GetComponent<Maquina>();
+        animator = GetComponentInChildren<Animator>();
         OnAwake();
     }
 

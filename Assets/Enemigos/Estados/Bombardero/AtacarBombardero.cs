@@ -33,6 +33,7 @@ public class AtacarBombardero : Estado
                     if (launchBombClip != null)
                         AudioSource.PlayClipAtPoint(launchBombClip, transform.position);
 
+                    animator.SetTrigger("Bomba");
                     StartCoroutine(controller.ShootBomba());
                 }
             }

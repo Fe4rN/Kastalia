@@ -24,6 +24,7 @@ public class MantenerDistanciaBombardero : Estado
 
             if (distancia < controller.safeDistance)
             {
+                animator.SetBool("IsWandering", true);
                 agent.ResetPath();
                 transform.LookAt(controller.jugador);
                 if (!controller.isFiring)
@@ -42,10 +43,12 @@ public class MantenerDistanciaBombardero : Estado
             {
                 agent.ResetPath();
                 transform.LookAt(controller.jugador);
+                animator.SetBool("IsWandering", false);
                 controller.SetEstado(controller.atacarEstado.Value);
             }
             else
             {
+                animator.SetBool("IsWandering", true);
                 agent.SetDestination(controller.jugador.position);
             }
         }

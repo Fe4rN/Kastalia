@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6354034963932618721}
   - component: {fileID: 3046503381536149608}
   - component: {fileID: 2266067780951299644}
-  - component: {fileID: 57867240159742629}
   m_Layer: 0
   m_Name: DeathCamera
   m_TagString: DeathCamera
@@ -129,11 +128,3 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &57867240159742629
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8792258981132517495}
-  m_Enabled: 1

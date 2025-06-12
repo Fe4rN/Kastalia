@@ -14,6 +14,7 @@ public class Perseguir : Estado
         agent = GetComponent<NavMeshAgent>();
         controller = maquina as CaballeroNormalController;
         controller = GetComponent<CaballeroNormalController>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -25,6 +26,7 @@ public class Perseguir : Estado
 
         if (distancia <= controller.AttackDistance)
         {
+            animator.SetBool("IsWandering", false);
             controller.SetEstado(controller.atacarEstado.Value);
             return;
         }
@@ -32,6 +34,7 @@ public class Perseguir : Estado
         if (distancia <= controller.DetectionDistance)
         {
             agent.SetDestination(controller.Player.position);
+            animator.SetBool("IsWandering", true);
 
             Vector3 direccion = controller.Player.position - transform.position;
             direccion.y = 0;
@@ -42,6 +45,7 @@ public class Perseguir : Estado
         }
         else if (!esperando)
         {
+            animator.SetBool("IsWandering", false);
             StartCoroutine(EsperarYVolverADeambular());
         }
     }
