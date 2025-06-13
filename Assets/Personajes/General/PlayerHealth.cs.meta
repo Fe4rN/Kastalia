@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 0c45f31fd62efb247befd9415572b728
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - deathCameraPrefab: {instanceID: 0}
+  - derrotaClip: {fileID: 8300000, guid: c01459e9b552590409b23ebde12ae79e, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

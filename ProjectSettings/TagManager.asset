@@ -8,6 +8,8 @@ TagManager:
   - SpawnPoint
   - Floor
   - Pet
+  - DeathCamera
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - Enemies
   - Pet
   - NavMeshIgnore
-  - 
+  - MinimapLayer
   - 
   - 
   - 
